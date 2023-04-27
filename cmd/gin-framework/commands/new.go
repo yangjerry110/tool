@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:50:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-26 10:48:58
+ * @LastEditTime: 2023-04-27 10:29:40
  * @Description: new
  */
 package commands
@@ -139,6 +139,15 @@ func (n *New) New(ctx *cli.Context) error {
 	 * @创建router
 	 **/
 	err = CreateNewRouterCommands().CreateRouter()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建service
+	 **/
+	err = CreateNewServiceCommands().CreateService()
 	if err != nil {
 		return err
 	}
