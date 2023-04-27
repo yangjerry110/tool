@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:35:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 15:58:50
+ * @LastEditTime: 2023-04-27 11:11:20
  * @Description: test router
  */
 package router
@@ -34,7 +34,7 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 	}
 
 	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "common.go", t.GetTemplate(), data)
+	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", t.GetTemplate(), data)
 }
 
 /**
