@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:31:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 10:34:26
+ * @LastEditTime: 2023-04-27 11:20:24
  * @Description: common
  */
 package logger
@@ -34,7 +34,7 @@ func (c *Common) SaveTemplate(path string, projectPath string) error {
 	}
 
 	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", c.GetTemplate(), data)
+	return templates.CreateCommonTemplate().SaveTemplate(path, "common.go", c.GetTemplate(), data)
 }
 
 /**
