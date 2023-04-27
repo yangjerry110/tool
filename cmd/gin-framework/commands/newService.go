@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:14:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 17:32:36
+ * @LastEditTime: 2023-04-27 11:06:19
  * @Description: service
  */
 package commands
@@ -112,7 +112,7 @@ func (n *NewService) CreateFile() error {
 	 * @step
 	 * @创建beforStart
 	 **/
-	err = service.CreateBeforStartService().SaveTemplate(NewRouterParams.RouterPath, InitParms.ProjectImportPath)
+	err = service.CreateBeforStartService().SaveTemplate(NewServiceParams.ServicePath, InitParms.ProjectImportPath)
 	if err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (n *NewService) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = service.CreateTestService().SaveTemplate(NewRouterParams.RouterPath, InitParms.ProjectImportPath)
+	err = service.CreateTestService().SaveTemplate(NewServiceParams.ServicePath, InitParms.ProjectImportPath)
 	if err != nil {
 		return err
 	}
