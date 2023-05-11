@@ -2,14 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:50:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-27 10:29:40
+ * @LastEditTime: 2023-05-11 14:38:38
  * @Description: new
  */
 package commands
 
 import (
 	"github.com/golib/cli"
-	"github.com/yangjerry110/tool/cmd/gin-framework/errors"
 )
 
 type NewCommands interface {
@@ -39,6 +38,54 @@ func (n *New) Commands(app *cli.App) error {
 				return n.New(c)
 			},
 		},
+		{
+			Name:    "newApp",
+			Aliases: []string{"na"},
+			Usage:   "new a app => new app",
+			Action: func(c *cli.Context) error {
+				return CreateNewAppCommands().NewApp(c)
+			},
+		},
+		{
+			Name:    "newController",
+			Aliases: []string{"nc"},
+			Usage:   "new a controller => new controller",
+			Action: func(c *cli.Context) error {
+				return CreateNewControllerCommands().NewController(c)
+			},
+		},
+		{
+			Name:    "newService",
+			Aliases: []string{"ns"},
+			Usage:   "new a service => new service",
+			Action: func(c *cli.Context) error {
+				return CreateNewServiceCommands().NewService(c)
+			},
+		},
+		{
+			Name:    "newVo",
+			Aliases: []string{"nv"},
+			Usage:   "new a vo => new vo",
+			Action: func(c *cli.Context) error {
+				return CreateNewVoCommands().NewVo(c)
+			},
+		},
+		{
+			Name:    "newModel",
+			Aliases: []string{"nm"},
+			Usage:   "new a model => new model",
+			Action: func(c *cli.Context) error {
+				return CreateNewModelCommands().NewModel(c)
+			},
+		},
+		{
+			Name:    "newDao",
+			Aliases: []string{"nd"},
+			Usage:   "new a dao => new dao",
+			Action: func(c *cli.Context) error {
+				return CreateNewDaoCommands().NewDao(c)
+			},
+		},
 	}
 	return nil
 }
@@ -54,19 +101,18 @@ func (n *New) New(ctx *cli.Context) error {
 
 	/**
 	 * @step
-	 * @获取项目名称
+	 * @设置projectName
 	 **/
-	projectName := ctx.Args().First()
-	if projectName == "" {
-		return errors.ErrProjectNameIsEmpty
+	err := CreateInitCommands().SetProjectName(ctx)
+	if err != nil {
+		return nil
 	}
-	InitParms.ProjectName = projectName
 
 	/**
 	 * @step
 	 * @问新创建的项目名称
 	 **/
-	err := CreateInitCommands().AskInit()
+	err = CreateInitCommands().AskInit()
 	if err != nil {
 		return err
 	}
@@ -79,7 +125,6 @@ func (n *New) New(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-
 	/**
 	 * @step
 	 * @创建config

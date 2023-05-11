@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 15:23:07
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 15:37:30
+ * @LastEditTime: 2023-05-11 14:53:42
  * @Description: logger
  */
 package config
@@ -47,7 +47,7 @@ func (l *Logger) GetTemplate() string {
 	   "time"
    
 	   "github.com/sirupsen/logrus"
-	   "github.com/yangjerry110/mytool/pkg/conf"
+	   "github.com/yangjerry110/tool/pkg/conf"
    )
    
    type LoggerConfig interface {

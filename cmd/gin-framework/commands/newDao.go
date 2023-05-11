@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:06:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 17:11:12
+ * @LastEditTime: 2023-05-11 15:16:15
  * @Description: dao commands
  */
 package commands
@@ -11,10 +11,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/golib/cli"
 	"github.com/yangjerry110/tool/cmd/gin-framework/templates/dao"
 )
 
 type NewDaoCommands interface {
+	NewDao(ctx *cli.Context) error
+	CreateNewDao() error
+	AppendFuncBaseDao() error
 	CreateDao() error
 	CreateWd() error
 	CreateFile() error
@@ -31,6 +35,91 @@ type NewDao struct {
  * @return {*}
  */
 var NewDaoParams = &NewDao{}
+
+/**
+ * @description: NewDao
+ * @param {*cli.Context} ctx
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 11:36:30
+ * @return {*}
+ */
+func (n *NewDao) NewDao(ctx *cli.Context) error {
+
+	/**
+	 * @step
+	 * @设置daoName
+	 **/
+	err := CreateInitCommands().SetDaoName(ctx)
+	if err != nil {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @设置projectPath
+	 **/
+	err = CreateInitCommands().SetProjectPath()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @设置projectImportPath
+	 **/
+	err = CreateInitCommands().SetImportProjectPath()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建newDao
+	 **/
+	err = n.CreateNewDao()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @appendFuncBaseGo
+	 **/
+	err = n.AppendFuncBaseDao()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/**
+ * @description: CreateNewDao
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 11:24:28
+ * @return {*}
+ */
+func (n *NewDao) CreateNewDao() error {
+	NewAppParams.AppDaoFileName = fmt.Sprintf("%sDao.go", InitParms.DaoName)
+	err := dao.CreateNewDao().SaveTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "dao"), InitParms.ProjectImportPath, InitParms.DaoName, NewAppParams.AppDaoFileName)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/**
+ * @description: AppendFuncTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 15:16:22
+ * @return {*}
+ */
+func (n *NewDao) AppendFuncBaseDao() error {
+	err := dao.CreateBaseDao().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "dao"), InitParms.DaoName)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 /**
  * @description: CreateDao

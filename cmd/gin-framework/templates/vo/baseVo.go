@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:49:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 17:25:24
+ * @LastEditTime: 2023-05-08 15:11:06
  * @Description: baseVo
  */
 package vo
@@ -33,4 +33,18 @@ func CreateTestOutputVo(TestOutputVos ...TestOutputVo) TestOutputVo {
 		return &TestOutput{}
 	}
 	return TestOutputVos[0]
+}
+
+/**
+ * @description: CreateNewVo
+ * @param {...NewVo} NewVos
+ * @author: Jerry.Yang
+ * @date: 2023-05-08 15:11:16
+ * @return {*}
+ */
+func CreateNewVo(NewVos ...NewVo) NewVo {
+	if len(NewVos) == 0 {
+		return &New{}
+	}
+	return NewVos[0]
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:51:29
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-26 10:48:33
+ * @LastEditTime: 2023-05-08 17:41:46
  * @Description: base
  */
 package commands
@@ -173,4 +173,32 @@ func CreateNewTemplateCommands(NewTemplateCommands ...NewTemplateCommands) NewTe
 		return &NewTemplate{}
 	}
 	return NewTemplateCommands[0]
+}
+
+/**
+ * @description: CreateNewAppCommands
+ * @param {...NewAppCommands} NewAppCommands
+ * @author: Jerry.Yang
+ * @date: 2023-05-08 15:18:24
+ * @return {*}
+ */
+func CreateNewAppCommands(NewAppCommands ...NewAppCommands) NewAppCommands {
+	if len(NewAppCommands) == 0 {
+		return &NewApp{}
+	}
+	return NewAppCommands[0]
+}
+
+/**
+ * @description: CreateCommonCommands
+ * @param {...CommandsCommands} CommandsCommands
+ * @author: Jerry.Yang
+ * @date: 2023-05-08 17:41:56
+ * @return {*}
+ */
+func CreateCommonCommands(CommandsCommands ...CommandsCommands) CommandsCommands {
+	if len(CommandsCommands) == 0 {
+		return &Common{}
+	}
+	return CommandsCommands[0]
 }

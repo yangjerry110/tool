@@ -17,7 +17,7 @@
 ```
 package main
 
-import "github.com/yangjerry110/mytool/pkg/common"
+import "github.com/yangjerry110/tool/pkg/common"
 
 func main() {
     accessToken,err := common.GetQiweiAccessToken(appId,cropId,cropSecret)
@@ -37,7 +37,7 @@ conf_path: "conf_path"
 ```
 package main
 
-import "github.com/yangjerry110/mytool/pkg/conf"
+import "github.com/yangjerry110/tool/pkg/conf"
 
 func main() {
 
@@ -63,8 +63,8 @@ func main() {
 package main 
 
 import (
-    httpPkg "github.com/yangjerry110/mytool/pkg/http" 
-    "github.com/yangjerry110/mytool/http"
+    httpPkg "github.com/yangjerry110/tool/pkg/http" 
+    "github.com/yangjerry110/tool/http"
 )
 
 func main() {
@@ -106,7 +106,7 @@ func main() {
 ```
 package main 
 
-import "github.com/yangjerry110/mytool/pkg/extenrnal"
+import "github.com/yangjerry110/tool/pkg/extenrnal"
 
 func main() {
 
@@ -149,7 +149,7 @@ func main() {
 
 package main 
 
-import "github.com/yangjerry110/mytool/pkg/perm"
+import "github.com/yangjerry110/tool/pkg/perm"
 
 func main() {
     encrtyStr,err := perm.RsaDecrty(permPath,inputStr)
@@ -165,8 +165,8 @@ func main() {
 package main 
 
 import （
-    "github.com/yangjerry110/mytool/pkg/logger"
-    toolLogger "github.com/yangjerry110/mytool/logger"
+    "github.com/yangjerry110/tool/pkg/logger"
+    toolLogger "github.com/yangjerry110/tool/logger"
 ）
 
 func main() {
@@ -183,7 +183,7 @@ func main() {
 	}).WithField("testFields", "testFieldVal").Info("this is test withField")
 
     // show this
-    // {"file":"/Users/admin/go/src/my-tool/logger/logrusLog.go:60","func":"github.com/yangjerry110/mytool/logger.(*LogrusLog).WriteLog","level":"info","msg":"this is test withField","time":"2022-10-09T17:32:59+08:00"}
+    // {"file":"/Users/admin/go/src/my-tool/logger/logrusLog.go:60","func":"github.com/yangjerry110/tool/logger.(*LogrusLog).WriteLog","level":"info","msg":"this is test withField","time":"2022-10-09T17:32:59+08:00"}
 
 }
 ```
@@ -199,7 +199,7 @@ func main() {
 ```
 package main 
 import (
-    "github.com/yangjerry110/mytool/pkg/cache"
+    "github.com/yangjerry110/tool/pkg/cache"
 )
 
 func main() {

@@ -43,7 +43,7 @@ func (b *Base) GetTemplate() string {
 	*/
    package logger
    
-   import "github.com/yangjerry110/mytool/pkg/logger"
+   import "github.com/yangjerry110/tool/pkg/logger"
    
    /**
 	* @description: Logger

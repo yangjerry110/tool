@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-27 11:35:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-28 16:07:47
+ * @LastEditTime: 2023-04-28 16:10:07
  * @Description: 
 -->
 
@@ -24,5 +24,5 @@
     根据提示 input 项目地址
 ```
 ``` bash
-    生成newApp之后，进入到newApp跟目录，执行 `go mod tidy`
+    生成newApp之后，进入到newApp根目录，执行 `go mod tidy`
 ```

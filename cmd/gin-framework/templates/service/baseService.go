@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:02:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 16:14:04
+ * @LastEditTime: 2023-05-08 11:38:02
  * @Description: base service
  */
 package service
@@ -47,4 +47,18 @@ func CreateTestService(TestServices ...TestService) TestService {
 		return &Test{}
 	}
 	return TestServices[0]
+}
+
+/**
+ * @description: CreateNewService
+ * @param {...NewService} NewServices
+ * @author: Jerry.Yang
+ * @date: 2023-05-08 11:38:07
+ * @return {*}
+ */
+func CreateNewService(NewServices ...NewService) NewService {
+	if len(NewServices) == 0 {
+		return &New{}
+	}
+	return NewServices[0]
 }

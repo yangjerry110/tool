@@ -56,8 +56,8 @@ func (c *Common) GetTemplate() string {
    import (
 	   "{{.ProjectPath}}/config"
    
-	   "github.com/yangjerry110/mytool/logger"
-	   pkgLogger "github.com/yangjerry110/mytool/pkg/logger"
+	   "github.com/yangjerry110/tool/logger"
+	   pkgLogger "github.com/yangjerry110/tool/pkg/logger"
    )
    
    type CommonLogger interface {

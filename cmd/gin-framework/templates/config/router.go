@@ -46,7 +46,7 @@ func (r *Router) GetTemplate() string {
    import (
 	   "time"
    
-	   "github.com/yangjerry110/mytool/pkg/conf"
+	   "github.com/yangjerry110/tool/pkg/conf"
    )
    
    type RouterConfig interface {
