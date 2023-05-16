@@ -2,18 +2,22 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 14:51:06
+ * @LastEditTime: 2023-05-16 11:22:32
  * @Description:new dao
  */
 package dao
 
 import (
+	"fmt"
+
 	"github.com/yangjerry110/tool/cmd/gin-framework/templates"
 )
 
 type NewDao interface {
 	SaveTemplate(path string, projectImportPath string, daoName string, daoFileName string) error
 	GetTemplate() string
+	AppendFuncTemplate(path string, daoName string, baseDaoName string) error
+	GetAppendTemplate() string
 }
 
 type New struct{}
@@ -61,6 +65,50 @@ func (n *New) SaveTemplate(path string, projectImportPath string, daoName string
 }
 
 /**
+ * @description: AppendFuncTemplate
+ * @param {string} path
+ * @param {string} daoName
+ * @param {string} baseDaoName
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 11:22:40
+ * @return {*}
+ */
+func (n *New) AppendFuncTemplate(path string, daoName string, baseDaoName string) error {
+
+	/**
+	 * @step
+	 * @解析需要添加的文件
+	 **/
+	basePath := fmt.Sprintf("%s/%sDao.go", path, baseDaoName)
+
+	/**
+	 * @step
+	 * @定义数据结构
+	 **/
+	type Data struct {
+		BaseDaoName        string
+		FirstBaseDaoNameUp string
+		DaoName            string
+		DaoNameUp          string
+	}
+
+	/**
+	 * @step
+	 * @定义大写的参数
+	 **/
+	firstBaseDaoNameUp := templates.CreateCommonTemplate().FirstUpper(baseDaoName)
+	DaoNameUp := templates.CreateCommonTemplate().FirstUpper(daoName)
+
+	/**
+	 * @step
+	 * @进行赋值
+	 **/
+	data := &Data{FirstBaseDaoNameUp: firstBaseDaoNameUp, BaseDaoName: baseDaoName, DaoNameUp: DaoNameUp, DaoName: daoName}
+	return templates.CreateCommonTemplate().AppendTemplate(basePath, n.GetAppendTemplate(), data)
+
+}
+
+/**
  * @description: GetTemplate
  * @author: Jerry.Yang
  * @date: 2023-05-10 18:01:53
@@ -93,14 +141,14 @@ func (n *New) GetTemplate() string {
    type {{.DaoNameUp}} struct{}
    
    /**
-	* @description: GetList
+	* @description: Get{{.DaoNameUp}}List
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
 	* @date: 2023-05-10 17:49:19
 	* @return {*}
 	*/
-   func ({{.FirstDaoName}} *{{.DaoNameUp}}) GetList(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error) {
+   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error) {
    
 	   /**
 		* @step
@@ -120,14 +168,14 @@ func (n *New) GetTemplate() string {
    }
    
    /**
-	* @description: GetInfo
+	* @description: Get{{.DaoNameUp}}Info
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
 	* @date: 2023-05-10 17:50:21
 	* @return {*}
 	*/
-   func ({{.FirstDaoName}} *{{.DaoNameUp}}) GetInfo(ctx context.Context,{{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error) {
+   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Get{{.DaoNameUp}}Info(ctx context.Context,{{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error) {
    
 	   /**
 		* @step
@@ -147,14 +195,14 @@ func (n *New) GetTemplate() string {
    }
    
    /**
-	* @description: Save
+	* @description: Save{{.DaoNameUp}}
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
 	* @date: 2023-05-10 17:51:41
 	* @return {*}
 	*/
-   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Save(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error) {
+   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error) {
    
 	   /**
 		* @step
@@ -168,14 +216,14 @@ func (n *New) GetTemplate() string {
    }
    
    /**
-	* @description: Delete
+	* @description: Delete{{.DaoNameUp}}
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
 	* @date: 2023-05-10 17:53:14
 	* @return {*}
 	*/
-   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Delete(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error) {
+   func ({{.FirstDaoName}} *{{.DaoNameUp}}) Delete{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error) {
    
 	   /**
 		* @step
@@ -188,4 +236,108 @@ func (n *New) GetTemplate() string {
 	   return true, nil
    }
    `
+}
+
+/**
+ * @description: GetAppendTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 11:16:14
+ * @return {*}
+ */
+func (n *New) GetAppendTemplate() string {
+	return `/**
+	* @description: Get{{.DaoNameUp}}List
+	* @param {context.Context} ctx
+	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
+	* @author: Jerry.Yang
+	* @date: 2023-05-10 17:49:19
+	* @return {*}
+	*/
+   func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error) {
+   
+	   /**
+		* @step
+		* @result
+		**/
+	   result := []*model.{{.DaoNameUp}}{}
+   
+	   /**
+		* @step
+		* @执行结果
+		**/
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Find(result).Error; err != nil {
+		   logger.Logger().Errorf("{{.DaoName}}Dao GetList Err : %+v", err)
+		   return nil, err
+	   }
+	   return result, nil
+   }
+   
+   /**
+	* @description: Get{{.DaoNameUp}}Info
+	* @param {context.Context} ctx
+	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
+	* @author: Jerry.Yang
+	* @date: 2023-05-10 17:50:21
+	* @return {*}
+	*/
+   func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Get{{.DaoNameUp}}Info(ctx context.Context,{{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error) {
+   
+	   /**
+		* @step
+		* @result
+		**/
+	   result := &model.{{.DaoNameUp}}{}
+   
+	   /**
+		* @step
+		* @执行结果
+		**/
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).First(result).Error; err != nil {
+		   logger.Logger().Errorf("{{.DaoName}}Dao GetList Err : %+v", err)
+		   return nil, err
+	   }
+	   return result, nil
+   }
+   
+   /**
+	* @description: Save{{.DaoNameUp}}
+	* @param {context.Context} ctx
+	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
+	* @author: Jerry.Yang
+	* @date: 2023-05-10 17:51:41
+	* @return {*}
+	*/
+   func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error) {
+   
+	   /**
+		* @step
+		* @执行结果
+		**/
+	   if err := CreateCommonDao().DbClient().Save({{.DaoName}}Model).Error; err != nil {
+		   logger.Logger().Errorf("{{.DaoName}}Dao GetList Err : %+v", err)
+		   return 0, err
+	   }
+	   return {{.DaoName}}Model.UID, nil
+   }
+   
+   /**
+	* @description: Delete{{.DaoNameUp}}
+	* @param {context.Context} ctx
+	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
+	* @author: Jerry.Yang
+	* @date: 2023-05-10 17:53:14
+	* @return {*}
+	*/
+   func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Delete{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error) {
+   
+	   /**
+		* @step
+		* @执行结果
+		**/
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", 0).Error; err != nil {
+		   logger.Logger().Errorf("{{.DaoName}}Dao GetList Err : %+v", err)
+		   return false, err
+	   }
+	   return true, nil
+   }`
 }

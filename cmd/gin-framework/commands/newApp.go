@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-06 11:09:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-10 16:58:38
+ * @LastEditTime: 2023-05-11 16:36:21
  * @Description: new app
  */
 package commands
@@ -92,7 +92,7 @@ func (n *NewApp) CreateApp() error {
 	 * @step
 	 * @创建controller
 	 **/
-	err := CreateNewControllerCommands().CreateController()
+	err := CreateNewControllerCommands().CreateNewController()
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (n *NewApp) CreateApp() error {
 	 * @step
 	 * @创建service
 	 **/
-	err = CreateNewServiceCommands().CreateService()
+	err = CreateNewServiceCommands().CreateNewService()
 	if err != nil {
 		return err
 	}
@@ -110,7 +110,7 @@ func (n *NewApp) CreateApp() error {
 	 * @step
 	 * @创建Vo
 	 **/
-	err = CreateNewVoCommands().CreateVo()
+	err = CreateNewVoCommands().CreateNewVo()
 	if err != nil {
 		return err
 	}

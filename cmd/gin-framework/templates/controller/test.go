@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:52:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 16:55:03
+ * @LastEditTime: 2023-05-11 17:21:04
  * @Description: test controller
  */
 package controller
@@ -34,7 +34,7 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 	}
 
 	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", t.GetTemplate(), data)
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testController.go", t.GetTemplate(), data)
 }
 
 /**

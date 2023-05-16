@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 16:36:03
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 11:35:34
+ * @LastEditTime: 2023-05-11 18:08:16
  * @Description: init
  */
 package commands
@@ -11,6 +11,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/golib/cli"
@@ -24,18 +25,26 @@ type InitCommands interface {
 	SetProjectPath() error
 	SetProjectName(ctx *cli.Context) error
 	SetAppName(ctx *cli.Context) error
+	SetControllerName(ctx *cli.Context) error
+	SetServiceName(ctx *cli.Context) error
 	SetDaoName(ctx *cli.Context) error
 	SetModelName(ctx *cli.Context) error
+	SetVoName(ctx *cli.Context) error
 	SetImportProjectPath() error
+	SetBaseProjectPath() error
 }
 
 type Init struct {
 	ProjectImportPath string
+	ProjectBasePath   string
 	ProjectPath       string
 	ProjectName       string
 	AppName           string
+	ControllerName    string
+	ServiceName       string
 	ModelName         string
 	DaoName           string
+	VoName            string
 	ModelConfigPath   string
 }
 
@@ -201,6 +210,66 @@ func (i *Init) SetAppName(ctx *cli.Context) error {
 		return errors.ErrAppNameIsEmpty
 	}
 	InitParms.AppName = appName
+	InitParms.ControllerName = appName
+	InitParms.ServiceName = appName
+	InitParms.VoName = appName
+	return nil
+}
+
+/**
+ * @description: SetControllerName
+ * @param {*cli.Context} ctx
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 16:30:16
+ * @return {*}
+ */
+func (i *Init) SetControllerName(ctx *cli.Context) error {
+
+	/**
+	 * @step
+	 * @判断ControllerName是否有值
+	 **/
+	if InitParms.ControllerName != "" {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @获取第一个参数的名称
+	 **/
+	ControllerName := ctx.Args().First()
+	if ControllerName == "" {
+		return errors.ErrControllerNameIsEmpty
+	}
+	InitParms.ControllerName = ControllerName
+	return nil
+}
+
+/**
+ * @description: SetServiceName
+ * @param {*cli.Context} ctx
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 16:31:31
+ * @return {*}
+ */
+func (i *Init) SetServiceName(ctx *cli.Context) error {
+	/**
+	 * @step
+	 * @判断ServiceName是否有值
+	 **/
+	if InitParms.ServiceName != "" {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @获取第一个参数的名称
+	 **/
+	ServiceName := ctx.Args().First()
+	if ServiceName == "" {
+		return errors.ErrServiceNameIsEmpty
+	}
+	InitParms.ServiceName = ServiceName
 	return nil
 }
 
@@ -273,6 +342,34 @@ func (i *Init) SetModelName(ctx *cli.Context) error {
 }
 
 /**
+ * @description: SetVoName
+ * @param {*cli.Context} ctx
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 16:32:43
+ * @return {*}
+ */
+func (i *Init) SetVoName(ctx *cli.Context) error {
+	/**
+	 * @step
+	 * @判断VoName是否有值
+	 **/
+	if InitParms.VoName != "" {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @获取第一个参数的名称
+	 **/
+	VoName := ctx.Args().First()
+	if VoName == "" {
+		return errors.ErrVoNameIsEmpty
+	}
+	InitParms.VoName = VoName
+	return nil
+}
+
+/**
  * @description: SetImportProjectPath
  * @author: Jerry.Yang
  * @date: 2023-05-10 16:45:47
@@ -300,5 +397,27 @@ func (i *Init) SetImportProjectPath() error {
 		return errors.ErrImportProjectPathIsEmpty
 	}
 	InitParms.ProjectImportPath = pkgs[0].PkgPath
+	return nil
+}
+
+/**
+ * @description: GetBaseProjectPath
+ * @author: Jerry.Yang
+ * @date: 2023-05-11 17:27:58
+ * @return {*}
+ */
+func (i *Init) SetBaseProjectPath() error {
+
+	/**
+	 * @step
+	 * @获取项目跟目录
+	 **/
+	binary, err := os.Executable()
+	if err != nil {
+		return err
+	}
+
+	rootDir := filepath.Dir(filepath.Dir(binary))
+	InitParms.ProjectBasePath = rootDir
 	return nil
 }

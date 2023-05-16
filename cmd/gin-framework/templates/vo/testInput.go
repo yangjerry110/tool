@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:50:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 17:31:04
+ * @LastEditTime: 2023-05-16 10:40:35
  * @Description: test input
  */
 package vo
@@ -24,7 +24,7 @@ type TestInput struct{}
  * @return {*}
  */
 func (t *TestInput) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", t.GetTemplate(), nil)
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testInputVo.go", t.GetTemplate(), nil)
 }
 
 /**

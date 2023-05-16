@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 17:04:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 11:26:29
+ * @LastEditTime: 2023-05-16 11:24:29
  * @Description: errors
  */
 package errors
@@ -17,8 +17,16 @@ var ErrTemplateSavePathIsEmpty = errors.New("err : templates Err => path is empt
 var ErrTemplateSavePathFmtErr = errors.New("err : template Err => format is err")
 
 var ErrAppNameIsEmpty = errors.New("err : appname is empty; please check")
+var ErrControllerNameIsEmpty = errors.New("err : controllername is empty; please check")
+var ErrServiceNameIsEmpty = errors.New("err : servicename is empty; please check")
+var ErrVoNameIsEmpty = errors.New("err : voname is empty; please check")
 
 var ErrGetInitParams = errors.New("err : get initParams is err; ")
+
+var ErrAppendControllerPathIsEmpyty = errors.New("err : append controllerPath is empty; please check")
+var ErrAppendServicePathIsEmpty = errors.New("err : append servicePath is empty; please check")
+var ErrAppendVoPathIsEmprty = errors.New("err : append voPath is empty; please check")
+var ErrDaoPathIsEmpty = errors.New("err : append daoPath is empty; please check")
 
 var ErrModelNameIsEmpty = errors.New("err : modelname is empty; please check")
 var ErrModelConfigIsEmpty = errors.New("err : modelconfig is empty; please check")

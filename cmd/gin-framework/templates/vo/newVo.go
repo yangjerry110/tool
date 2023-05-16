@@ -2,17 +2,25 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 15:05:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-09 16:55:04
+ * @LastEditTime: 2023-05-16 10:56:29
  * @Description: new vo
  */
 package vo
 
 import (
+	"fmt"
+
 	"github.com/yangjerry110/tool/cmd/gin-framework/templates"
 )
 
 type NewVo interface {
-	SaveTemplate(inputPath string, outputPath string, inputVoName string, outputVoName string, appName string) error
+	SaveTemplate(inputPath string, outputPath string, inputVoName string, outputVoName string, VoName string) error
+	SaveAppendFuncInputTemplate(path string, voName string, baseVoName string) error
+	SaveAppendFuncOutputTemplate(path string, voName string, baseVoName string) error
+	GetAppendFuncInputTemplate() string
+	GetAppendFuncOutputTemplate() string
+	GetInputTemplate() string
+	GetOutputTemplate() string
 }
 
 type New struct{}
@@ -23,32 +31,33 @@ type New struct{}
  * @param {string} outputPath
  * @param {string} inputVoName
  * @param {string} outputVoName
- * @param {string} appName
+ * @param {string} voName
  * @author: Jerry.Yang
  * @date: 2023-05-08 15:09:48
  * @return {*}
  */
-func (n *New) SaveTemplate(inputPath string, outputPath string, inputVoName string, outputVoName string, appName string) error {
+func (n *New) SaveTemplate(inputPath string, outputPath string, inputVoName string, outputVoName string, voName string) error {
 
 	/**
 	 * @step
 	 * @需要渲染的数据
 	 **/
 	type Data struct {
-		AppName string
+		VoName   string
+		VoNameUp string
 	}
 
 	/**
 	 * @step
-	 * @appName进行大写字母的转换
+	 * @VoName进行大写字母的转换
 	 **/
-	appName = templates.CreateCommonTemplate().FirstUpper(appName)
+	voNameUp := templates.CreateCommonTemplate().FirstUpper(voName)
 
 	/**
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{AppName: appName}
+	data := &Data{VoName: voName, VoNameUp: voNameUp}
 
 	/**
 	 * @step
@@ -71,6 +80,116 @@ func (n *New) SaveTemplate(inputPath string, outputPath string, inputVoName stri
 }
 
 /**
+ * @description: SaveAppendFuncInputTemplate
+ * @param {string} path
+ * @param {string} voName
+ * @param {string} baseVoName
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 10:45:08
+ * @return {*}
+ */
+func (n *New) SaveAppendFuncInputTemplate(path string, voName string, baseVoName string) error {
+
+	/**
+	 * @step
+	 * @inputVoPath
+	 **/
+	baseInputVoPath := fmt.Sprintf("%s/%sInputVo.go", path, baseVoName)
+
+	/**
+	 * @step
+	 * @需要渲染的数据
+	 **/
+	type Data struct {
+		VoName   string
+		VoNameUp string
+	}
+
+	/**
+	 * @step
+	 * @VoName进行大写字母的转换
+	 **/
+	voNameUp := templates.CreateCommonTemplate().FirstUpper(voName)
+
+	/**
+	 * @step
+	 * @进行赋值
+	 **/
+	data := &Data{VoName: voName, VoNameUp: voNameUp}
+
+	/**
+	 * @step
+	 * @执行追加
+	 **/
+	return templates.CreateCommonTemplate().AppendTemplate(baseInputVoPath, n.GetAppendFuncInputTemplate(), data)
+}
+
+/**
+ * @description: SaveAppendFuncOutputTemplate
+ * @param {string} path
+ * @param {string} voName
+ * @param {string} baseVoName
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 10:48:00
+ * @return {*}
+ */
+func (n *New) SaveAppendFuncOutputTemplate(path string, voName string, baseVoName string) error {
+
+	/**
+	 * @step
+	 * @baseOutputVoPath
+	 **/
+	baseOutputVoPath := fmt.Sprintf("%s/%sOutputVo.go", path, baseVoName)
+
+	/**
+	 * @step
+	 * @需要渲染的数据
+	 **/
+	type Data struct {
+		VoName   string
+		VoNameUp string
+	}
+
+	/**
+	 * @step
+	 * @VoName进行大写字母的转换
+	 **/
+	voNameUp := templates.CreateCommonTemplate().FirstUpper(voName)
+
+	/**
+	 * @step
+	 * @进行赋值
+	 **/
+	data := &Data{VoName: voName, VoNameUp: voNameUp}
+
+	/**
+	 * @step
+	 * @执行追加
+	 **/
+	return templates.CreateCommonTemplate().AppendTemplate(baseOutputVoPath, n.GetAppendFuncOutputTemplate(), data)
+}
+
+/**
+ * @description: GetAppendFuncInputTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-05-12 11:00:48
+ * @return {*}
+ */
+func (n *New) GetAppendFuncInputTemplate() string {
+	return `type {{.VoNameUp}} struct {}`
+}
+
+/**
+ * @description: GetAppendFuncOutputTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-05-12 11:16:08
+ * @return {*}
+ */
+func (n *New) GetAppendFuncOutputTemplate() string {
+	return `type {{.VoNameUp}} struct {}`
+}
+
+/**
  * @description: GetInputTemplate
  * @author: Jerry.Yang
  * @date: 2023-05-09 16:22:50
@@ -82,12 +201,11 @@ func (n *New) GetInputTemplate() string {
 	* @Date: 2023-04-23 14:16:24
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-23 14:16:32
-	* @Description: {{.AppName}} inputVo
+	* @Description: {{.VoName}} inputVo
 	*/
    package input
    
-   type {{.AppName}} struct {
-	   
+   type {{.VoNameUp}} struct {
    }`
 }
 
@@ -103,11 +221,11 @@ func (n *New) GetOutputTemplate() string {
 	* @Date: 2023-04-23 14:16:24
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-23 14:16:32
-	* @Description: {{.AppName}} outputVo
+	* @Description: {{.VoName}} outputVo
 	*/
    package output
    
-   type {{.AppName}} struct {
+   type {{.VoNameUp}} struct {
 	   
    }`
 }

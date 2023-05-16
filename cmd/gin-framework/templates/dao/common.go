@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:04:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 17:05:48
+ * @LastEditTime: 2023-05-16 11:12:08
  * @Description: common
  */
 package dao
@@ -24,7 +24,7 @@ type Common struct{}
  * @return {*}
  */
 func (c *Common) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "common.go", c.GetTemplate(), nil)
+	return templates.CreateCommonTemplate().SaveTemplate(path, "commonDao.go", c.GetTemplate(), nil)
 }
 
 /**
