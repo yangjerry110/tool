@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 11:28:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:55:01
+ * @LastEditTime: 2023-05-17 16:40:56
  * @Description: template config
  */
 package config
@@ -95,5 +95,19 @@ func (b *Base) GetTemplate() string {
 	   }
 	   return RouterConfigs[0]
    }
+
+   /**
+	* @description: CreateDatabaseConfig
+	* @param {...DataBaseConfig} DataBaseConfigs
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	func CreateDatabaseConfig(DataBaseConfigs ...DataBaseConfig) DataBaseConfig {
+		if len(DataBaseConfigs) == 0 {
+			return &DataBase{}
+		}
+		return DataBaseConfigs[0]
+	}
    `
 }
