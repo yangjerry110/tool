@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 11:33:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 15:20:50
+ * @LastEditTime: 2023-05-17 15:25:34
  * @Description: new service
  */
 package service
@@ -116,12 +116,12 @@ func (n *New) GetAppendFuncTemplate() string {
 	return `/**
 	* @description: {{.ServiceNameUp}}
 	* @param {context.Context} ctx
-	* @param {*input.Test} inputVo
+	* @param {*input.{{.ServiceNameUp}}} inputVo
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func ({{.FirstBaseServiceNameUp}} *{{.BaseServiceNameUp}}) {{.ServiceNameUp}}(ctx context.Context, inputVo *input.{{.ServiceNameUp}}) (*output.{{.ServiceNameUp}}, error) {
+   func ({{.FirstBaseServiceName}} *{{.BaseServiceNameUp}}) {{.ServiceNameUp}}(ctx context.Context, inputVo *input.{{.ServiceNameUp}}) (*output.{{.ServiceNameUp}}, error) {
    
 	   /**
 		* @step
