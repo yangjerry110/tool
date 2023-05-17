@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-17 16:26:51
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 16:30:55
+ * @LastEditTime: 2023-05-17 16:37:08
  * @Description: databaseYaml config
  */
 package config
@@ -23,7 +23,7 @@ type DataBaseYaml struct{}
  * @return {*}
  */
 func (d *DataBaseYaml) SaveTemplate(configPath string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(configPath, "database.yaml", d.GetTemplate(), nil)
+	return templates.CreateCommonTemplate().SaveTemplate(configPath, "database.yaml", d.GetTemplate(), nil, "yaml")
 }
 
 /**
