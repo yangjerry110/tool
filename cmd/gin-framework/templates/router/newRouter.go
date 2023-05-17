@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-16 16:35:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 14:42:17
+ * @LastEditTime: 2023-05-17 15:47:22
  * @Description: new router
  */
 package router
@@ -149,13 +149,13 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @定义group
 		**/
-	   gourpRouter := router.Group("{{.RouterName}}")
+		groupRouter := router.Group("{{.RouterName}}")
    
 	   /**
 		* @step
 		* @定义router
 		**/
-	   gourpRouter.GET("/{{.RouterName}}", func(ctx *gin.Context) { controller.Create{{.RouterNameUp}}Controller().{{.RouterNameUp}}(ctx) })
+		groupRouter.GET("/{{.RouterName}}", func(ctx *gin.Context) { controller.Create{{.RouterNameUp}}Controller().{{.RouterNameUp}}(ctx) })
    }
    `
 }
@@ -186,13 +186,13 @@ func (n *New) GetAppendFuncTemplate() string {
 		* @step
 		* @定义group
 		**/
-	   gourpRouter := router.Group("{{.RouterName}}")
+		groupRouter := router.Group("{{.RouterName}}")
    
 	   /**
 		* @step
 		* @定义router
 		**/
-	   gourpRouter.GET("/{{.RouterName}}", func(ctx *gin.Context) { controller.Create{{.BaseRouterNameUp}}Controller().{{.RouterNameUp}}(ctx) })
+		groupRouter.GET("/{{.RouterName}}", func(ctx *gin.Context) { controller.Create{{.BaseRouterNameUp}}Controller().{{.RouterNameUp}}(ctx) })
    }
 	`
 }

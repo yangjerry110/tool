@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:35:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 14:31:03
+ * @LastEditTime: 2023-05-17 15:47:09
  * @Description: test router
  */
 package router
@@ -84,13 +84,13 @@ func (t *Test) GetTemplate() string {
 		* @step
 		* @定义group
 		**/
-	   gourpRouter := router.Group("test")
+	   groupRouter := router.Group("test")
    
 	   /**
 		* @step
 		* @定义router
 		**/
-	   gourpRouter.GET("/test", func(ctx *gin.Context) { controller.CreateTestController().Test(ctx) })
+	   groupRouter.GET("/test", func(ctx *gin.Context) { controller.CreateTestController().Test(ctx) })
    }
    `
 }
