@@ -26,3 +26,8 @@
 ``` bash
     生成newApp之后，进入到newApp根目录，执行 `go mod tidy`
 ```
+
+- 查看脚手架命令行
+``` bash
+    gin-framework --help
+```
