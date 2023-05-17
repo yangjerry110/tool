@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 11:33:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:18:49
+ * @LastEditTime: 2023-05-17 14:58:58
  * @Description: new service
  */
 package service
@@ -163,7 +163,7 @@ func (n *New) GetTemplate() string {
    /**
 	* @description: {{.ServiceNameUp}}
 	* @param {context.Context} ctx
-	* @param {*input.Test} inputVo
+	* @param {*input.{{.ServiceNameUp}}} inputVo
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
