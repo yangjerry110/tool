@@ -170,7 +170,7 @@ func (n *New) GetTemplate() string {
 		**/
 		outputVo, err := service.Create{{.ControllerName}}Service().{{.ControllerName}}(ctx, inputVo)
 		if err != nil {
-			logger.Logger().Errorf("{{.ControllerName}}Controller {{.ControllerName}}Service Test Err : %+v", err)
+			logger.Logger().Errorf("{{.ControllerName}}Controller {{.ControllerName}}Service {{.ControllerName}} Err : %+v", err)
 		}
 
 		/**
@@ -210,7 +210,7 @@ func (n *New) GetAppendFuncTemplate() string {
 		* @should bind
 		**/
 		if err := ctx.ShouldBind(inputVo); err != nil {
-			logger.Logger().Errorf("{{.ControllerName}}Controller {{.ControllerName}} shouldBind Err : %+v", err)
+			logger.Logger().Errorf("{{.BaseControllerName}}Controller {{.ControllerName}} shouldBind Err : %+v", err)
 			return err
 		}
 
@@ -220,7 +220,7 @@ func (n *New) GetAppendFuncTemplate() string {
 		**/
 		outputVo, err := service.Create{{.BaseControllerName}}Service().{{.ControllerName}}(ctx, inputVo)
 		if err != nil {
-			logger.Logger().Errorf("{{.ControllerName}}Controller {{.ControllerName}}Service Test Err : %+v", err)
+			logger.Logger().Errorf("{{.ControllerName}}Controller {{.BaseControllerName}}Service {{.ControllerName}} Err : %+v", err)
 		}
 
 		/**
