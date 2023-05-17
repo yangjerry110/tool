@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 15:05:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:10:09
+ * @LastEditTime: 2023-05-17 15:36:27
  * @Description: new vo
  */
 package vo
@@ -195,7 +195,13 @@ func (n *New) GetAppendFuncInputTemplate() string {
  * @return {*}
  */
 func (n *New) GetAppendFuncOutputTemplate() string {
-	return `type {{.VoNameUp}} struct {}`
+	return `/**
+	* @description: {{.VoNameUp}}
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/	
+	type {{.VoNameUp}} struct {}`
 }
 
 /**
@@ -214,6 +220,12 @@ func (n *New) GetInputTemplate() string {
 	*/
    package input
    
+   /**
+	* @description: {{.VoNameUp}}
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
    type {{.VoNameUp}} struct {
    }`
 }
@@ -234,6 +246,12 @@ func (n *New) GetOutputTemplate() string {
 	*/
    package output
    
+   /**
+	* @description: {{.VoNameUp}}
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
    type {{.VoNameUp}} struct {
 	   
    }`
