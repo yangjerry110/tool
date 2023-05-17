@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:28:26
+ * @LastEditTime: 2023-05-17 16:49:11
  * @Description:new dao
  */
 package dao
@@ -134,10 +134,10 @@ func (n *New) GetTemplate() string {
    )
    
    type {{.DaoNameUp}}Dao interface {
-	   GetList(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error)
-	   GetInfo(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error)
-	   Save(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error)
-	   Delete(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error)
+		Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error)
+	   Get{{.DaoNameUp}}Info(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error)
+	   Save{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error)
+	   Delete{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error)
    }
    
    type {{.DaoNameUp}} struct{}
