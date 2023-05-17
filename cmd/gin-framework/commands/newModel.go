@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:45:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 11:25:54
+ * @LastEditTime: 2023-05-17 16:04:02
  * @Description: new model
  */
 package commands
@@ -335,8 +335,8 @@ func (n *NewModel) GetGormDb() (*gorm.DB, error) {
 	 * @获取配置
 	 **/
 	dataBase := db.BaseDb{}
-	yamlConf := conf.YamlConf{FilePath: InitParams.ModelConfigPath, FileName: "database.yaml", FileType: "yaml", Intervals: 10 * time.Minute, Conf: dataBase}
-	err := yamlConf.GetConf(&dataBase)
+	yamlConf := conf.YamlConf{FilePath: InitParams.ModelConfigPath, FileName: "database.yaml", FileType: "yaml", Intervals: 10 * time.Minute, Conf: &dataBase}
+	err := yamlConf.GetConf(dataBase)
 	if err != nil {
 		return nil, err
 	}
