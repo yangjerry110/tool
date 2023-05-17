@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 11:33:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 14:58:58
+ * @LastEditTime: 2023-05-17 15:20:50
  * @Description: new service
  */
 package service
@@ -15,7 +15,7 @@ import (
 
 type NewService interface {
 	SaveTemplate(path string, projectPath string, serviceName string, serviceFileName string) error
-	SaveAppendFuncTemplate(path string, baseServiceName string, serviceName string) error
+	SaveAppendFuncTemplate(path string, serviceName string, baseServiceName string) error
 	GetTemplate() string
 	GetAppendFuncTemplate() string
 }
@@ -67,7 +67,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, serviceName st
  * @date: 2023-05-11 18:26:29
  * @return {*}
  */
-func (n *New) SaveAppendFuncTemplate(path string, baseServiceName string, serviceName string) error {
+func (n *New) SaveAppendFuncTemplate(path string, serviceName string, baseServiceName string) error {
 
 	/**
 	 * @step
