@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:04:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:26:47
+ * @LastEditTime: 2023-05-17 16:33:08
  * @Description: common
  */
 package dao
@@ -51,10 +51,48 @@ func (c *Common) GetTemplate() string {
 	* @LastEditTime: {{.Time}}
 	* @Description: common
 	*/
-   package dao
-   
-   type CommonDao interface{}
-   
-   type Common struct{}
+	package dao
+
+	import (
+		"github.com/yangjerry110/tool/pkg/db"
+		"gorm.io/gorm"
+	)
+	
+	type CommonDao interface {
+		DbClient(dbNames ...string) *gorm.DB
+	}
+	
+	type Common struct{}
+	
+	/**
+	 * @description: DbClient
+	 * @param {...string} dbNames
+	 * @author: Jerry.Yang
+	 * @date: 2023-05-17 16:13:47
+	 * @return {*}
+	 */
+	func (c *Common) DbClient(dbNames ...string) *gorm.DB {
+	
+		/**
+		 * @step
+		 * @定义dbName
+		 **/
+		dbName := "master"
+	
+		/**
+		 * @step
+		 * @判断是否指定dbNames
+		 **/
+		if len(dbNames) == 0 {
+			dbName = dbNames[0]
+		}
+	
+		/**
+		 * @step
+		 * @dbClient
+		 **/
+		return db.Client(dbName)
+	}
+	
    `
 }

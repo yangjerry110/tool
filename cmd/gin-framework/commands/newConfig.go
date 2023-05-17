@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 10:57:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 16:34:23
+ * @LastEditTime: 2023-05-17 16:31:24
  * @Description: new config
  */
 package commands
@@ -154,6 +154,15 @@ func (n *NewConfig) CreateFile() error {
 
 	/**
 	 * @step
+	 * @创建database
+	 **/
+	err = config.CreateDatabaseConfig().SaveTemplate(NewConfigParams.ConfigPath)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
 	 * @创建loggerYaml
 	 **/
 	err = config.CreateLoggerYamlConfig().SaveTemplate(NewConfigParams.YamlConfigPath)
@@ -166,6 +175,15 @@ func (n *NewConfig) CreateFile() error {
 	 * @创建routerYaml
 	 **/
 	err = config.CreateRouterYamlConfig().SaveTemplate(NewConfigParams.YamlConfigPath)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建databaseYaml
+	 **/
+	err = config.CreateDatabaseYamlConfig().SaveTemplate(NewConfigParams.YamlConfigPath)
 	if err != nil {
 		return err
 	}

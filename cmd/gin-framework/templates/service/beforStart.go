@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:05:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:18:12
+ * @LastEditTime: 2023-05-17 16:23:09
  * @Description: beforStart
  */
 package service
@@ -125,6 +125,16 @@ func (b *BeforStart) GetTemplate() string {
 		   logger.Logger().Errorf("beforeStartService SetRouterConfig Err : %+v", err)
 		   return err
 	   }
+
+	   /**
+		* @step
+		* @设置databaseConfig
+		**/
+		err = config.CreateDatabaseConfig().SetConfig()
+		if err != nil {
+			logger.Logger().Errorf("beforeStartService SetDatabaseConfig Err : %+v", err)
+			return err
+		}
 	   return nil
    }
    `

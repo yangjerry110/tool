@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 14:50:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-02-09 15:24:37
+ * @LastEditTime: 2023-05-17 16:19:29
  * @Description: gorm db
  */
 package db
@@ -56,13 +56,12 @@ func (g *GormDb) Client(dbname string) *gorm.DB {
  * @date: 2023-02-09 14:59:42
  * @return {*}
  */
-func (g *GormDb) RenderDbConfig(dbConfigPath string, dbConfigFileName string) {
+func (g *GormDb) RenderDbConfig(dbConfigPath string, dbConfigFileName string) error {
 
 	/**
 	 * @step
 	 * @返回结果
 	 **/
 	yamlConf := conf.YamlConf{FilePath: dbConfigPath, FileName: dbConfigFileName, Conf: &DbConfig}
-	yamlConf.GetConf(DbConfig)
-	return
+	return yamlConf.GetConf(DbConfig)
 }

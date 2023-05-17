@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 14:42:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 16:05:45
+ * @LastEditTime: 2023-05-17 16:29:55
  * @Description: base config
  */
 package config
@@ -89,4 +89,32 @@ func CreateRouterYamlConfig(RouterYamlConfigs ...RouterYamlConfig) RouterYamlCon
 		return &RouterYaml{}
 	}
 	return RouterYamlConfigs[0]
+}
+
+/**
+ * @description: CreateDatabaseConfig
+ * @param {...DataBaseConfig} DataBaseConfigs
+ * @author: Jerry.Yang
+ * @date: 2023-05-17 16:30:00
+ * @return {*}
+ */
+func CreateDatabaseConfig(DataBaseConfigs ...DataBaseConfig) DataBaseConfig {
+	if len(DataBaseConfigs) == 0 {
+		return &DataBase{}
+	}
+	return DataBaseConfigs[0]
+}
+
+/**
+ * @description: CreateDatabaseYamlConfig
+ * @param {...DataBaseYamlConfig} DataBaseYamlConfigs
+ * @author: Jerry.Yang
+ * @date: 2023-05-17 16:30:41
+ * @return {*}
+ */
+func CreateDatabaseYamlConfig(DataBaseYamlConfigs ...DataBaseYamlConfig) DataBaseYamlConfig {
+	if len(DataBaseYamlConfigs) == 0 {
+		return &DataBaseYaml{}
+	}
+	return DataBaseYamlConfigs[0]
 }

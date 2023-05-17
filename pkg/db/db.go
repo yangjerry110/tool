@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 15:08:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-02-09 15:31:06
+ * @LastEditTime: 2023-05-17 16:19:51
  * @Description: db
  */
 package db
@@ -66,6 +66,6 @@ func Client(dbname string) *gorm.DB {
  * @date: 2023-02-09 15:28:27
  * @return {*}
  */
-func RenderDbConfig(filePath string, filename string) {
-	defaultClient.RenderDbConfig(filePath, filename)
+func RenderDbConfig(filePath string, filename string) error {
+	return defaultClient.RenderDbConfig(filePath, filename)
 }
