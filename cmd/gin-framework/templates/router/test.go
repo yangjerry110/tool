@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:35:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-27 11:11:20
+ * @LastEditTime: 2023-05-17 14:31:03
  * @Description: test router
  */
 package router
@@ -31,10 +31,11 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", t.GetTemplate(), data)
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testRouter.go", t.GetTemplate(), data)
 }
 
 /**
@@ -46,9 +47,9 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 func (t *Test) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:18:10
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:39:34
+	* @LastEditTime: {{.Time}}
 	* @Description: test
 	*/
    package router
@@ -68,7 +69,7 @@ func (t *Test) GetTemplate() string {
    /**
 	* @description: CreateRouter
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:31:32
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (t *Test) CreateRouter() {

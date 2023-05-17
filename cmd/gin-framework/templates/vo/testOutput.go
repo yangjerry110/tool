@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 17:18:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 10:40:40
+ * @LastEditTime: 2023-05-16 15:14:43
  * @Description: test output
  */
 package vo
@@ -24,7 +24,16 @@ type TestOutput struct{}
  * @return {*}
  */
 func (t *TestOutput) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "testOutputVo.go", t.GetTemplate(), nil)
+	/**
+	 * @step
+	 * @定义数据结构
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testOutputVo.go", t.GetTemplate(), data)
 }
 
 /**
@@ -36,13 +45,19 @@ func (t *TestOutput) SaveTemplate(path string) error {
 func (t *TestOutput) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:17:08
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-23 14:17:14
-	* @Description: test
+	* @Description: {{.Time}}
 	*/
    package output
    
+   /**
+    * @description: Test
+    * @author: Jerry.Yang
+    * @date: {{.Time}}
+    * @return {*}
+    */   
    type Test struct {
 	   RetCode   int32  ` + " ` json:\"retCode\"` " + `
 	   RetMsg    string ` + " ` json:\"retMsg\"` " + `

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 17:25:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 11:06:35
+ * @LastEditTime: 2023-05-16 15:05:04
  * @Description: vo commands
  */
 package commands
@@ -137,7 +137,16 @@ func (n *NewVo) AppendVo() error {
 	 * @step
 	 * @append vo
 	 **/
-	err := vo.CreateNewVo().SaveAppendFuncInputTemplate(fmt.Sprintf("%s%s/%s", InitParms.ProjectPath, "vo", "input"), InitParms.VoName, NewVoParams.AppendBaseVoName)
+	err := vo.CreateNewVo().SaveAppendFuncInputTemplate(fmt.Sprintf("%s%s/%s", InitParams.ProjectPath, "vo", "input"), InitParams.VoName, NewVoParams.AppendBaseVoName)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @add output
+	 **/
+	err = vo.CreateNewVo().SaveAppendFuncOutputTemplate(fmt.Sprintf("%s%s/%s", InitParams.ProjectPath, "vo", "output"), InitParams.VoName, NewVoParams.AppendBaseVoName)
 	if err != nil {
 		return err
 	}
@@ -155,9 +164,9 @@ func (n *NewVo) CreateNewVo() error {
 	 * @step
 	 * @创建vo
 	 **/
-	NewAppParams.AppVoInputFileName = fmt.Sprintf("%sInputVo.go", InitParms.VoName)
-	NewAppParams.AppVoOutputFileName = fmt.Sprintf("%sOutputVo.go", InitParms.VoName)
-	err := vo.CreateNewVo().SaveTemplate(fmt.Sprintf("%s%s/%s", InitParms.ProjectPath, "vo", "input"), fmt.Sprintf("%s%s/%s", InitParms.ProjectPath, "vo", "output"), NewAppParams.AppVoInputFileName, NewAppParams.AppVoOutputFileName, InitParms.VoName)
+	NewAppParams.AppVoInputFileName = fmt.Sprintf("%sInputVo.go", InitParams.VoName)
+	NewAppParams.AppVoOutputFileName = fmt.Sprintf("%sOutputVo.go", InitParams.VoName)
+	err := vo.CreateNewVo().SaveTemplate(fmt.Sprintf("%s%s/%s", InitParams.ProjectPath, "vo", "input"), fmt.Sprintf("%s%s/%s", InitParams.ProjectPath, "vo", "output"), NewAppParams.AppVoInputFileName, NewAppParams.AppVoOutputFileName, InitParams.VoName)
 	if err != nil {
 		return err
 	}
@@ -204,7 +213,7 @@ func (n *NewVo) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	inputPath := fmt.Sprintf("%s/%s/%s", InitParms.ProjectPath, "vo", "input")
+	inputPath := fmt.Sprintf("%s/%s/%s", InitParams.ProjectPath, "vo", "input")
 
 	/**
 	 * @step
@@ -219,7 +228,7 @@ func (n *NewVo) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	outputPath := fmt.Sprintf("%s/%s/%s", InitParms.ProjectPath, "vo", "output")
+	outputPath := fmt.Sprintf("%s/%s/%s", InitParams.ProjectPath, "vo", "output")
 
 	/**
 	 * @step

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:32:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 15:34:58
+ * @LastEditTime: 2023-05-17 14:31:12
  * @Description: common router
  */
 package router
@@ -31,10 +31,11 @@ func (c *Common) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "common.go", c.GetTemplate(), data)
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "commonRouter.go", c.GetTemplate(), data)
 }
 
 /**
@@ -46,9 +47,9 @@ func (c *Common) SaveTemplate(path string, projectPath string) error {
 func (c *Common) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 11:40:15
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:30:19
+	* @LastEditTime: {{.Time}}
 	* @Description: common
 	*/
    package router
@@ -69,7 +70,7 @@ func (c *Common) GetTemplate() string {
    /**
 	* @description: default router
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 11:43:31
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    var defaultRouter *gin.Engine
@@ -77,7 +78,7 @@ func (c *Common) GetTemplate() string {
    /**
 	* @description: CreateRouter
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 11:44:43
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (c *Common) GetRouter() *gin.Engine {
@@ -102,7 +103,7 @@ func (c *Common) GetTemplate() string {
 	* @description: CreateRouter
 	* @param {*gin.Context} ctx
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 15:14:55
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (c *Common) CreateRouter() {

@@ -65,7 +65,7 @@ func (n *NewModel) NewModel(ctx *cli.Context) error {
 	 * @step
 	 * @进行赋值
 	 **/
-	InitParms.ModelName = modelName
+	InitParams.ModelName = modelName
 
 	/**
 	 * @step
@@ -136,7 +136,7 @@ func (n *NewModel) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "model")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "model")
 
 	/**
 	 * @step
@@ -206,7 +206,7 @@ func (n *NewModel) AskModelConfigPath() error {
 	 * @step
 	 * @赋值
 	 **/
-	InitParms.ModelConfigPath = text
+	InitParams.ModelConfigPath = text
 	return nil
 }
 
@@ -231,8 +231,8 @@ func (n *NewModel) ActionModelGen() error {
 	 * @step
 	 * @初始化gen
 	 **/
-	modelPath := fmt.Sprintf("%s%s", InitParms.ProjectPath, "model")
-	queryPath := fmt.Sprintf("%s%s", InitParms.ProjectPath, "query")
+	modelPath := fmt.Sprintf("%s%s", InitParams.ProjectPath, "model")
+	queryPath := fmt.Sprintf("%s%s", InitParams.ProjectPath, "query")
 	genObj := gen.NewGenerator(gen.Config{
 		// 相对执行`go run`时的路径, 会自动创建目录
 		OutPath: queryPath,
@@ -290,8 +290,8 @@ func (n *NewModel) ActionModelGen() error {
 	 * @step
 	 * @生成某张表的结构体
 	 **/
-	modelName := templates.CreateCommonTemplate().FirstUpper(InitParms.ModelName)
-	genObj.ApplyBasic(genObj.GenerateModelAs(InitParms.ModelName, modelName))
+	modelName := templates.CreateCommonTemplate().FirstUpper(InitParams.ModelName)
+	genObj.ApplyBasic(genObj.GenerateModelAs(InitParams.ModelName, modelName))
 	// genObj.ApplyBasic(genObj.GenerateAllTable()...)
 
 	/**
@@ -304,7 +304,7 @@ func (n *NewModel) ActionModelGen() error {
 	 * @step
 	 * @判断文件是否存在
 	 **/
-	oldModelFileName := fmt.Sprintf("%s/%s.gen.go", modelPath, InitParms.ModelName)
+	oldModelFileName := fmt.Sprintf("%s/%s.gen.go", modelPath, InitParams.ModelName)
 	_, err = os.Stat(oldModelFileName)
 	if err != nil {
 		return err
@@ -314,7 +314,7 @@ func (n *NewModel) ActionModelGen() error {
 	 * @step
 	 * @重命名model文件
 	 **/
-	NewAppParams.AppModelFileName = fmt.Sprintf("%s/%s.go", modelPath, InitParms.ModelName)
+	NewAppParams.AppModelFileName = fmt.Sprintf("%s/%s.go", modelPath, InitParams.ModelName)
 	err = os.Rename(oldModelFileName, NewAppParams.AppModelFileName)
 	if err != nil {
 		return err
@@ -335,7 +335,7 @@ func (n *NewModel) GetGormDb() (*gorm.DB, error) {
 	 * @获取配置
 	 **/
 	dataBase := db.BaseDb{}
-	yamlConf := conf.YamlConf{FilePath: InitParms.ModelConfigPath, FileName: "database.yaml", FileType: "yaml", Intervals: 10 * time.Minute, Conf: dataBase}
+	yamlConf := conf.YamlConf{FilePath: InitParams.ModelConfigPath, FileName: "database.yaml", FileType: "yaml", Intervals: 10 * time.Minute, Conf: dataBase}
 	err := yamlConf.GetConf(&dataBase)
 	if err != nil {
 		return nil, err

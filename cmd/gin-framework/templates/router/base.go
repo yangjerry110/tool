@@ -2,16 +2,22 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:04:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 15:32:09
+ * @LastEditTime: 2023-05-16 17:25:50
  * @Description: base
  */
 package router
 
-import "github.com/yangjerry110/tool/cmd/gin-framework/templates"
+import (
+	"fmt"
+
+	"github.com/yangjerry110/tool/cmd/gin-framework/templates"
+)
 
 type BaseRouter interface {
 	SaveTemplate(path string) error
+	SaveAppendFuncTemplate(path string, routerName string) error
 	GetTemplate() string
+	GetAppendFuncTemplate() string
 }
 
 type Base struct{}
@@ -24,7 +30,57 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
+}
+
+/**
+ * @description: SaveAppendFuncTemplate
+ * @param {string} path
+ * @param {string} routerName
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 17:25:49
+ * @return {*}
+ */
+func (b *Base) SaveAppendFuncTemplate(path string, routerName string) error {
+
+	/**
+	 * @step
+	 * @basePath
+	 **/
+	basePath := fmt.Sprintf("%s/base.go", path)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		RouterNameUp string
+		RouterName   string
+		Time         string
+	}
+
+	/**
+	 * @step
+	 * @大写
+	 **/
+	routerNameUp := templates.CreateCommonTemplate().FirstUpper(routerName)
+
+	/**
+	 * @step
+	 * @append
+	 **/
+	data := &Data{RouterNameUp: routerNameUp, RouterName: routerName, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().AppendTemplate(basePath, b.GetAppendFuncTemplate(), data)
 }
 
 /**
@@ -36,9 +92,9 @@ func (b *Base) SaveTemplate(path string) error {
 func (b *Base) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 14:46:07
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:29:47
+	* @LastEditTime: {{.Time}}
 	* @Description: base
 	*/
    package router
@@ -47,7 +103,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateCommonRouter
 	* @param {...CommonRouter} CommonRouters
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 14:59:43
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateCommonRouter(CommonRouters ...CommonRouter) CommonRouter {
@@ -61,7 +117,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateTestRouter
 	* @param {...TestRouter} TestRouters
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:29:52
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateTestRouter(TestRouters ...TestRouter) TestRouter {
@@ -71,4 +127,27 @@ func (b *Base) GetTemplate() string {
 	   return TestRouters[0]
    }
    `
+}
+
+/**
+ * @description: GetAppendFuncTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 17:22:29
+ * @return {*}
+ */
+func (b *Base) GetAppendFuncTemplate() string {
+	return `
+	/**
+	* @description: Create{{.RouterNameUp}}Router
+	* @param {...{{.RouterNameUp}}Router} {{.RouterNameUp}}Routers
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+   func Create{{.RouterNameUp}}Router({{.RouterName}}Routers ...{{.RouterNameUp}}Router) {{.RouterNameUp}}Router {
+	   if len({{.RouterName}}Routers) == 0 {
+		   return &{{.RouterNameUp}}{}
+	   }
+	   return {{.RouterName}}Routers[0]
+   }`
 }

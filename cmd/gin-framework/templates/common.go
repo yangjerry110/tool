@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 14:45:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 17:41:58
+ * @LastEditTime: 2023-05-16 15:08:31
  * @Description: common
  */
 package templates
@@ -13,6 +13,7 @@ import (
 	"os/exec"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/yangjerry110/tool/cmd/gin-framework/errors"
 )
@@ -22,6 +23,7 @@ type CommonTemplate interface {
 	SaveTemplate(path string, name string, content string, data interface{}, fileType ...string) error
 	AppendTemplate(path string, content string, data interface{}, fileType ...string) error
 	FirstUpper(s string) string
+	GetFormatNowTime() string
 }
 
 type Common struct{}
@@ -235,4 +237,14 @@ func (c *Common) FirstUpper(s string) string {
 		return ""
 	}
 	return strings.ToUpper(s[:1]) + s[1:]
+}
+
+/**
+ * @description: GetFormatNowTime
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 15:08:36
+ * @return {*}
+ */
+func (c *Common) GetFormatNowTime() string {
+	return time.Now().Format("2006-01-02 15:04:05")
 }

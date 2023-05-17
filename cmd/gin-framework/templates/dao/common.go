@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:04:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 11:12:08
+ * @LastEditTime: 2023-05-16 15:26:47
  * @Description: common
  */
 package dao
@@ -24,7 +24,17 @@ type Common struct{}
  * @return {*}
  */
 func (c *Common) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "commonDao.go", c.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "commonDao.go", c.GetTemplate(), data)
 }
 
 /**
@@ -36,9 +46,9 @@ func (c *Common) SaveTemplate(path string) error {
 func (c *Common) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 11:43:53
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 11:43:58
+	* @LastEditTime: {{.Time}}
 	* @Description: common
 	*/
    package dao

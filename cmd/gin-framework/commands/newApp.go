@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-06 11:09:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 16:36:21
+ * @LastEditTime: 2023-05-16 17:40:26
  * @Description: new app
  */
 package commands
@@ -18,6 +18,7 @@ type NewAppCommands interface {
 
 type NewApp struct {
 	AppControllerFileName string
+	AppRouterFileName     string
 	AppServiceFileName    string
 	AppVoInputFileName    string
 	AppVoOutputFileName   string
@@ -93,6 +94,15 @@ func (n *NewApp) CreateApp() error {
 	 * @创建controller
 	 **/
 	err := CreateNewControllerCommands().CreateNewController()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建router
+	 **/
+	err = CreateNewRouterCommands().CreateNewRouter()
 	if err != nil {
 		return err
 	}

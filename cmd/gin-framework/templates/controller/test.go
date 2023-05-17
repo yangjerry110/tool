@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:52:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 17:21:04
+ * @LastEditTime: 2023-05-16 15:53:59
  * @Description: test controller
  */
 package controller
@@ -31,9 +31,10 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, "testController.go", t.GetTemplate(), data)
 }
 
@@ -46,9 +47,9 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 func (t *Test) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 11:44:49
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:30:54
+	* @LastEditTime: {{.Time}}
 	* @Description: test
 	*/
    package controller
@@ -72,7 +73,7 @@ func (t *Test) GetTemplate() string {
 	* @description: Test
 	* @param {*gin.Context} ctx
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 11:45:45
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (t *Test) Test(ctx *gin.Context) error {

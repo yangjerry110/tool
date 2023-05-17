@@ -140,8 +140,8 @@ func (n *NewDao) NewDao(ctx *cli.Context) error {
  * @return {*}
  */
 func (n *NewDao) CreateNewDao() error {
-	NewAppParams.AppDaoFileName = fmt.Sprintf("%sDao.go", InitParms.DaoName)
-	err := dao.CreateNewDao().SaveTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "dao"), InitParms.ProjectImportPath, InitParms.DaoName, NewAppParams.AppDaoFileName)
+	NewAppParams.AppDaoFileName = fmt.Sprintf("%sDao.go", InitParams.DaoName)
+	err := dao.CreateNewDao().SaveTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "dao"), InitParams.ProjectImportPath, InitParams.DaoName, NewAppParams.AppDaoFileName)
 	if err != nil {
 		return err
 	}
@@ -160,7 +160,7 @@ func (n *NewDao) AppendFuncDao() error {
 	 * @step
 	 * @appendFunDao
 	 **/
-	err := dao.CreateNewDao().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "dao"), InitParms.DaoName, NewDaoParams.AppendBaseDaoPath)
+	err := dao.CreateNewDao().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "dao"), InitParams.DaoName, NewDaoParams.AppendBaseDaoPath)
 	if err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func (n *NewDao) AppendFuncDao() error {
  * @return {*}
  */
 func (n *NewDao) AppendFuncBaseDao() error {
-	err := dao.CreateBaseDao().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "dao"), InitParms.DaoName)
+	err := dao.CreateBaseDao().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "dao"), InitParams.DaoName)
 	if err != nil {
 		return err
 	}
@@ -220,7 +220,7 @@ func (n *NewDao) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "dao")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "dao")
 
 	/**
 	 * @step

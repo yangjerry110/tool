@@ -73,7 +73,7 @@ func (n *NewConfig) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "config")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "config")
 
 	/**
 	 * @step
@@ -138,7 +138,7 @@ func (n *NewConfig) CreateFile() error {
 	 * @step
 	 * @创建path
 	 **/
-	err = config.CreatePathConfig().SaveTemplate(NewConfigParams.ConfigPath, InitParms.ProjectImportPath)
+	err = config.CreatePathConfig().SaveTemplate(NewConfigParams.ConfigPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

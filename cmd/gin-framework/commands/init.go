@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 16:36:03
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 18:08:16
+ * @LastEditTime: 2023-05-16 16:34:52
  * @Description: init
  */
 package commands
@@ -26,6 +26,7 @@ type InitCommands interface {
 	SetProjectName(ctx *cli.Context) error
 	SetAppName(ctx *cli.Context) error
 	SetControllerName(ctx *cli.Context) error
+	SetRouterName(ctx *cli.Context) error
 	SetServiceName(ctx *cli.Context) error
 	SetDaoName(ctx *cli.Context) error
 	SetModelName(ctx *cli.Context) error
@@ -41,6 +42,7 @@ type Init struct {
 	ProjectName       string
 	AppName           string
 	ControllerName    string
+	RouterName        string
 	ServiceName       string
 	ModelName         string
 	DaoName           string
@@ -54,7 +56,7 @@ type Init struct {
  * @date: 2023-04-23 16:37:53
  * @return {*}
  */
-var InitParms = &Init{}
+var InitParams = &Init{}
 
 /**
  * @description: askInit
@@ -127,7 +129,7 @@ func (i *Init) AskProjectName() error {
 	 * @step
 	 * @赋值
 	 **/
-	InitParms.ProjectImportPath = text
+	InitParams.ProjectImportPath = text
 	return nil
 }
 
@@ -143,7 +145,7 @@ func (i *Init) SetProjectPath() error {
 	 * @step
 	 * @判断当前的projectPath是否存在值
 	 **/
-	if InitParms.ProjectPath != "" {
+	if InitParams.ProjectPath != "" {
 		return nil
 	}
 
@@ -160,7 +162,7 @@ func (i *Init) SetProjectPath() error {
 	 * @step
 	 * @进行赋值
 	 **/
-	InitParms.ProjectPath = fmt.Sprintf("%s/%s", thisPath, InitParms.ProjectName)
+	InitParams.ProjectPath = fmt.Sprintf("%s/%s", thisPath, InitParams.ProjectName)
 	return nil
 }
 
@@ -180,7 +182,7 @@ func (i *Init) SetProjectName(ctx *cli.Context) error {
 	if projectName == "" {
 		return errors.ErrProjectNameIsEmpty
 	}
-	InitParms.ProjectName = projectName
+	InitParams.ProjectName = projectName
 	return nil
 }
 
@@ -197,7 +199,7 @@ func (i *Init) SetAppName(ctx *cli.Context) error {
 	 * @step
 	 * @判断appName是否有值
 	 **/
-	if InitParms.AppName != "" {
+	if InitParams.AppName != "" {
 		return nil
 	}
 
@@ -209,10 +211,11 @@ func (i *Init) SetAppName(ctx *cli.Context) error {
 	if appName == "" {
 		return errors.ErrAppNameIsEmpty
 	}
-	InitParms.AppName = appName
-	InitParms.ControllerName = appName
-	InitParms.ServiceName = appName
-	InitParms.VoName = appName
+	InitParams.AppName = appName
+	InitParams.ControllerName = appName
+	InitParams.RouterName = appName
+	InitParams.ServiceName = appName
+	InitParams.VoName = appName
 	return nil
 }
 
@@ -229,7 +232,7 @@ func (i *Init) SetControllerName(ctx *cli.Context) error {
 	 * @step
 	 * @判断ControllerName是否有值
 	 **/
-	if InitParms.ControllerName != "" {
+	if InitParams.ControllerName != "" {
 		return nil
 	}
 
@@ -241,7 +244,36 @@ func (i *Init) SetControllerName(ctx *cli.Context) error {
 	if ControllerName == "" {
 		return errors.ErrControllerNameIsEmpty
 	}
-	InitParms.ControllerName = ControllerName
+	InitParams.ControllerName = ControllerName
+	return nil
+}
+
+/**
+ * @description: SetRouterName
+ * @param {*cli.Context} ctx
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 16:32:53
+ * @return {*}
+ */
+func (i *Init) SetRouterName(ctx *cli.Context) error {
+
+	/**
+	 * @step
+	 * @判断routerName是否有值
+	 **/
+	if InitParams.RouterName != "" {
+		return nil
+	}
+
+	/**
+	 * @step
+	 * @获取第一个参数
+	 **/
+	routerName := ctx.Args().First()
+	if routerName == "" {
+		return errors.ErrRouterNameIsEmpty
+	}
+	InitParams.RouterName = routerName
 	return nil
 }
 
@@ -257,7 +289,7 @@ func (i *Init) SetServiceName(ctx *cli.Context) error {
 	 * @step
 	 * @判断ServiceName是否有值
 	 **/
-	if InitParms.ServiceName != "" {
+	if InitParams.ServiceName != "" {
 		return nil
 	}
 
@@ -269,7 +301,7 @@ func (i *Init) SetServiceName(ctx *cli.Context) error {
 	if ServiceName == "" {
 		return errors.ErrServiceNameIsEmpty
 	}
-	InitParms.ServiceName = ServiceName
+	InitParams.ServiceName = ServiceName
 	return nil
 }
 
@@ -286,7 +318,7 @@ func (i *Init) SetDaoName(ctx *cli.Context) error {
 	 * @step
 	 * @判断daoName是否有值
 	 **/
-	if InitParms.DaoName != "" {
+	if InitParams.DaoName != "" {
 		return nil
 	}
 
@@ -303,7 +335,7 @@ func (i *Init) SetDaoName(ctx *cli.Context) error {
 	 * @step
 	 * @进行赋值
 	 **/
-	InitParms.DaoName = daoName
+	InitParams.DaoName = daoName
 	return nil
 }
 
@@ -320,7 +352,7 @@ func (i *Init) SetModelName(ctx *cli.Context) error {
 	 * @step
 	 * @判断modelName是否有值
 	 **/
-	if InitParms.ModelName != "" {
+	if InitParams.ModelName != "" {
 		return nil
 	}
 
@@ -337,7 +369,7 @@ func (i *Init) SetModelName(ctx *cli.Context) error {
 	 * @step
 	 * @进行赋值
 	 **/
-	InitParms.ModelName = modelName
+	InitParams.ModelName = modelName
 	return nil
 }
 
@@ -353,7 +385,7 @@ func (i *Init) SetVoName(ctx *cli.Context) error {
 	 * @step
 	 * @判断VoName是否有值
 	 **/
-	if InitParms.VoName != "" {
+	if InitParams.VoName != "" {
 		return nil
 	}
 
@@ -365,7 +397,7 @@ func (i *Init) SetVoName(ctx *cli.Context) error {
 	if VoName == "" {
 		return errors.ErrVoNameIsEmpty
 	}
-	InitParms.VoName = VoName
+	InitParams.VoName = VoName
 	return nil
 }
 
@@ -383,7 +415,7 @@ func (i *Init) SetImportProjectPath() error {
 	 **/
 	pkgs, err := packages.Load(&packages.Config{
 		Mode: packages.NeedName,
-		Dir:  InitParms.ProjectPath,
+		Dir:  InitParams.ProjectPath,
 	})
 	if err != nil {
 		return err
@@ -396,7 +428,7 @@ func (i *Init) SetImportProjectPath() error {
 	if len(pkgs) == 0 {
 		return errors.ErrImportProjectPathIsEmpty
 	}
-	InitParms.ProjectImportPath = pkgs[0].PkgPath
+	InitParams.ProjectImportPath = pkgs[0].PkgPath
 	return nil
 }
 
@@ -418,6 +450,6 @@ func (i *Init) SetBaseProjectPath() error {
 	}
 
 	rootDir := filepath.Dir(filepath.Dir(binary))
-	InitParms.ProjectBasePath = rootDir
+	InitParams.ProjectBasePath = rootDir
 	return nil
 }

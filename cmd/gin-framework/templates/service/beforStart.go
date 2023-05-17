@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:05:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 16:07:53
+ * @LastEditTime: 2023-05-16 15:18:12
  * @Description: beforStart
  */
 package service
@@ -31,9 +31,10 @@ func (b *BeforStart) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, "beforStart.go", b.GetTemplate(), data)
 }
 
@@ -46,9 +47,9 @@ func (b *BeforStart) SaveTemplate(path string, projectPath string) error {
 func (b *BeforStart) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:57:08
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-21 17:29:26
+	* @LastEditTime:  {{.Time}}
 	* @Description: before start
 	*/
    package service
@@ -68,7 +69,7 @@ func (b *BeforStart) GetTemplate() string {
    /**
 	* @description: Preparing
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 17:30:05
+	* @date:  {{.Time}}
 	* @return {*}
 	*/
    func (b *BeforeStart) Preparing() error {

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:50:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 10:40:35
+ * @LastEditTime: 2023-05-16 15:13:57
  * @Description: test input
  */
 package vo
@@ -24,7 +24,17 @@ type TestInput struct{}
  * @return {*}
  */
 func (t *TestInput) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "testInputVo.go", t.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义数据结构
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testInputVo.go", t.GetTemplate(), data)
 }
 
 /**
@@ -36,13 +46,19 @@ func (t *TestInput) SaveTemplate(path string) error {
 func (t *TestInput) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:16:24
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-23 14:16:32
-	* @Description: test
+	* @Description:  {{.Time}}
 	*/
    package input
    
+   /**
+    * @description: Test
+    * @author: Jerry.Yang
+    * @date: {{.Time}}
+    * @return {*}
+    */   
    type Test struct {
 	   Id int32 ` + " ` json:\"id\"` " + `
    }

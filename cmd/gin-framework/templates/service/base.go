@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:02:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 15:25:50
+ * @LastEditTime: 2023-05-16 15:17:00
  * @Description: base
  */
 package service
@@ -30,7 +30,17 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义数据结构
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
 }
 
 /**
@@ -56,13 +66,14 @@ func (b *Base) AppendFuncTemplate(path string, serviceName string) error {
 	type Data struct {
 		ServiceName   string
 		ServiceNameUp string
+		Time          string
 	}
 
 	/**
 	 * @step
 	 * @渲染参数
 	 **/
-	data := &Data{ServiceName: serviceName, ServiceNameUp: templates.CreateCommonTemplate().FirstUpper(serviceName)}
+	data := &Data{ServiceName: serviceName, ServiceNameUp: templates.CreateCommonTemplate().FirstUpper(serviceName), Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, b.GetAppendFuncTemplate(), data)
 }
 
@@ -75,9 +86,9 @@ func (b *Base) AppendFuncTemplate(path string, serviceName string) error {
 func (b *Base) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:56:17
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:27:27
+	* @LastEditTime: {{.Time}}
 	* @Description: base
 	*/
    package service
@@ -86,7 +97,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateBeforeStartService
 	* @param {...BeforeStartService} BeforeStartServices
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 17:30:56
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateBeforeStartService(BeforeStartServices ...BeforeStartService) BeforeStartService {
@@ -100,7 +111,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateTestService
 	* @param {...TestService} TestServices
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:27:34
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateTestService(TestServices ...TestService) TestService {
@@ -120,16 +131,16 @@ func (b *Base) GetTemplate() string {
  */
 func (b *Base) GetAppendFuncTemplate() string {
 	return `/**
-	* @description: Create{{.ServiceNameUp}}Dao
-	* @param {...{{.ServiceNameUp}}Dao} {{.ServiceName}}Daos
+	* @description: Create{{.ServiceNameUp}}Service
+	* @param {...{{.ServiceNameUp}}Service} {{.ServiceName}}Services
 	* @author: Jerry.Yang
-	* @date: 2023-04-24 17:02:59
+	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func Create{{.ServiceNameUp}}Dao({{.ServiceName}}Daos ...{{.ServiceNameUp}}Dao) {{.ServiceNameUp}}Dao {
-	   if len({{.ServiceName}}Daos) == 0 {
+   func Create{{.ServiceNameUp}}Service({{.ServiceName}}Services ...{{.ServiceNameUp}}Service) {{.ServiceNameUp}}Service {
+	   if len({{.ServiceName}}Services) == 0 {
 		   return &{{.ServiceNameUp}}{}
 	   }
-	   return {{.ServiceName}}Daos[0]
+	   return {{.ServiceName}}Services[0]
    }`
 }

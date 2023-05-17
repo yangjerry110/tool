@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:50:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 14:38:38
+ * @LastEditTime: 2023-05-16 17:40:51
  * @Description: new
  */
 package commands
@@ -52,6 +52,14 @@ func (n *New) Commands(app *cli.App) error {
 			Usage:   "new a controller => new controller",
 			Action: func(c *cli.Context) error {
 				return CreateNewControllerCommands().NewController(c)
+			},
+		},
+		{
+			Name:    "newRouter",
+			Aliases: []string{"nr"},
+			Usage:   "new a router => new router",
+			Action: func(c *cli.Context) error {
+				return CreateNewRouterCommands().NewRouter(c)
 			},
 		},
 		{

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:14:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 17:15:45
+ * @LastEditTime: 2023-05-16 15:25:26
  * @Description: errors
  */
 package errors
@@ -24,7 +24,17 @@ type Errors struct{}
  * @return {*}
  */
 func (r *Errors) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "errors.go", r.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "errors.go", r.GetTemplate(), data)
 }
 
 /**
@@ -36,9 +46,9 @@ func (r *Errors) SaveTemplate(path string) error {
 func (r *Errors) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:08:08
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-21 17:06:39
+	* @LastEditTime: {{.Time}}
 	* @Description: error
 	*/
    package errors

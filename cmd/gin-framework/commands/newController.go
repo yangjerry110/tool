@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:44:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-12 10:50:05
+ * @LastEditTime: 2023-05-16 14:27:28
  * @Description: controller
  */
 package commands
@@ -169,8 +169,17 @@ func (n *NewController) CreateNewController() error {
 	 * @step
 	 * @创建controller
 	 **/
-	NewAppParams.AppControllerFileName = fmt.Sprintf("%sController.go", InitParms.ControllerName)
-	err := controller.CreateNewController().SaveTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "controller"), InitParms.ProjectImportPath, InitParms.ControllerName, NewAppParams.AppControllerFileName)
+	NewAppParams.AppControllerFileName = fmt.Sprintf("%sController.go", InitParams.ControllerName)
+	err := controller.CreateNewController().SaveTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "controller"), InitParams.ProjectImportPath, InitParams.ControllerName, NewAppParams.AppControllerFileName)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @appendBase
+	 **/
+	err = n.AppendFuncBaseDao()
 	if err != nil {
 		return err
 	}
@@ -189,7 +198,7 @@ func (n *NewController) AppendFuncController() error {
 	 * @step
 	 * @append controller
 	 **/
-	err := controller.CreateNewController().SaveAppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "controller"), InitParms.ControllerName, NewControllerParams.AppendBaseControllerName)
+	err := controller.CreateNewController().SaveAppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "controller"), InitParams.ControllerName, NewControllerParams.AppendBaseControllerName)
 	if err != nil {
 		return err
 	}
@@ -203,7 +212,7 @@ func (n *NewController) AppendFuncController() error {
  * @return {*}
  */
 func (n *NewController) AppendFuncBaseDao() error {
-	err := controller.CreateBaseController().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "controller"), InitParms.ControllerName)
+	err := controller.CreateBaseController().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "controller"), InitParams.ControllerName)
 	if err != nil {
 		return err
 	}
@@ -222,7 +231,7 @@ func (n *NewController) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "controller")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "controller")
 
 	/**
 	 * @step
@@ -262,7 +271,7 @@ func (n *NewController) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = controller.CreateTestController().SaveTemplate(NewControllerParams.ControllerPath, InitParms.ProjectImportPath)
+	err = controller.CreateTestController().SaveTemplate(NewControllerParams.ControllerPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 11:28:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 14:59:59
+ * @LastEditTime: 2023-05-16 15:55:01
  * @Description: template config
  */
 package config
@@ -24,7 +24,17 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
 }
 
 /**
@@ -37,9 +47,9 @@ func (b *Base) GetTemplate() string {
 
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 15:15:48
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-21 17:28:31
+	* @LastEditTime: {{.Time}}
 	* @Description: base
 	*/
    package config
@@ -48,7 +58,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreatePathConfig
 	* @param {...PathConfig} PathConfigs
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:28:37
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreatePathConfig(PathConfigs ...PathConfig) PathConfig {
@@ -62,7 +72,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateLoggerConfig
 	* @param {...LoggerConfig} LoggerConfigs
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:33:04
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateLoggerConfig(LoggerConfigs ...LoggerConfig) LoggerConfig {
@@ -76,7 +86,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateRouterConfig
 	* @param {...RouterConfig} RouterConfigs
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 17:28:48
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateRouterConfig(RouterConfigs ...RouterConfig) RouterConfig {

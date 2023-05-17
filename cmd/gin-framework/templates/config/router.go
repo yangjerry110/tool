@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 15:55:13
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 15:56:41
+ * @LastEditTime: 2023-05-16 15:56:53
  * @Description: router
  */
 package config
@@ -24,7 +24,17 @@ type Router struct{}
  * @return {*}
  */
 func (r *Router) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "router.go", r.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "router.go", r.GetTemplate(), data)
 }
 
 /**
@@ -36,9 +46,9 @@ func (r *Router) SaveTemplate(path string) error {
 func (r *Router) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:46:48
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 11:32:29
+	* @LastEditTime: {{.Time}}
 	* @Description: router
 	*/
    package config
@@ -60,7 +70,7 @@ func (r *Router) GetTemplate() string {
    /**
 	* @description: RouterSetConfig
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:47:48
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    var RouterSetConfig = &Router{}
@@ -68,7 +78,7 @@ func (r *Router) GetTemplate() string {
    /**
 	* @description: GetConfig
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:31:33
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (r *Router) SetConfig() error {

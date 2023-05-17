@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:31:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-27 11:20:24
+ * @LastEditTime: 2023-05-16 15:24:28
  * @Description: common
  */
 package logger
@@ -31,9 +31,10 @@ func (c *Common) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, "common.go", c.GetTemplate(), data)
 }
 
@@ -46,9 +47,9 @@ func (c *Common) SaveTemplate(path string, projectPath string) error {
 func (c *Common) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 15:27:42
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-21 16:44:52
+	* @LastEditTime: {{.Time}}
 	* @Description: logger
 	*/
    package logger
@@ -69,7 +70,7 @@ func (c *Common) GetTemplate() string {
    /**
 	* @description: CreateLogger
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:04:38
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (c *Common) Logger() pkgLogger.LoggerPkgInterface {

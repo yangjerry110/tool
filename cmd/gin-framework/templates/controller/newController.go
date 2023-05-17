@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-06 11:17:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 14:08:03
+ * @LastEditTime: 2023-05-16 15:53:14
  * @Description: newController
  */
 package controller
@@ -42,6 +42,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, controllerName
 		ProjectImportPath   string
 		ControllerName      string
 		FirstControllerName string
+		Time                string
 	}
 
 	/**
@@ -54,7 +55,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, controllerName
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{ProjectImportPath: projectImportPath, ControllerName: controllerNameUp, FirstControllerName: controllerName[:1]}
+	data := &Data{ProjectImportPath: projectImportPath, ControllerName: controllerNameUp, FirstControllerName: controllerName[:1], Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, controllerFileName, n.GetTemplate(), data)
 }
 
@@ -83,6 +84,7 @@ func (n *New) SaveAppendFuncTemplate(path string, controllerName string, baseCon
 		ControllerName      string
 		FirstControllerName string
 		BaseControllerName  string
+		Time                string
 	}
 
 	/**
@@ -101,7 +103,7 @@ func (n *New) SaveAppendFuncTemplate(path string, controllerName string, baseCon
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{ControllerName: controllerNameUp, FirstControllerName: controllerName[:1], BaseControllerName: baseControllerNameUp}
+	data := &Data{ControllerName: controllerNameUp, FirstControllerName: controllerName[:1], BaseControllerName: baseControllerNameUp, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, n.GetAppendFuncTemplate(), data)
 }
 
@@ -116,9 +118,9 @@ func (n *New) GetTemplate() string {
 	return `
 	/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 11:44:49
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:30:54
+	* @LastEditTime: {{.Time}}
 	* @Description: {{.ControllerName}}
 	*/
 	package controller
@@ -142,7 +144,7 @@ func (n *New) GetTemplate() string {
 	* @description: {{.ControllerName}}
 	* @param {*gin.Context} ctx
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 11:45:45
+	* @date: {{.Time}}
 	* @return {*}
 	*/
 	func ({{.FirstControllerName}} *{{.ControllerName}}) {{.ControllerName}}(ctx *gin.Context) error {
@@ -192,7 +194,7 @@ func (n *New) GetAppendFuncTemplate() string {
 	* @description: {{.ControllerName}}
 	* @param {*gin.Context} ctx
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 11:45:45
+	* @date: {{.Time}}
 	* @return {*}
 	*/
 	func ({{.FirstControllerName}} *{{.BaseControllerName}}) {{.ControllerName}}(ctx *gin.Context) error {

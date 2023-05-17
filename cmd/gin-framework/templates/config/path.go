@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 15:31:06
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-24 16:30:45
+ * @LastEditTime: 2023-05-16 15:56:01
  * @Description: path
  */
 package config
@@ -34,9 +34,10 @@ func (p *Path) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, "path.go", p.GetTemplate(), data)
 }
 
@@ -49,9 +50,9 @@ func (p *Path) SaveTemplate(path string, projectPath string) error {
 func (p *Path) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 15:16:29
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 10:35:12
+	* @LastEditTime: {{.Time}}
 	* @Description: common
 	*/
    package config
@@ -72,7 +73,7 @@ func (p *Path) GetTemplate() string {
    /**
 	* @description: configPath
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 15:25:45
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    var configPath = ""
@@ -81,7 +82,7 @@ func (p *Path) GetTemplate() string {
 	* @description: SetConfigPath
 	* @param {string} configPath
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 15:22:17
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (p *Path) SetConfigPath(path string) error {
@@ -100,7 +101,7 @@ func (p *Path) GetTemplate() string {
    /**
 	* @description: GetConfigPath
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 15:25:00
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (p *Path) GetConfigPath() (string, error) {
@@ -142,7 +143,7 @@ func (p *Path) GetTemplate() string {
    /**
 	* @description: GetLocalPath
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:18:30
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (p *Path) GetLocalPath() (string, error) {

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:03:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 15:59:04
+ * @LastEditTime: 2023-05-16 17:19:08
  * @Description: baseRouter
  */
 package router
@@ -47,4 +47,18 @@ func CreateTestRouter(TestRouters ...TestRouter) TestRouter {
 		return &Test{}
 	}
 	return TestRouters[0]
+}
+
+/**
+ * @description: CreateNewRouter
+ * @param {...NewRouter} NewRouters
+ * @author: Jerry.Yang
+ * @date: 2023-05-16 17:19:16
+ * @return {*}
+ */
+func CreateNewRouter(NewRouters ...NewRouter) NewRouter {
+	if len(NewRouters) == 0 {
+		return &New{}
+	}
+	return NewRouters[0]
 }

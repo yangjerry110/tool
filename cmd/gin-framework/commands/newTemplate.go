@@ -66,7 +66,7 @@ func (n *NewTemplate) CreateFile() error {
 	 * @step
 	 * @创建main
 	 **/
-	err := templates.CreateMainTemplate().SaveTemplate(InitParms.ProjectPath, InitParms.ProjectImportPath)
+	err := templates.CreateMainTemplate().SaveTemplate(InitParams.ProjectPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (n *NewTemplate) CreateFile() error {
 	 * @step
 	 * @创建mod
 	 **/
-	err = templates.CreateModTemplate().SaveTemplate(InitParms.ProjectPath, InitParms.ProjectImportPath)
+	err = templates.CreateModTemplate().SaveTemplate(InitParams.ProjectPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

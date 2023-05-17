@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 11:22:32
+ * @LastEditTime: 2023-05-16 15:28:26
  * @Description:new dao
  */
 package dao
@@ -42,6 +42,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, daoName string
 		DaoName           string
 		DaoNameUp         string
 		FirstDaoName      string
+		Time              string
 	}
 
 	/**
@@ -60,7 +61,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, daoName string
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{ProjectImportPath: projectImportPath, DaoName: daoName, DaoNameUp: daoNameUp, FirstDaoName: FirstDaoName}
+	data := &Data{ProjectImportPath: projectImportPath, DaoName: daoName, DaoNameUp: daoNameUp, FirstDaoName: FirstDaoName, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, daoFileName, n.GetTemplate(), data)
 }
 
@@ -90,6 +91,7 @@ func (n *New) AppendFuncTemplate(path string, daoName string, baseDaoName string
 		FirstBaseDaoNameUp string
 		DaoName            string
 		DaoNameUp          string
+		Time               string
 	}
 
 	/**
@@ -103,7 +105,7 @@ func (n *New) AppendFuncTemplate(path string, daoName string, baseDaoName string
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{FirstBaseDaoNameUp: firstBaseDaoNameUp, BaseDaoName: baseDaoName, DaoNameUp: DaoNameUp, DaoName: daoName}
+	data := &Data{FirstBaseDaoNameUp: firstBaseDaoNameUp, BaseDaoName: baseDaoName, DaoNameUp: DaoNameUp, DaoName: daoName, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, n.GetAppendTemplate(), data)
 
 }
@@ -117,9 +119,9 @@ func (n *New) AppendFuncTemplate(path string, daoName string, baseDaoName string
 func (n *New) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-05-10 17:02:13
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-05-10 17:54:17
+	* @LastEditTime: {{.Time}}
 	* @Description: {{.DaoName}} dao
 	*/
    package dao
@@ -145,7 +147,7 @@ func (n *New) GetTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:49:19
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstDaoName}} *{{.DaoNameUp}}) Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error) {
@@ -172,7 +174,7 @@ func (n *New) GetTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:50:21
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstDaoName}} *{{.DaoNameUp}}) Get{{.DaoNameUp}}Info(ctx context.Context,{{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error) {
@@ -199,7 +201,7 @@ func (n *New) GetTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:51:41
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstDaoName}} *{{.DaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error) {
@@ -220,7 +222,7 @@ func (n *New) GetTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:53:14
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstDaoName}} *{{.DaoNameUp}}) Delete{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error) {
@@ -250,7 +252,7 @@ func (n *New) GetAppendTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:49:19
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) ([]*model.{{.DaoNameUp}}, error) {
@@ -277,7 +279,7 @@ func (n *New) GetAppendTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:50:21
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Get{{.DaoNameUp}}Info(ctx context.Context,{{.DaoName}}Model *model.{{.DaoNameUp}}) (*model.{{.DaoNameUp}}, error) {
@@ -304,7 +306,7 @@ func (n *New) GetAppendTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:51:41
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (int64, error) {
@@ -325,7 +327,7 @@ func (n *New) GetAppendTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*model.{{.DaoNameUp}}} {{.DaoName}}Model
 	* @author: Jerry.Yang
-	* @date: 2023-05-10 17:53:14
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstBaseDaoName}} *{{.BaseDaoNameUp}}) Delete{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.DaoNameUp}}) (bool, error) {

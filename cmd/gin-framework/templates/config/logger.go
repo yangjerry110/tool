@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 15:23:07
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 14:53:42
+ * @LastEditTime: 2023-05-16 15:55:25
  * @Description: logger
  */
 package config
@@ -24,7 +24,17 @@ type Logger struct{}
  * @return {*}
  */
 func (l *Logger) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "logger.go", l.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "logger.go", l.GetTemplate(), data)
 }
 
 /**
@@ -36,7 +46,7 @@ func (l *Logger) SaveTemplate(path string) error {
 func (l *Logger) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:22:47
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-23 11:32:20
 	* @Description: logger config
@@ -62,7 +72,7 @@ func (l *Logger) GetTemplate() string {
    /**
 	* @description: LoggerSetConfig
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:25:15
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    var LoggerSetConfig = &Logger{}
@@ -70,7 +80,7 @@ func (l *Logger) GetTemplate() string {
    /**
 	* @description: SetConfig
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:31:33
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (l *Logger) SetConfig() error {

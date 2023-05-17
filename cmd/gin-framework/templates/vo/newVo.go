@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 15:05:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 10:56:29
+ * @LastEditTime: 2023-05-16 15:10:09
  * @Description: new vo
  */
 package vo
@@ -45,6 +45,7 @@ func (n *New) SaveTemplate(inputPath string, outputPath string, inputVoName stri
 	type Data struct {
 		VoName   string
 		VoNameUp string
+		Time     string
 	}
 
 	/**
@@ -57,7 +58,7 @@ func (n *New) SaveTemplate(inputPath string, outputPath string, inputVoName stri
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{VoName: voName, VoNameUp: voNameUp}
+	data := &Data{VoName: voName, VoNameUp: voNameUp, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 
 	/**
 	 * @step
@@ -103,6 +104,7 @@ func (n *New) SaveAppendFuncInputTemplate(path string, voName string, baseVoName
 	type Data struct {
 		VoName   string
 		VoNameUp string
+		Time     string
 	}
 
 	/**
@@ -115,7 +117,7 @@ func (n *New) SaveAppendFuncInputTemplate(path string, voName string, baseVoName
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{VoName: voName, VoNameUp: voNameUp}
+	data := &Data{VoName: voName, VoNameUp: voNameUp, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 
 	/**
 	 * @step
@@ -148,6 +150,7 @@ func (n *New) SaveAppendFuncOutputTemplate(path string, voName string, baseVoNam
 	type Data struct {
 		VoName   string
 		VoNameUp string
+		Time     string
 	}
 
 	/**
@@ -160,7 +163,7 @@ func (n *New) SaveAppendFuncOutputTemplate(path string, voName string, baseVoNam
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{VoName: voName, VoNameUp: voNameUp}
+	data := &Data{VoName: voName, VoNameUp: voNameUp, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 
 	/**
 	 * @step
@@ -176,7 +179,13 @@ func (n *New) SaveAppendFuncOutputTemplate(path string, voName string, baseVoNam
  * @return {*}
  */
 func (n *New) GetAppendFuncInputTemplate() string {
-	return `type {{.VoNameUp}} struct {}`
+	return `/**
+	* @description: {{.VoNameUp}}
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/	
+	type {{.VoNameUp}} struct {}`
 }
 
 /**
@@ -198,9 +207,9 @@ func (n *New) GetAppendFuncOutputTemplate() string {
 func (n *New) GetInputTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:16:24
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:16:32
+	* @LastEditTime: {{.Time}}
 	* @Description: {{.VoName}} inputVo
 	*/
    package input
@@ -218,9 +227,9 @@ func (n *New) GetInputTemplate() string {
 func (n *New) GetOutputTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:16:24
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:16:32
+	* @LastEditTime: {{.Time}}
 	* @Description: {{.VoName}} outputVo
 	*/
    package output

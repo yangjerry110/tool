@@ -71,7 +71,7 @@ func (n *NewError) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "errors")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "errors")
 
 	/**
 	 * @step

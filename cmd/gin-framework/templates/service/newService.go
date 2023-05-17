@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 11:33:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-12 10:49:00
+ * @LastEditTime: 2023-05-16 15:18:49
  * @Description: new service
  */
 package service
@@ -39,21 +39,22 @@ func (n *New) SaveTemplate(path string, projectImportPath string, serviceName st
 	 **/
 	type Data struct {
 		ProjectImportPath string
-		ServiceNameUpUp   string
+		ServiceNameUp     string
 		FirstServiceName  string
+		Time              string
 	}
 
 	/**
 	 * @step
 	 * @ServiceNameUp进行大写字母的转换
 	 **/
-	serviceNameUpUp := templates.CreateCommonTemplate().FirstUpper(serviceName)
+	serviceNameUp := templates.CreateCommonTemplate().FirstUpper(serviceName)
 
 	/**
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{ProjectImportPath: projectImportPath, ServiceNameUpUp: serviceNameUpUp, FirstServiceName: serviceName[:1]}
+	data := &Data{ProjectImportPath: projectImportPath, ServiceNameUp: serviceNameUp, FirstServiceName: serviceName[:1], Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().SaveTemplate(path, serviceFileName, n.GetTemplate(), data)
 }
 
@@ -82,6 +83,7 @@ func (n *New) SaveAppendFuncTemplate(path string, baseServiceName string, servic
 		BaseServiceNameUp    string
 		ServiceNameUp        string
 		FirstBaseServiceName string
+		Time                 string
 	}
 
 	/**
@@ -100,7 +102,7 @@ func (n *New) SaveAppendFuncTemplate(path string, baseServiceName string, servic
 	 * @step
 	 * @执行添加
 	 **/
-	data := &Data{BaseServiceNameUp: baseServiceNameUp, ServiceNameUp: serviceNameUp, FirstBaseServiceName: baseServiceName[:1]}
+	data := &Data{BaseServiceNameUp: baseServiceNameUp, ServiceNameUp: serviceNameUp, FirstBaseServiceName: baseServiceName[:1], Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, n.GetAppendFuncTemplate(), data)
 }
 
@@ -116,7 +118,7 @@ func (n *New) GetAppendFuncTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*input.Test} inputVo
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:23:07
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstBaseServiceNameUp}} *{{.BaseServiceNameUp}}) {{.ServiceNameUp}}(ctx context.Context, inputVo *input.{{.ServiceNameUp}}) (*output.{{.ServiceNameUp}}, error) {
@@ -126,9 +128,6 @@ func (n *New) GetAppendFuncTemplate() string {
 		* @result
 		**/
 	   output := &output.{{.ServiceNameUp}}{}
-	   output.RetCode = 0
-	   output.RetMsg = ""
-	   output.RetResult = true
 	   return output, nil
    }`
 }
@@ -142,9 +141,9 @@ func (n *New) GetAppendFuncTemplate() string {
 func (n *New) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:21:15
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:37:13
+	* @LastEditTime: {{.Time}}
 	* @Description: {{.ServiceNameUp}} service
 	*/
    package service
@@ -155,18 +154,18 @@ func (n *New) GetTemplate() string {
 	   "{{.ProjectImportPath}}/vo/output"
    )
    
-   type {{.ServiceNameUpUp}}Service interface {
-	   Test(ctx context.Context, inputVo *input.{{.ServiceNameUpUp}}) (*output.{{.ServiceNameUpUp}}, error)
+   type {{.ServiceNameUp}}Service interface {
+		{{.ServiceNameUp}}(ctx context.Context, inputVo *input.{{.ServiceNameUp}}) (*output.{{.ServiceNameUp}}, error)
    }
    
-   type {{.ServiceNameUpUp}} struct{}
+   type {{.ServiceNameUp}} struct{}
    
    /**
 	* @description: {{.ServiceNameUp}}
 	* @param {context.Context} ctx
 	* @param {*input.Test} inputVo
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:23:07
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceNameUp}}(ctx context.Context, inputVo *input.{{.ServiceNameUp}}) (*output.{{.ServiceNameUp}}, error) {
@@ -176,9 +175,6 @@ func (n *New) GetTemplate() string {
 		* @result
 		**/
 	   output := &output.{{.ServiceNameUp}}{}
-	   output.RetCode = 0
-	   output.RetMsg = ""
-	   output.RetResult = true
 	   return output, nil
    }
    `

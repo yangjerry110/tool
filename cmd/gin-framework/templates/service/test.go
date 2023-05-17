@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:09:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 16:17:42
+ * @LastEditTime: 2023-05-16 15:19:56
  * @Description: test
  */
 package service
@@ -31,10 +31,11 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 	 **/
 	type Data struct {
 		ProjectPath string
+		Time        string
 	}
 
-	data := &Data{ProjectPath: projectPath}
-	return templates.CreateCommonTemplate().SaveTemplate(path, "test.go", t.GetTemplate(), data)
+	data := &Data{ProjectPath: projectPath, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "testService.go", t.GetTemplate(), data)
 }
 
 /**
@@ -46,9 +47,9 @@ func (t *Test) SaveTemplate(path string, projectPath string) error {
 func (t *Test) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 14:21:15
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:37:13
+	* @LastEditTime: {{.Time}}
 	* @Description: test service
 	*/
    package service
@@ -70,7 +71,7 @@ func (t *Test) GetTemplate() string {
 	* @param {context.Context} ctx
 	* @param {*input.Test} inputVo
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:23:07
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func (t *Test) Test(ctx context.Context, inputVo *input.Test) (*output.Test, error) {
@@ -80,9 +81,6 @@ func (t *Test) GetTemplate() string {
 		* @result
 		**/
 	   output := &output.Test{}
-	   output.RetCode = 0
-	   output.RetMsg = ""
-	   output.RetResult = true
 	   return output, nil
    }
    `

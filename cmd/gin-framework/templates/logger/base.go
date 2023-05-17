@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:25:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-25 10:28:26
+ * @LastEditTime: 2023-05-16 15:24:59
  * @Description: base
  */
 package logger
@@ -24,7 +24,17 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
 }
 
 /**
@@ -36,7 +46,7 @@ func (b *Base) SaveTemplate(path string) error {
 func (b *Base) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 16:06:09
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
 	* @LastEditTime: 2023-04-21 16:16:29
 	* @Description: base
@@ -48,7 +58,7 @@ func (b *Base) GetTemplate() string {
    /**
 	* @description: Logger
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:17:08
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func Logger() logger.LoggerPkgInterface {
@@ -59,7 +69,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateLogger
 	* @param {...CommonLogger} CommonLoggers
 	* @author: Jerry.Yang
-	* @date: 2023-04-21 16:06:52
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateLogger(CommonLoggers ...CommonLogger) CommonLogger {

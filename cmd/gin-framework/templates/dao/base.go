@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:01:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 15:24:36
+ * @LastEditTime: 2023-05-16 15:25:53
  * @Description: base
  */
 package dao
@@ -30,7 +30,17 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
 }
 
 /**
@@ -56,13 +66,14 @@ func (b *Base) AppendFuncTemplate(path string, daoName string) error {
 	type Data struct {
 		DaoName   string
 		DaoNameUp string
+		Time      string
 	}
 
 	/**
 	 * @step
 	 * @渲染参数
 	 **/
-	data := &Data{DaoName: daoName, DaoNameUp: templates.CreateCommonTemplate().FirstUpper(daoName)}
+	data := &Data{DaoName: daoName, DaoNameUp: templates.CreateCommonTemplate().FirstUpper(daoName), Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, b.GetAppendFuncTemplate(), data)
 }
 
@@ -75,9 +86,9 @@ func (b *Base) AppendFuncTemplate(path string, daoName string) error {
 func (b *Base) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-23 11:40:11
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 11:40:18
+	* @LastEditTime: {{.Time}}
 	* @Description: base
 	*/
    package dao
@@ -86,7 +97,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateCommonDao
 	* @param {...CommonDao} commonDaos
 	* @author: Jerry.Yang
-	* @date: 2023-04-24 17:02:59
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateCommonDao(commonDaos ...CommonDao) CommonDao {
@@ -109,7 +120,7 @@ func (b *Base) GetAppendFuncTemplate() string {
 	* @description: Create{{.DaoNameUp}}Dao
 	* @param {...{{.DaoNameUp}}Dao} {{.DaoName}}Daos
 	* @author: Jerry.Yang
-	* @date: 2023-04-24 17:02:59
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func Create{{.DaoNameUp}}Dao({{.DaoName}}Daos ...{{.DaoNameUp}}Dao) {{.DaoNameUp}}Dao {

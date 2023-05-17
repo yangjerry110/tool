@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:14:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-12 10:49:41
+ * @LastEditTime: 2023-05-16 14:27:39
  * @Description: service
  */
 package commands
@@ -140,8 +140,17 @@ func (n *NewService) CreateNewService() error {
 	 * @step
 	 * @创建service
 	 **/
-	NewAppParams.AppServiceFileName = fmt.Sprintf("%sService.go", InitParms.ServiceName)
-	err := service.CreateNewService().SaveTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "service"), InitParms.ProjectImportPath, InitParms.ServiceName, NewAppParams.AppServiceFileName)
+	NewAppParams.AppServiceFileName = fmt.Sprintf("%sService.go", InitParams.ServiceName)
+	err := service.CreateNewService().SaveTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "service"), InitParams.ProjectImportPath, InitParams.ServiceName, NewAppParams.AppServiceFileName)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @appendBase
+	 **/
+	err = n.AppendFuncBaseDao()
 	if err != nil {
 		return err
 	}
@@ -160,7 +169,7 @@ func (n *NewService) AppendFuncService() error {
 	 * @step
 	 * @append controller
 	 **/
-	err := service.CreateNewService().SaveAppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "service"), InitParms.ServiceName, NewServiceParams.AppendBaseServiceName)
+	err := service.CreateNewService().SaveAppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "service"), InitParams.ServiceName, NewServiceParams.AppendBaseServiceName)
 	if err != nil {
 		return err
 	}
@@ -174,7 +183,7 @@ func (n *NewService) AppendFuncService() error {
  * @return {*}
  */
 func (n *NewService) AppendFuncBaseDao() error {
-	err := service.CreateBaseService().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParms.ProjectPath, "service"), InitParms.ServiceName)
+	err := service.CreateBaseService().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "service"), InitParams.ServiceName)
 	if err != nil {
 		return err
 	}
@@ -221,7 +230,7 @@ func (n *NewService) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "service")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "service")
 
 	/**
 	 * @step
@@ -261,7 +270,7 @@ func (n *NewService) CreateFile() error {
 	 * @step
 	 * @创建beforStart
 	 **/
-	err = service.CreateBeforStartService().SaveTemplate(NewServiceParams.ServicePath, InitParms.ProjectImportPath)
+	err = service.CreateBeforStartService().SaveTemplate(NewServiceParams.ServicePath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}
@@ -270,7 +279,7 @@ func (n *NewService) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = service.CreateTestService().SaveTemplate(NewServiceParams.ServicePath, InitParms.ProjectImportPath)
+	err = service.CreateTestService().SaveTemplate(NewServiceParams.ServicePath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

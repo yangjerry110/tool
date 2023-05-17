@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:40:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-11 15:23:27
+ * @LastEditTime: 2023-05-16 15:50:54
  * @Description: base
  */
 package controller
@@ -30,7 +30,17 @@ type Base struct{}
  * @return {*}
  */
 func (b *Base) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), nil)
+
+	/**
+	 * @step
+	 * @定义渲染数据
+	 **/
+	type Data struct {
+		Time string
+	}
+
+	data := &Data{Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "base.go", b.GetTemplate(), data)
 }
 
 /**
@@ -56,13 +66,14 @@ func (b *Base) AppendFuncTemplate(path string, controllerName string) error {
 	type Data struct {
 		ControllerName   string
 		ControllerNameUp string
+		Time             string
 	}
 
 	/**
 	 * @step
 	 * @渲染参数
 	 **/
-	data := &Data{ControllerName: controllerName, ControllerNameUp: templates.CreateCommonTemplate().FirstUpper(controllerName)}
+	data := &Data{ControllerName: controllerName, ControllerNameUp: templates.CreateCommonTemplate().FirstUpper(controllerName), Time: templates.CreateCommonTemplate().GetFormatNowTime()}
 	return templates.CreateCommonTemplate().AppendTemplate(basePath, b.GetAppendFuncTemplate(), data)
 }
 
@@ -75,9 +86,9 @@ func (b *Base) AppendFuncTemplate(path string, controllerName string) error {
 func (b *Base) GetTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
-	* @Date: 2023-04-21 19:40:24
+	* @Date: {{.Time}}
 	* @LastEditors: Jerry.Yang
-	* @LastEditTime: 2023-04-23 14:26:07
+	* @LastEditTime: {{.Time}}
 	* @Description: base
 	*/
    package controller
@@ -86,7 +97,7 @@ func (b *Base) GetTemplate() string {
 	* @description: CreateTestController
 	* @param {...TestController} TestControllers
 	* @author: Jerry.Yang
-	* @date: 2023-04-23 14:26:15
+	* @date: {{.Time}}
 	* @return {*}
 	*/
    func CreateTestController(TestControllers ...TestController) TestController {
@@ -106,16 +117,16 @@ func (b *Base) GetTemplate() string {
  */
 func (b *Base) GetAppendFuncTemplate() string {
 	return `/**
-	* @description: Create{{.ControllerNameUp}}Dao
-	* @param {...{{.ControllerNameUp}}Dao} {{.ControllerName}}Daos
+	* @description: Create{{.ControllerNameUp}}Controller
+	* @param {...{{.ControllerNameUp}}Controller} {{.ControllerNameUp}}Controllers
 	* @author: Jerry.Yang
-	* @date: 2023-04-24 17:02:59
+	* @date: {{.Time}}
 	* @return {*}
-	*/
-   func Create{{.ControllerNameUp}}Dao({{.ControllerName}}Daos ...{{.ControllerNameUp}}Dao) {{.ControllerNameUp}}Dao {
-	   if len({{.ControllerName}}Daos) == 0 {
-		   return &{{.ControllerNameUp}}{}
-	   }
-	   return {{.ControllerName}}Daos[0]
-   }`
+	 */
+	func Create{{.ControllerNameUp}}Controller({{.ControllerName}}Controllers ...{{.ControllerNameUp}}Controller) {{.ControllerNameUp}}Controller {
+		if len({{.ControllerName}}Controllers) == 0 {
+			return &{{.ControllerNameUp}}{}
+		}
+		return {{.ControllerName}}Controllers[0]
+	}`
 }

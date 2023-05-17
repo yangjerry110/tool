@@ -71,7 +71,7 @@ func (n *NewLogger) CreateWd() error {
 	 * @step
 	 * @获取config的path
 	 **/
-	path := fmt.Sprintf("%s/%s", InitParms.ProjectPath, "logger")
+	path := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "logger")
 
 	/**
 	 * @step
@@ -111,7 +111,7 @@ func (n *NewLogger) CreateFile() error {
 	 * @step
 	 * @创建common
 	 **/
-	err = logger.CreateCommonLogger().SaveTemplate(NewLoggerParams.LoggerPath, InitParms.ProjectImportPath)
+	err = logger.CreateCommonLogger().SaveTemplate(NewLoggerParams.LoggerPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}
