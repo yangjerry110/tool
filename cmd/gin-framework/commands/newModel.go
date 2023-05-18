@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:45:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-18 11:33:25
+ * @LastEditTime: 2023-05-18 15:21:38
  * @Description: new model
  */
 package commands
@@ -17,6 +17,7 @@ import (
 	"github.com/golib/cli"
 	"github.com/yangjerry110/tool/cmd/gin-framework/errors"
 	"github.com/yangjerry110/tool/cmd/gin-framework/templates"
+	"github.com/yangjerry110/tool/cmd/gin-framework/templates/model"
 	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/db"
 	"gorm.io/driver/mysql"
@@ -121,6 +122,15 @@ func (n *NewModel) CreateModel() error {
 	if err != nil {
 		return err
 	}
+
+	/**
+	 * @step
+	 * @创建文件
+	 **/
+	err = n.CreateFile()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -155,8 +165,23 @@ func (n *NewModel) CreateWd() error {
 	return nil
 }
 
+/**
+ * @description: CreateFile
+ * @author: Jerry.Yang
+ * @date: 2023-05-18 15:21:55
+ * @return {*}
+ */
 func (n *NewModel) CreateFile() error {
 
+	/**
+	 * @step
+	 * @创建base
+	 **/
+	err := model.CreateBaseModel().SaveTemplate(NewModelParams.ModelPath)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 /**
