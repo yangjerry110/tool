@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:02:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-08 11:38:02
+ * @LastEditTime: 2023-05-17 18:30:06
  * @Description: base service
  */
 package service
@@ -61,4 +61,18 @@ func CreateNewService(NewServices ...NewService) NewService {
 		return &New{}
 	}
 	return NewServices[0]
+}
+
+/**
+ * @description: CreateCommonService
+ * @param {...CommonService} CommonServices
+ * @author: Jerry.Yang
+ * @date: 2023-05-17 18:30:11
+ * @return {*}
+ */
+func CreateCommonService(CommonServices ...CommonService) CommonService {
+	if len(CommonServices) == 0 {
+		return &Common{}
+	}
+	return CommonServices[0]
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-08 11:33:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 15:25:34
+ * @LastEditTime: 2023-05-18 11:31:50
  * @Description: new service
  */
 package service
@@ -127,8 +127,8 @@ func (n *New) GetAppendFuncTemplate() string {
 		* @step
 		* @result
 		**/
-	   output := &output.{{.ServiceNameUp}}{}
-	   return output, nil
+		result := &output.{{.ServiceNameUp}}{}
+	   return result, nil
    }`
 }
 
@@ -174,8 +174,8 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @result
 		**/
-	   output := &output.{{.ServiceNameUp}}{}
-	   return output, nil
+	   result := &output.{{.ServiceNameUp}}{}
+	   return result, nil
    }
    `
 }

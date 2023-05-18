@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:14:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:25:26
+ * @LastEditTime: 2023-05-17 18:24:22
  * @Description: errors
  */
 package errors
@@ -54,6 +54,33 @@ func (r *Errors) GetTemplate() string {
    package errors
    
    import "errors"
+
+
+	/**
+	* @description: DefaultErrCode
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	var DefaultErrCode = -1
+
+	/**
+	* @description: Err_Default_Msg
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	var Err_Default_Msg = errors.New("err : err")
+
+	/**
+	* @description: ErrCodes
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	var ErrCodes = map[error]int32{
+		Err_Default_Msg:             int32(DefaultErrCode),
+	}
    
    // config err
    var Err_Config_SetConfigPath_PathIsEmpty = errors.New("config setConfigPath Err : path is empty")

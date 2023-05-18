@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 10:45:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 16:04:02
+ * @LastEditTime: 2023-05-18 11:33:25
  * @Description: new model
  */
 package commands
@@ -155,59 +155,8 @@ func (n *NewModel) CreateWd() error {
 	return nil
 }
 
-/**
- * @description: AskModelConfig
- * @author: Jerry.Yang
- * @date: 2023-05-10 11:00:26
- * @return {*}
- */
-func (n *NewModel) AskModelConfigPath() error {
+func (n *NewModel) CreateFile() error {
 
-	/**
-	 * @step
-	 * @初始化reader
-	 **/
-	reader := bufio.NewReader(os.Stdin)
-
-	/**
-	 * @step
-	 * @定义输入的提示
-	 **/
-	fmt.Println("请输入你的model配置文件路径，按回车结束")
-	fmt.Print("\r\n")
-	fmt.Print("need username; password; port; ip; database;  ")
-	fmt.Print("=> ")
-
-	/**
-	 * @step
-	 * @获取输入的内容
-	 **/
-	text, err := reader.ReadString('\n')
-	if err != nil {
-		fmt.Printf("发生错误 : %+v \r\n", err)
-		return err
-	}
-
-	/**
-	 * @step
-	 * @假如输入内容为空，报错直接
-	 **/
-	if len(text) == 1 {
-		return errors.ErrModelConfigIsEmpty
-	}
-
-	/**
-	 * @step
-	 * @删除换行
-	 **/
-	text = strings.ReplaceAll(text, "\n", "")
-
-	/**
-	 * @step
-	 * @赋值
-	 **/
-	InitParams.ModelConfigPath = text
-	return nil
 }
 
 /**
@@ -350,4 +299,59 @@ func (n *NewModel) GetGormDb() (*gorm.DB, error) {
 		return nil, err
 	}
 	return db, nil
+}
+
+/**
+ * @description: AskModelConfig
+ * @author: Jerry.Yang
+ * @date: 2023-05-10 11:00:26
+ * @return {*}
+ */
+func (n *NewModel) AskModelConfigPath() error {
+
+	/**
+	 * @step
+	 * @初始化reader
+	 **/
+	reader := bufio.NewReader(os.Stdin)
+
+	/**
+	 * @step
+	 * @定义输入的提示
+	 **/
+	fmt.Println("请输入你的model配置文件路径，按回车结束")
+	fmt.Print("\r\n")
+	fmt.Print("need username; password; port; ip; database;  ")
+	fmt.Print("=> ")
+
+	/**
+	 * @step
+	 * @获取输入的内容
+	 **/
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Printf("发生错误 : %+v \r\n", err)
+		return err
+	}
+
+	/**
+	 * @step
+	 * @假如输入内容为空，报错直接
+	 **/
+	if len(text) == 1 {
+		return errors.ErrModelConfigIsEmpty
+	}
+
+	/**
+	 * @step
+	 * @删除换行
+	 **/
+	text = strings.ReplaceAll(text, "\n", "")
+
+	/**
+	 * @step
+	 * @赋值
+	 **/
+	InitParams.ModelConfigPath = text
+	return nil
 }

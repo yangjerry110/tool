@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 16:53:20
+ * @LastEditTime: 2023-05-18 11:40:29
  * @Description:new dao
  */
 package dao
@@ -162,7 +162,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Find(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).Find(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		   return nil, err
 	   }
@@ -189,7 +189,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).First(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).First(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}Info Err : %+v", err)
 		   return nil, err
 	   }
@@ -214,7 +214,7 @@ func (n *New) GetTemplate() string {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Save{{.DaoNameUp}} Err : %+v", err)
 		   return 0, err
 	   }
-	   return {{.DaoName}}Model.UID, nil
+	   return {{.DaoName}}Model.ID, nil
    }
    
    /**
@@ -231,7 +231,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", 0).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Delete{{.DaoNameUp}} Err : %+v", err)
 		   return false, err
 	   }
@@ -267,7 +267,7 @@ func (n *New) GetAppendTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Find(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).Find(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		   return nil, err
 	   }
@@ -294,7 +294,7 @@ func (n *New) GetAppendTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).First(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).First(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao  Get{{.DaoNameUp}}Info Err : %+v", err)
 		   return nil, err
 	   }
@@ -319,7 +319,7 @@ func (n *New) GetAppendTemplate() string {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Save{{.DaoNameUp}} Err : %+v", err)
 		   return 0, err
 	   }
-	   return {{.DaoName}}Model.UID, nil
+	   return {{.DaoName}}Model.ID, nil
    }
    
    /**
@@ -336,7 +336,7 @@ func (n *New) GetAppendTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", 0).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Delete{{.DaoNameUp}} Err : %+v", err)
 		   return false, err
 	   }
