@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:44:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 14:27:28
+ * @LastEditTime: 2023-05-18 16:01:08
  * @Description: controller
  */
 package commands
@@ -271,7 +271,7 @@ func (n *NewController) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = controller.CreateTestController().SaveTemplate(NewControllerParams.ControllerPath, InitParams.ProjectImportPath)
+	err = controller.CreateDemoController().SaveTemplate(NewControllerParams.ControllerPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

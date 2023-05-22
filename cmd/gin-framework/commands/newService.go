@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:14:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 18:30:56
+ * @LastEditTime: 2023-05-18 16:01:22
  * @Description: service
  */
 package commands
@@ -279,7 +279,7 @@ func (n *NewService) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = service.CreateTestService().SaveTemplate(NewServiceParams.ServicePath, InitParams.ProjectImportPath)
+	err = service.CreateDemoService().SaveTemplate(NewServiceParams.ServicePath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

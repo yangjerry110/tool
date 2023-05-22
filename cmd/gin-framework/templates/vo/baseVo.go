@@ -2,37 +2,37 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:49:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-08 15:11:06
+ * @LastEditTime: 2023-05-18 16:00:45
  * @Description: baseVo
  */
 package vo
 
 /**
- * @description: CreateTestInputVo
- * @param {...TestInputVo} TestInputVos
+ * @description: CreateDemoInputVo
+ * @param {...DemoInputVo} DemoInputVos
  * @author: Jerry.Yang
- * @date: 2023-04-25 17:24:35
+ * @date: 2023-05-18 15:59:53
  * @return {*}
  */
-func CreateTestInputVo(TestInputVos ...TestInputVo) TestInputVo {
-	if len(TestInputVos) == 0 {
-		return &TestInput{}
+func CreateDemoInputVo(DemoInputVos ...DemoInputVo) DemoInputVo {
+	if len(DemoInputVos) == 0 {
+		return &DemoInput{}
 	}
-	return TestInputVos[0]
+	return DemoInputVos[0]
 }
 
 /**
- * @description: CreateTestOutputVo
- * @param {...TestOutputVo} TestOutputVos
+ * @description: CreateDemoOutputVo
+ * @param {...DemoOutputVo} DemoOutputVos
  * @author: Jerry.Yang
- * @date: 2023-04-25 17:25:22
+ * @date: 2023-05-18 16:00:51
  * @return {*}
  */
-func CreateTestOutputVo(TestOutputVos ...TestOutputVo) TestOutputVo {
-	if len(TestOutputVos) == 0 {
-		return &TestOutput{}
+func CreateDemoOutputVo(DemoOutputVos ...DemoOutputVo) DemoOutputVo {
+	if len(DemoOutputVos) == 0 {
+		return &DemoOutput{}
 	}
-	return TestOutputVos[0]
+	return DemoOutputVos[0]
 }
 
 /**

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:51:29
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-08 17:41:46
+ * @LastEditTime: 2023-05-18 16:12:29
  * @Description: base
  */
 package commands
@@ -19,6 +19,20 @@ func CreateNewCommands(NewCommands ...NewCommands) NewCommands {
 		return &New{}
 	}
 	return NewCommands[0]
+}
+
+/**
+ * @description: CreateNewApiCommands
+ * @param {...NewApiCommands} NewApiCommands
+ * @author: Jerry.Yang
+ * @date: 2023-05-18 15:38:55
+ * @return {*}
+ */
+func CreateNewApiCommands(NewApiCommands ...NewApiCommands) NewApiCommands {
+	if len(NewApiCommands) == 0 {
+		return &NewApi{}
+	}
+	return NewApiCommands[0]
 }
 
 /**
@@ -201,4 +215,18 @@ func CreateCommonCommands(CommandsCommands ...CommandsCommands) CommandsCommands
 		return &Common{}
 	}
 	return CommandsCommands[0]
+}
+
+/**
+ * @description: CreateNewProtobufCommands
+ * @param {...NewProtobufCommands} NewProtobufCommands
+ * @author: Jerry.Yang
+ * @date: 2023-05-18 16:12:35
+ * @return {*}
+ */
+func CreateNewProtobufCommands(NewProtobufCommands ...NewProtobufCommands) NewProtobufCommands {
+	if len(NewProtobufCommands) == 0 {
+		return &NewProtobuf{}
+	}
+	return NewProtobufCommands[0]
 }

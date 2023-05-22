@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:03:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 17:19:08
+ * @LastEditTime: 2023-05-18 15:55:09
  * @Description: baseRouter
  */
 package router
@@ -36,17 +36,17 @@ func CreateCommonRouter(CommonRouters ...CommonRouter) CommonRouter {
 }
 
 /**
- * @description: CreateTestRouter
- * @param {...TestRouter} TestRouters
+ * @description: CreateDemoRouter
+ * @param {...DemoRouter} DemoRouters
  * @author: Jerry.Yang
- * @date: 2023-04-25 15:51:58
+ * @date: 2023-05-18 15:55:15
  * @return {*}
  */
-func CreateTestRouter(TestRouters ...TestRouter) TestRouter {
-	if len(TestRouters) == 0 {
-		return &Test{}
+func CreateDemoRouter(DemoRouters ...DemoRouter) DemoRouter {
+	if len(DemoRouters) == 0 {
+		return &Demo{}
 	}
-	return TestRouters[0]
+	return DemoRouters[0]
 }
 
 /**

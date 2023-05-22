@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:53:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 14:29:09
+ * @LastEditTime: 2023-05-18 16:01:16
  * @Description: new router
  */
 package commands
@@ -274,7 +274,7 @@ func (n *NewRouter) CreateFile() error {
 	 * @step
 	 * @创建test
 	 **/
-	err = router.CreateTestRouter().SaveTemplate(NewRouterParams.RouterPath, InitParams.ProjectImportPath)
+	err = router.CreateDemoRouter().SaveTemplate(NewRouterParams.RouterPath, InitParams.ProjectImportPath)
 	if err != nil {
 		return err
 	}

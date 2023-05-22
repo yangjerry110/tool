@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:02:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 18:30:06
+ * @LastEditTime: 2023-05-18 15:58:02
  * @Description: base service
  */
 package service
@@ -36,17 +36,17 @@ func CreateBeforStartService(BeforStartServices ...BeforStartService) BeforStart
 }
 
 /**
- * @description: CreateTestService
- * @param {...TestService} TestServices
+ * @description: CreateDemoService
+ * @param {...DemoService} DemoServices
  * @author: Jerry.Yang
- * @date: 2023-04-25 16:14:10
+ * @date: 2023-05-18 15:58:09
  * @return {*}
  */
-func CreateTestService(TestServices ...TestService) TestService {
-	if len(TestServices) == 0 {
-		return &Test{}
+func CreateDemoService(DemoServices ...DemoService) DemoService {
+	if len(DemoServices) == 0 {
+		return &Demo{}
 	}
-	return TestServices[0]
+	return DemoServices[0]
 }
 
 /**

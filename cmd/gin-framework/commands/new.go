@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-23 15:50:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 17:40:51
+ * @LastEditTime: 2023-05-18 16:12:53
  * @Description: new
  */
 package commands
@@ -44,6 +44,14 @@ func (n *New) Commands(app *cli.App) error {
 			Usage:   "new a app => new app",
 			Action: func(c *cli.Context) error {
 				return CreateNewAppCommands().NewApp(c)
+			},
+		},
+		{
+			Name:    "newApi",
+			Aliases: []string{"napi"},
+			Usage:   "new a api => new api",
+			Action: func(c *cli.Context) error {
+				return CreateNewApiCommands().NewApi(c)
 			},
 		},
 		{
@@ -210,6 +218,15 @@ func (n *New) New(ctx *cli.Context) error {
 	 * @创建vo
 	 **/
 	err = CreateNewVoCommands().CreateVo()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建protobuf
+	 **/
+	err = CreateNewProtobufCommands().CreateProtobuf()
 	if err != nil {
 		return err
 	}

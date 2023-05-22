@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 17:25:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:05:04
+ * @LastEditTime: 2023-05-18 16:06:46
  * @Description: vo commands
  */
 package commands
@@ -33,6 +33,7 @@ type NewVo struct {
 	AppendBaseVoName string
 	VoInputPath      string
 	VoOutputPath     string
+	VoProtobufPath   string
 }
 
 /**
@@ -241,6 +242,16 @@ func (n *NewVo) CreateWd() error {
 
 	/**
 	 * @step
+	 * @创建protobufPath
+	 **/
+	protobufPath := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "protobufVo")
+	err = os.MkdirAll(protobufPath, 0777)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
 	 * @赋值
 	 **/
 	NewVoParams.VoInputPath = inputPath
@@ -260,7 +271,7 @@ func (n *NewVo) CreateFile() error {
 	 * @step
 	 * @创建input test
 	 **/
-	err := vo.CreateTestInputVo().SaveTemplate(NewVoParams.VoInputPath)
+	err := vo.CreateDemoInputVo().SaveTemplate(NewVoParams.VoInputPath)
 	if err != nil {
 		return err
 	}
@@ -269,7 +280,7 @@ func (n *NewVo) CreateFile() error {
 	 * @step
 	 * @创建output test
 	 **/
-	err = vo.CreateTestOutputVo().SaveTemplate(NewVoParams.VoOutputPath)
+	err = vo.CreateDemoOutputVo().SaveTemplate(NewVoParams.VoOutputPath)
 	if err != nil {
 		return err
 	}
