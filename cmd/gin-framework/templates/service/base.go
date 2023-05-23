@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:02:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:17:00
+ * @LastEditTime: 2023-05-22 15:36:03
  * @Description: base
  */
 package service
@@ -108,17 +108,17 @@ func (b *Base) GetTemplate() string {
    }
    
    /**
-	* @description: CreateTestService
-	* @param {...TestService} TestServices
+	* @description: CreateDemoService
+	* @param {...DemoService} DemoServices
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func CreateTestService(TestServices ...TestService) TestService {
-	   if len(TestServices) == 0 {
-		   return &Test{}
+   func CreateDemoService(DemoServices ...DemoService) DemoService {
+	   if len(DemoServices) == 0 {
+		   return &Demo{}
 	   }
-	   return TestServices[0]
+	   return DemoServices[0]
    }
    `
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-18 15:40:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-18 16:03:29
+ * @LastEditTime: 2023-05-22 15:50:44
  * @Description: new protobuf
  */
 package commands
@@ -103,7 +103,16 @@ func (n *NewProtobuf) CreateFile() error {
 	 * @step
 	 * @创建demo
 	 **/
-	err := protobuf.CreateDemoProtobuf().SaveTemplate(NewProtobufParams.ProtobufPath)
+	err := protobuf.CreateDemoProtobuf().SaveTemplate(NewProtobufParams.ProtobufPath, InitParams.ProjectImportPath)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @创建http
+	 **/
+	err = protobuf.CreateHttpProtobuf().SaveTemplate(NewProtobufParams.ProtobufPath)
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-18 15:47:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-22 14:32:01
+ * @LastEditTime: 2023-05-22 17:30:28
  * @Description: test
  */
 package protobuf
@@ -10,7 +10,7 @@ package protobuf
 import "github.com/yangjerry110/tool/cmd/gin-framework/templates"
 
 type DemoProtobuf interface {
-	SaveTemplate(path string) error
+	SaveTemplate(path string, projectImportPath string) error
 	GetTemplate() string
 }
 
@@ -19,12 +19,22 @@ type Demo struct{}
 /**
  * @description: SaveTemplate
  * @param {string} path
+ * @param {string} projectImportPath
  * @author: Jerry.Yang
  * @date: 2023-05-18 15:53:36
  * @return {*}
  */
-func (d *Demo) SaveTemplate(path string) error {
-	return templates.CreateCommonTemplate().SaveTemplate(path, "demo.proto", d.GetTemplate(), nil, "proto")
+func (d *Demo) SaveTemplate(path string, projectImportPath string) error {
+	/**
+	 * @step
+	 * @定义渲染的数据
+	 **/
+	type Data struct {
+		ProjectImportPath string
+	}
+
+	data := &Data{ProjectImportPath: projectImportPath}
+	return templates.CreateCommonTemplate().SaveTemplate(path, "demo.proto", d.GetTemplate(), data, "proto")
 }
 
 /**
@@ -38,7 +48,9 @@ func (d *Demo) GetTemplate() string {
 
 package demo;
 
-option go_package = "{{.ProjectImportPath}}/protobuf/";
+option go_package = "{{.ProjectImportPath}}/vo/protobuf";
+
+import "http.proto";
 
 service DemoApi {
 

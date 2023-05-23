@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:32:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 14:31:12
+ * @LastEditTime: 2023-05-22 15:37:58
  * @Description: common router
  */
 package router
@@ -112,7 +112,7 @@ func (c *Common) GetTemplate() string {
 		* @step
 		* @test router
 		**/
-	   CreateTestRouter().CreateRouter()
+		CreateDemoRouter().CreateRouter()
    
 	   /**
 		* @step

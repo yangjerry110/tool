@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 17:25:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-18 16:06:46
+ * @LastEditTime: 2023-05-22 17:30:08
  * @Description: vo commands
  */
 package commands
@@ -244,7 +244,7 @@ func (n *NewVo) CreateWd() error {
 	 * @step
 	 * @创建protobufPath
 	 **/
-	protobufPath := fmt.Sprintf("%s/%s", InitParams.ProjectPath, "protobufVo")
+	protobufPath := fmt.Sprintf("%s/%s/%s", InitParams.ProjectPath, "vo", "protobuf")
 	err = os.MkdirAll(protobufPath, 0777)
 	if err != nil {
 		return err

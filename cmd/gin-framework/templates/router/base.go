@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 15:04:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 17:25:50
+ * @LastEditTime: 2023-05-22 15:35:30
  * @Description: base
  */
 package router
@@ -114,17 +114,17 @@ func (b *Base) GetTemplate() string {
    }
    
    /**
-	* @description: CreateTestRouter
-	* @param {...TestRouter} TestRouters
+	* @description: CreateDemoRouter
+	* @param {...DemoRouter} DemoRouters
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func CreateTestRouter(TestRouters ...TestRouter) TestRouter {
-	   if len(TestRouters) == 0 {
-		   return &Test{}
+   func CreateDemoRouter(DemoRouters ...DemoRouter) DemoRouter {
+	   if len(DemoRouters) == 0 {
+		   return &Demo{}
 	   }
-	   return TestRouters[0]
+	   return DemoRouters[0]
    }
    `
 }

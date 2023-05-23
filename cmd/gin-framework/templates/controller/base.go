@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 16:40:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-16 15:50:54
+ * @LastEditTime: 2023-05-22 15:31:29
  * @Description: base
  */
 package controller
@@ -94,17 +94,17 @@ func (b *Base) GetTemplate() string {
    package controller
    
    /**
-	* @description: CreateTestController
-	* @param {...TestController} TestControllers
+	* @description: CreateDemoController
+	* @param {...DemoController} DemoControllers
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func CreateTestController(TestControllers ...TestController) TestController {
-	   if len(TestControllers) == 0 {
-		   return &Test{}
+   func CreateDemoController(DemoControllers ...DemoController) DemoController {
+	   if len(DemoControllers) == 0 {
+		   return &Demo{}
 	   }
-	   return TestControllers[0]
+	   return DemoControllers[0]
    }
    `
 }
