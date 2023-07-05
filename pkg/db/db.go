@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 15:08:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 16:19:51
+ * @LastEditTime: 2023-07-05 20:18:02
  * @Description: db
  */
 package db
@@ -54,8 +54,8 @@ func SetClient(dbInterface db.DbInterface) db.DbInterface {
  * @date: 2023-02-09 15:27:06
  * @return {*}
  */
-func Client(dbname string) *gorm.DB {
-	return defaultClient.Client(dbname)
+func Client(dbname string, gormConfig *gorm.Config) *gorm.DB {
+	return defaultClient.Client(dbname, gormConfig)
 }
 
 /**

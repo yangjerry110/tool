@@ -2,13 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-27 18:32:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2022-11-16 17:15:32
+ * @LastEditTime: 2023-07-05 20:17:08
  * @Description: logrus
  */
 package logger
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/yangjerry110/tool/logger"
@@ -134,11 +133,19 @@ func (l *LogrusLogPkg) Logf(format string, args ...interface{}) error {
 
 	/**
 	 * @step
+	 * @writeLogs
+	 **/
+	writeLogs := []interface{}{}
+	writeLogs = append(writeLogs, format)
+	writeLogs = append(writeLogs, args...)
+
+	/**
+	 * @step
 	 * @写入日志
 	 **/
 	return obj.SetOptions([]logger.LoggerOptionFunc{
 		CreateLoggerOption(&LogrusOptionsPkg{}).SetLevel(Level(l.LogLevel)),
-	}).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(fmt.Sprintf(format, args...))
+	}).SetLoggerOptions().CreateInterface(&logger.LogrusLog{Options: &logger.LogrusOption{LoggerOption: logger.LoggerOption{Options: l.Options}}}).LoggerInterface.SetLevel().SetCallDept().SetWithFields().SetIsReportcaller().SetFormatter().SetOutput().SetLogger().WriteLog(writeLogs)
 }
 
 /**
