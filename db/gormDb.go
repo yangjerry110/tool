@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 14:50:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-17 16:19:29
+ * @LastEditTime: 2023-07-05 20:06:41
  * @Description: gorm db
  */
 package db
@@ -22,11 +22,12 @@ type GormDb struct{}
 /**
  * @description: Client
  * @param {string} dbname
+ * @param {*gorm.Config} gormConfig
  * @author: Jerry.Yang
- * @date: 2023-02-09 15:06:50
+ * @date: 2023-07-05 20:06:48
  * @return {*}
  */
-func (g *GormDb) Client(dbname string) *gorm.DB {
+func (g *GormDb) Client(dbname string, gormConfig *gorm.Config) *gorm.DB {
 
 	/**
 	 * @step
@@ -41,7 +42,7 @@ func (g *GormDb) Client(dbname string) *gorm.DB {
 	 * @step
 	 * @创建db连接
 	 **/
-	db, err := gorm.Open(mysql.Open(dbConfig.Dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dbConfig.Dsn), gormConfig)
 	if err != nil {
 		panic(fmt.Sprintf("getDb Err : %v", err))
 	}

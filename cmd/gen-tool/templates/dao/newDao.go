@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-18 11:40:29
+ * @LastEditTime: 2023-07-05 16:09:38
  * @Description:new dao
  */
 package dao
@@ -162,7 +162,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).Find(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).Find(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		   return nil, err
 	   }
@@ -189,7 +189,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).First(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).First(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}Info Err : %+v", err)
 		   return nil, err
 	   }
@@ -267,7 +267,7 @@ func (n *New) GetAppendTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).Find(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).Find(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		   return nil, err
 	   }
@@ -294,7 +294,7 @@ func (n *New) GetAppendTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_deleted).First(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).First(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao  Get{{.DaoNameUp}}Info Err : %+v", err)
 		   return nil, err
 	   }
