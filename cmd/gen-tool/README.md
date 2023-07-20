@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-27 11:35:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-23 15:00:51
+ * @LastEditTime: 2023-07-20 10:45:52
  * @Description: 
 -->
 
@@ -14,6 +14,12 @@
 - 安装gen-tool 脚手架
 ``` bash
     go install github.com/yangjerry110/tool/cmd/gen-tool@latest
+```
+
+## 假如需要使用protobuf，则需要提前安装protobuf相关
+``` bash
+    go install github.com/yangjerry110/tool/cmd/protoc-gen-go@latest
+    go install github.com/yangjerry110/tool/cmd/protoc-gen-tool@latest
 ```
 
 - 安装新应用
