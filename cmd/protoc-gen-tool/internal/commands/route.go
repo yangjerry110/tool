@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-23 19:03:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-25 11:04:33
+ * @LastEditTime: 2023-07-17 19:15:30
  * @Description: router
  */
 package commands
@@ -141,6 +141,7 @@ func (r *Router) GetNewRouterProtobufs(fileName string, httpRules []*HttpRule) (
 			RouterFunc:      httpRule.FuncName,
 			RouterFuncUp:    templates.CreateCommonTemplate().FirstUpper(httpRule.FuncName),
 			InputReqName:    httpRule.InputName,
+			OutputRespName:  httpRule.OutputName,
 			FirstRouterName: fileName[:1],
 			RouterName:      fileName,
 			Time:            templates.CreateCommonTemplate().GetFormatNowTime(),

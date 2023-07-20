@@ -2,19 +2,17 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-24 17:06:15
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-24 15:19:44
+ * @LastEditTime: 2023-07-10 15:24:39
  * @Description: dao commands
  */
 package commands
 
 import (
-	"bufio"
 	"fmt"
 	"os"
-	"strings"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/golib/cli"
-	"github.com/yangjerry110/tool/cmd/gen-tool/errors"
 	"github.com/yangjerry110/tool/cmd/gen-tool/templates/dao"
 )
 
@@ -31,6 +29,7 @@ type NewDaoCommands interface {
 
 type NewDao struct {
 	AppendBaseDaoPath string
+	DbName            string
 	DaoPath           string
 }
 
@@ -74,6 +73,15 @@ func (n *NewDao) NewDao(ctx *cli.Context) error {
 	 * @设置projectImportPath
 	 **/
 	err = CreateInitCommands().SetImportProjectPath()
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @ask db name
+	 **/
+	err = n.AskDbName()
 	if err != nil {
 		return err
 	}
@@ -132,7 +140,7 @@ func (n *NewDao) NewDao(ctx *cli.Context) error {
  */
 func (n *NewDao) CreateNewDao() error {
 	NewAppParams.AppDaoFileName = fmt.Sprintf("%sDao.go", InitParams.DaoName)
-	err := dao.CreateNewDao().SaveTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "dao"), InitParams.ProjectImportPath, InitParams.DaoName, NewAppParams.AppDaoFileName)
+	err := dao.CreateNewDao().SaveTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "dao"), InitParams.ProjectImportPath, InitParams.DaoName, NewAppParams.AppDaoFileName, NewDaoParams.DbName)
 	if err != nil {
 		return err
 	}
@@ -274,46 +282,44 @@ func (n *NewDao) CreateFile() error {
  * @return {*}
  */
 func (n *NewDao) AskIsAppend() (bool, error) {
-	/**
-	 * @step
-	 * @初始化reader
-	 **/
-	reader := bufio.NewReader(os.Stdin)
 
 	/**
 	 * @step
-	 * @定义输入的提示
+	 * @定义问题列表
 	 **/
-	fmt.Print("\r\n")
-	fmt.Println("是否在当前已有的dao文件追加？")
-	fmt.Print("\r\n")
-	fmt.Print("回答: yes or no   ")
-	fmt.Print("=> ")
+	questions := []*survey.Question{
+		{
+			Name: "isAppend",
+			Prompt: &survey.Confirm{
+				Message: "please is append ? ",
+				Default: false,
+			},
+		},
+	}
 
 	/**
 	 * @step
-	 * @获取输入的内容
+	 * @定义答案列表
 	 **/
-	text, err := reader.ReadString('\n')
+	type Answer struct {
+		IsAppend bool `survey:"isAppend"`
+	}
+
+	/**
+	 * @step
+	 * @执行问答
+	 **/
+	answer := &Answer{}
+	err := survey.Ask(questions, answer)
 	if err != nil {
-		fmt.Printf("发生错误 : %+v \r\n", err)
 		return false, err
 	}
 
 	/**
 	 * @step
-	 * @假如输入内容为空，报错直接
+	 * @判断结果
 	 **/
-	if len(text) == 1 {
-		return false, nil
-	}
-
-	/**
-	 * @step
-	 * @删除换行
-	 **/
-	text = strings.ReplaceAll(text, "\n", "")
-	if text == "yes" {
+	if answer.IsAppend {
 		return true, nil
 	}
 	return false, nil
@@ -329,43 +335,89 @@ func (n *NewDao) AskAppendFileName() error {
 
 	/**
 	 * @step
-	 * @初始化reader
+	 * @定义问题列表
 	 **/
-	reader := bufio.NewReader(os.Stdin)
+	questions := []*survey.Question{
+		{
+			Name: "appendFileName",
+			Prompt: &survey.Input{
+				Message: "please input append file name = ? ",
+				Help:    "only input dao name; TestDao => test",
+				Default: "",
+			},
+		},
+	}
 
 	/**
 	 * @step
-	 * @定义输入的提示
+	 * @定义答案列表
 	 **/
-	fmt.Print("\r\n")
-	fmt.Println("追加的文件名称？")
-	fmt.Print("\r\n")
-	fmt.Print("回答: 只需要dao名称; ps: testDao.go => test   ")
-	fmt.Print("=> ")
+	type Answer struct {
+		AppendFileNmae string `survey:"appendFileName"`
+	}
 
 	/**
 	 * @step
-	 * @获取输入的内容
+	 * @执行问答
 	 **/
-	text, err := reader.ReadString('\n')
+	answer := &Answer{}
+	err := survey.Ask(questions, answer)
 	if err != nil {
-		fmt.Printf("发生错误 : %+v \r\n", err)
 		return err
 	}
 
 	/**
 	 * @step
-	 * @假如输入内容为空，报错直接
+	 * @获取答案
 	 **/
-	if len(text) == 1 {
-		return errors.ErrAppendVoPathIsEmprty
+	NewDaoParams.AppendBaseDaoPath = answer.AppendFileNmae
+	return nil
+}
+
+/**
+ * @description: AskDbName
+ * @author: Jerry.Yang
+ * @date: 2023-07-10 15:21:10
+ * @return {*}
+ */
+func (n *NewDao) AskDbName() error {
+
+	/**
+	 * @step
+	 * @定义问题列表
+	 **/
+	questions := []*survey.Question{
+		{
+			Name: "dbName",
+			Prompt: &survey.Input{
+				Message: "please input db name = ? ",
+				Default: "",
+			},
+		},
 	}
 
 	/**
 	 * @step
-	 * @删除换行
+	 * @定义答案列表
 	 **/
-	text = strings.ReplaceAll(text, "\n", "")
-	NewDaoParams.AppendBaseDaoPath = text
+	type Answer struct {
+		DbName string `survey:"dbName"`
+	}
+
+	/**
+	 * @step
+	 * @执行问答
+	 **/
+	answer := &Answer{}
+	err := survey.Ask(questions, answer)
+	if err != nil {
+		return err
+	}
+
+	/**
+	 * @step
+	 * @获取答案
+	 **/
+	NewDaoParams.DbName = answer.DbName
 	return nil
 }

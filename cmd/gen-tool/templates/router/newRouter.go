@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-16 16:35:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-26 10:45:51
+ * @LastEditTime: 2023-07-17 19:15:19
  * @Description: new router
  */
 package router
@@ -38,6 +38,7 @@ type NewProtobufRouter struct {
 	RouterFunc      string
 	RouterFuncUp    string
 	InputReqName    string
+	OutputRespName  string
 	FirstRouterName string
 	RouterName      string
 	Time            string
@@ -429,6 +430,8 @@ func (n *New) GetProtobufTemplate() string {
 	   outputVo, err := service.Create{{.RouterNameUp}}Service().{{.RouterFunc}}(ctx, inputVo)
 	   if err != nil {
 		   logger.Logger().Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
+		   ctx.JSON(http.StatusOK,&protobuf.{{.OutputRespName}}{RetCode:-1,RetMsg:err.Error()})
+		   return
 	   }
 
 	   /**

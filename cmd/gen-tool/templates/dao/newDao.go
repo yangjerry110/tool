@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-10 17:55:34
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-07-05 16:09:38
+ * @LastEditTime: 2023-07-10 15:24:26
  * @Description:new dao
  */
 package dao
@@ -14,7 +14,7 @@ import (
 )
 
 type NewDao interface {
-	SaveTemplate(path string, projectImportPath string, daoName string, daoFileName string) error
+	SaveTemplate(path string, projectImportPath string, daoName string, daoFileName string, dbName string) error
 	GetTemplate() string
 	AppendFuncTemplate(path string, daoName string, baseDaoName string) error
 	GetAppendTemplate() string
@@ -23,16 +23,17 @@ type NewDao interface {
 type New struct{}
 
 /**
- * @description: SaveTemplate
+ * @description:
  * @param {string} path
  * @param {string} projectImportPath
  * @param {string} daoName
  * @param {string} daoFileName
+ * @param {string} dbName
  * @author: Jerry.Yang
- * @date: 2023-05-11 11:22:28
+ * @date:
  * @return {*}
  */
-func (n *New) SaveTemplate(path string, projectImportPath string, daoName string, daoFileName string) error {
+func (n *New) SaveTemplate(path string, projectImportPath string, daoName string, daoFileName string, dbName string) error {
 	/**
 	 * @step
 	 * @定义渲染的数据
@@ -42,6 +43,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, daoName string
 		DaoName           string
 		DaoNameUp         string
 		FirstDaoName      string
+		DbName            string
 		Time              string
 	}
 
@@ -61,7 +63,7 @@ func (n *New) SaveTemplate(path string, projectImportPath string, daoName string
 	 * @step
 	 * @进行赋值
 	 **/
-	data := &Data{ProjectImportPath: projectImportPath, DaoName: daoName, DaoNameUp: daoNameUp, FirstDaoName: FirstDaoName, Time: templates.CreateCommonTemplate().GetFormatNowTime()}
+	data := &Data{ProjectImportPath: projectImportPath, DaoName: daoName, DaoNameUp: daoNameUp, FirstDaoName: FirstDaoName, Time: templates.CreateCommonTemplate().GetFormatNowTime(), DbName: dbName}
 	return templates.CreateCommonTemplate().SaveTemplate(path, daoFileName, n.GetTemplate(), data)
 }
 
@@ -162,7 +164,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).Find(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient({{.DbName}}).Where({{.DaoName}}Model).Find(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		   return nil, err
 	   }
@@ -189,7 +191,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Where("is_deleted = ?",model.No_Deleted).First(result).Error; err != nil {
+	   if err := CreateCommonDao().DbClient({{.DbName}}).Where({{.DaoName}}Model).First(result).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}Info Err : %+v", err)
 		   return nil, err
 	   }
@@ -210,7 +212,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Save({{.DaoName}}Model).Error; err != nil {
+	   if err := CreateCommonDao().DbClient({{.DbName}}).Save({{.DaoName}}Model).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Save{{.DaoNameUp}} Err : %+v", err)
 		   return 0, err
 	   }
@@ -231,7 +233,7 @@ func (n *New) GetTemplate() string {
 		* @step
 		* @执行结果
 		**/
-	   if err := CreateCommonDao().DbClient().Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
+	   if err := CreateCommonDao().DbClient({{.DbName}}).Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
 		   logger.Logger().Errorf("{{.DaoName}}Dao Delete{{.DaoNameUp}} Err : %+v", err)
 		   return false, err
 	   }

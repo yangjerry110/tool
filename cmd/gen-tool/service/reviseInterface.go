@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-25 15:48:22
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-26 15:11:56
+ * @LastEditTime: 2023-07-17 20:00:10
  * @Description: reviseInterface
  */
 package service
@@ -70,7 +70,7 @@ func (r *ReviseInterface) GetReviseInterface(filePath string, httpRuleMap map[st
 		return "", err
 	}
 
-	ast.Print(newFileSet, parseFileObj)
+	// ast.Print(newFileSet, parseFileObj)
 
 	/**
 	 * @step
@@ -290,7 +290,7 @@ func (r *ReviseInterface) GetAppendAstFields(interfaceType *ast.InterfaceType, e
 				ast.NewIdent("inputVo"),
 			},
 			Type: &ast.SelectorExpr{
-				X:   ast.NewIdent("protobuf"),
+				X:   ast.NewIdent("*protobuf"),
 				Sel: ast.NewIdent(httpRule.InputName),
 			},
 		})
