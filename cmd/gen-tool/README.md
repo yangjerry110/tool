@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-27 11:35:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-07-20 10:48:27
+ * @LastEditTime: 2023-07-20 11:18:16
  * @Description: 
 -->
 
@@ -36,4 +36,16 @@
 - 查看脚手架命令行
 ``` bash
     gen-tool --help
+```
+
+## 命令行
+- newApi
+```
+
+//第一步 定义protobuf文件(PS 必须定义在protobuf文件夹下，因为生成的时候会指定protobuf文件夹，有继承关系)
+//第二步 根据提示回答，假如是firstCreate，会在base文件中添加相关的CreateFunc
+//第三步 假如是append，不会重新生成service，会扫描没生成的func，进行添加
+//第四步 根据生成的文件自己修改
+gen-tool newApi demo.proto
+
 ```
