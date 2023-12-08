@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-25 16:14:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-25 23:03:54
+ * @LastEditTime: 2023-11-30 16:21:08
  * @Description: service
  */
 package commands
@@ -174,7 +174,7 @@ func (n *NewService) AppendFuncService() error {
  * @return {*}
  */
 func (n *NewService) AppendFuncBaseService() error {
-	err := service.CreateBaseService().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "service"), InitParams.ServiceName)
+	err := service.CreateBaseService().AppendFuncTemplate(fmt.Sprintf("%s%s", InitParams.ProjectPath, "internal/service"), InitParams.ServiceName)
 	if err != nil {
 		return err
 	}

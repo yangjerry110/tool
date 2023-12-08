@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-24 11:40:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-05-26 11:25:40
+ * @LastEditTime: 2023-12-01 15:06:48
  * @Description: service
  */
 package commands
@@ -154,7 +154,7 @@ func (s *Service) CreateNewService(newProtobufServices []*service.NewProtobufSer
 	 * @saveProtobufTemplate
 	 **/
 	if err := service.CreateNewService().SaveProtobufTemplate(
-		fmt.Sprintf("%s%s", genToolCommands.InitParams.ProjectPath, "service"),
+		fmt.Sprintf("%s%s", genToolCommands.InitParams.ProjectPath, "internal/service"),
 		genToolCommands.InitParams.ProjectImportPath,
 		genToolCommands.InitParams.ServiceName,
 		fmt.Sprintf("%sService.go", genToolCommands.InitParams.ServiceName),
@@ -198,7 +198,7 @@ func (s *Service) AppendNewSevice(serviceName string, httpRules []*HttpRule) err
 	 * @step
 	 * @拼接filePath
 	 **/
-	filePath := fmt.Sprintf("%s%s/%sService.go", genToolCommands.InitParams.ProjectPath, "service", serviceName)
+	filePath := fmt.Sprintf("%s%s/%sService.go", genToolCommands.InitParams.ProjectPath, "internal/service", serviceName)
 
 	/**
 	 * @step
@@ -213,7 +213,7 @@ func (s *Service) AppendNewSevice(serviceName string, httpRules []*HttpRule) err
 	 * @step
 	 * @获取servicePath
 	 **/
-	servicePath := fmt.Sprintf("%s%s", genToolCommands.InitParams.ProjectPath, "service")
+	servicePath := fmt.Sprintf("%s%s", genToolCommands.InitParams.ProjectPath, "internal/service")
 
 	/**
 	 * @step
@@ -302,7 +302,7 @@ func (s *Service) IsServiceFileExist() (bool, error) {
 	 * @step
 	 * @判断serviceFile是否存在
 	 **/
-	serviceFilePath := fmt.Sprintf("%s%s/%sService.go", genToolCommands.InitParams.ProjectPath, "service", genToolCommands.InitParams.ServiceName)
+	serviceFilePath := fmt.Sprintf("%s%s/%sService.go", genToolCommands.InitParams.ProjectPath, "internal/service", genToolCommands.InitParams.ServiceName)
 
 	/**
 	 * @step

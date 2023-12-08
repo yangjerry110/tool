@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-05-16 16:35:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-07-17 19:15:19
+ * @LastEditTime: 2023-11-30 16:28:01
  * @Description: new router
  */
 package router
@@ -361,7 +361,7 @@ func (n *New) GetProtobufTemplate() string {
 	   "net/http"
 	   "github.com/gin-gonic/gin"
 	   "{{.ProjectImportPath}}/logger"
-	   "{{.ProjectImportPath}}/service"
+	   "{{.ProjectImportPath}}/internal/service"
 	   "{{.ProjectImportPath}}/vo/protobuf"
    )
    
@@ -439,7 +439,6 @@ func (n *New) GetProtobufTemplate() string {
 	   * @return
 	   **/
 	   ctx.JSON(http.StatusOK, outputVo)
-	   return 
    }
    {{- end}}
    `
