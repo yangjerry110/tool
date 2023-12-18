@@ -1,42 +1,24 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2023-04-23 15:37:20
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-04-23 17:42:21
- * @Description: main
- */
 package main
 
 import (
-	"os"
-
-	"github.com/golib/cli"
-	"github.com/yangjerry110/tool/cmd/gen-tool/commands"
+	"github.com/yangjerry110/tool/internal/cmd/command"
+	"github.com/yangjerry110/tool/internal/cmd/config"
 )
 
 func main() {
 
-	/**
-	 * @创建app
-	 **/
-	app := cli.NewApp()
+	// set projectPath
+	if err := config.CreateConfig(&config.ProjectPath{}).SetConfig(); err != nil {
+		panic(err)
+	}
 
-	/**
-	 * @step
-	 * @定义app相关的参数
-	 **/
-	app.Name = "newApp"
-	app.Usage = "create a new app "
+	// set projectImportPath
+	if err := config.CreateConfig(&config.ProjectImportPath{}).SetConfig(); err != nil {
+		panic(err)
+	}
 
-	/**
-	 * @step
-	 * @创建commands
-	 **/
-	commands.CreateNewCommands().Commands(app)
-
-	/**
-	 * @step
-	 * @run
-	 **/
-	app.Run(os.Args)
+	// set cli app
+	if err := command.CreateCommand(&command.CliNewApp{}).New(); err != nil {
+		panic(err)
+	}
 }
