@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2023-12-18 17:33:20
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2023-12-19 16:49:38
+ * @Description: yamlConfig newApp
+ */
 package yamlconfig
 
 import (
@@ -72,7 +79,7 @@ func (n *NewAppRouter) New() error {
  */
 func (n *NewAppDatabase) getTemplate() string {
 	return `master: 
-	dsn: "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"`
+ dsn: "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"`
 }
 
 /**

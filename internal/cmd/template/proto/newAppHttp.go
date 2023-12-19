@@ -16,7 +16,7 @@ type NewAppHttpProto struct{}
  * @return {*}
  */
 func (n *NewAppHttpProto) New() error {
-	filePath := fmt.Sprintf("%s/proto", config.ProjectPathConf.Path)
+	filePath := fmt.Sprintf("%s/protobuf", config.ProjectPathConf.Path)
 	return template.SaveTemplate(filePath, "http.proto", n.getTemplate(), nil, "proto")
 }
 
@@ -27,8 +27,7 @@ func (n *NewAppHttpProto) New() error {
  * @return {*}
  */
 func (n *NewAppHttpProto) getTemplate() string {
-	return `
-	syntax = "proto3";
+	return `syntax = "proto3";
 
 package api;
 

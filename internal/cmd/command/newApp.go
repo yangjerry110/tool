@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:11:41
+ * @LastEditTime: 2023-12-19 17:36:56
  * @Description: newApp
  */
 package command
@@ -21,6 +21,8 @@ import (
 	internalFolderService "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/service"
 	folderProto "github.com/yangjerry110/tool/internal/cmd/folder/proto"
 	floderRouter "github.com/yangjerry110/tool/internal/cmd/folder/router"
+	"github.com/yangjerry110/tool/internal/cmd/folder/vo"
+	folderVoProtobuf "github.com/yangjerry110/tool/internal/cmd/folder/vo/protobuf"
 	"github.com/yangjerry110/tool/internal/cmd/template"
 	internalTemplateConfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config"
 	yamlconfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config/yamlConfig"
@@ -30,6 +32,7 @@ import (
 	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/service"
 	"github.com/yangjerry110/tool/internal/cmd/template/proto"
 	"github.com/yangjerry110/tool/internal/cmd/template/router"
+	"github.com/yangjerry110/tool/internal/cmd/template/vo/protobuf"
 	"github.com/yangjerry110/tool/internal/errors"
 )
 
@@ -139,6 +142,16 @@ func (n *NewApp) newFloder() error {
 	if err := folder.CreateFlod(&internalFolderService.NewApp{}).New(); err != nil {
 		return err
 	}
+
+	// NewAppVo
+	if err := folder.CreateFlod(&vo.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppVoProtobuf
+	if err := folder.CreateFlod(&folderVoProtobuf.NewApp{}).New(); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -232,6 +245,11 @@ func (n *NewApp) newTemplate() error {
 
 	// NewAppMain
 	if err := template.CreateTemplate(&template.NewAppMain{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppVoProtobuf
+	if err := template.CreateTemplate(&protobuf.NewAppDemoProto{}).New(); err != nil {
 		return err
 	}
 	return nil

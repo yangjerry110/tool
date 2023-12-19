@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:07:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:09:35
+ * @LastEditTime: 2023-12-19 16:46:39
  * @Description: newApp errors
  */
 package errors
@@ -45,13 +45,13 @@ func (n *NewAppError) New() error {
  */
 func (n *NewAppError) getTemplate() string {
 	return `
-	/*
-* @Author: Jerry.Yang
-* @Date: {{.Time}}
+/*
+ * @Author: Jerry.Yang
+ * @Date: {{.Time}}
  * @LastEditors: Jerry.Yang
  * @LastEditTime: {{.Time}}
-* @Description: error
-*/
+ * @Description: error
+ */
 package errors
 
 import (
@@ -59,26 +59,26 @@ import (
 )
 
 /**
-* @description: DefaultErrCode
-* @author: Jerry.Yang
-* @date: {{.Time}}
-* @return {*}
+ * @description: DefaultErrCode
+ * @author: Jerry.Yang 
+ * @date: {{.Time}}
+ * @return {*}
  */
 var DefaultErrCode = -1
 
 /**
-* @description: Err_Default_Msg
-* @author: Jerry.Yang
-* @date: {{.Time}}
-* @return {*}
+ * @description: Err_Default_Msg
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
  */
 var Err_Default_Msg = errors.New("err : err")
 
 /**
-* @description: ErrCodes
-* @author: Jerry.Yang
-* @date: {{.Time}}
-* @return {*}
+ * @description: ErrCodes
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
  */
 var ErrCodes = map[error]int32{
 	Err_Default_Msg: int32(DefaultErrCode),

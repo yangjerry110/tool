@@ -1,11 +1,11 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-19 15:41:54
+ * @Date: 2023-12-19 17:01:52
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:54:07
- * @Description: newApp
+ * @LastEditTime: 2023-12-19 17:02:48
+ * @Description: vo protobuf folder
  */
-package proto
+package vo
 
 import (
 	"fmt"
@@ -19,13 +19,12 @@ type NewApp struct{}
 /**
  * @description: New
  * @author: Jerry.Yang
- * @date: 2023-12-19 15:42:14
+ * @date: 2023-12-19 17:02:50
  * @return {*}
  */
 func (n *NewApp) New() error {
-
-	// protoPath
-	path := fmt.Sprintf("%s/%s", config.ProjectPathConf.Path, "protobuf")
+	// voPath
+	path := fmt.Sprintf("%s/%s/%s", config.ProjectPathConf.Path, "vo", "protobuf")
 
 	// Action MkDir
 	err := os.MkdirAll(path, 0777)

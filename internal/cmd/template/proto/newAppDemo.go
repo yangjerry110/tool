@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:43:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:08:50
+ * @LastEditTime: 2023-12-19 16:55:30
  * @Description:
  */
 package proto
@@ -23,7 +23,7 @@ type NewAppDemoProto struct{}
  * @return {*}
  */
 func (n *NewAppDemoProto) New() error {
-	filePath := fmt.Sprintf("%s/proto", config.ProjectPathConf.Path)
+	filePath := fmt.Sprintf("%s/protobuf", config.ProjectPathConf.Path)
 	return template.SaveTemplate(filePath, "demo.proto", n.getTemplate(), nil, "proto")
 }
 
@@ -34,8 +34,7 @@ func (n *NewAppDemoProto) New() error {
  * @return {*}
  */
 func (n *NewAppDemoProto) getTemplate() string {
-	return `
-	// demo.proto
+	return `// demo.proto
 syntax = "proto3";
 package demo;
 option go_package = "git.qutoutiao.net/ee/tool-api/vo/protobuf";

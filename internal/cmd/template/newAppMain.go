@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 15:22:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 15:23:20
+ * @LastEditTime: 2023-12-19 21:10:19
  * @Description: newApp Main
  */
 package template
@@ -18,7 +18,19 @@ type NewAppMain struct{}
  * @return {*}
  */
 func (n *NewAppMain) New() error {
-	return SaveTemplate(config.ProjectPathConf.Path, "main.go", n.getTemplate(), nil)
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time       string
+		ImportPath string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.ImportPath = config.ProjectImportPathConf.ImportPath
+	data.Time = GetFormatNowTime()
+
+	return SaveTemplate(config.ProjectPathConf.Path, "main.go", n.getTemplate(), data)
 }
 
 /**
@@ -29,9 +41,27 @@ func (n *NewAppMain) New() error {
  */
 func (n *NewAppMain) getTemplate() string {
 	return `
-	package main
-	
-	func main() {
+/*
+ * @Author: Jerry.Yang
+ * @Date: {{.Time}}
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: {{.Time}}
+ * @Description: main
+ */
+package main
 
-	}`
+import "{{.ImportPath}}/router"
+
+/**
+ * @description: main
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
+ */
+func main() {
+
+	// Run Router
+	router.RunRouter()
+}
+`
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:51:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:53:38
+ * @LastEditTime: 2023-12-19 21:49:22
  * @Description: newApp base router
  */
 package router
@@ -23,8 +23,20 @@ type NewAppBaseRouter struct{}
  * @return {*}
  */
 func (n *NewAppBaseRouter) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time       string
+		ImportPath string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+	data.ImportPath = config.ProjectImportPathConf.ImportPath
+
 	filePath := fmt.Sprintf("%s/router", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), nil)
+	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), data)
 }
 
 /**
@@ -34,5 +46,37 @@ func (n *NewAppBaseRouter) New() error {
  * @return {*}
  */
 func (n *NewAppBaseRouter) getTemplate() string {
-	return `package router`
+	return `/*
+	* @Author: Jerry.Yang
+	* @Date: {{.Time}}
+	* @LastEditors: Jerry.Yang
+	* @LastEditTime: {{.Time}}
+	* @Description: base
+	*/
+   package router
+   
+   import (
+	   "{{.ImportPath}}/internal/config"
+	   "github.com/yangjerry110/tool/router"
+   )
+   
+   /**
+	* @description: RunRouter
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+   func RunRouter() {
+   
+	   // Register Demo
+	   if err := router.CreateRouter().Register("demo", &Demo{}); err != nil {
+		   panic(err)
+	   }
+   
+	   // Run router
+	   if err := router.CreateRouter().Run(&config.Router{}); err != nil {
+		   panic(err)
+	   }
+   }
+   `
 }

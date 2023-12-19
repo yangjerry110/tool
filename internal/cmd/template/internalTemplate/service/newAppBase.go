@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:16:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:57:34
+ * @LastEditTime: 2023-12-19 17:40:23
  * @Description: newApp service
  */
 package service
@@ -23,8 +23,18 @@ type NewAppBaseService struct{}
  * @return {*}
  */
 func (n *NewAppBaseService) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+
 	filePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), nil)
+	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), data)
 }
 
 /**
@@ -34,5 +44,27 @@ func (n *NewAppBaseService) New() error {
  * @return {*}
  */
 func (n *NewAppBaseService) getTemplate() string {
-	return `package service`
+	return `/*
+	* @Author: Jerry.Yang
+	* @Date: {{.Time}}
+	* @LastEditors: Jerry.Yang
+	* @LastEditTime: {{.Time}}
+	* @Description: base
+	*/
+   package service
+   
+   /**
+	* @description: CreateDemoService
+	* @param {...DemoService} DemoServices
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+   func CreateDemoService(DemoServices ...DemoService) DemoService {
+	   if len(DemoServices) == 0 {
+		   return &Demo{}
+	   }
+	   return DemoServices[0]
+   }
+   `
 }

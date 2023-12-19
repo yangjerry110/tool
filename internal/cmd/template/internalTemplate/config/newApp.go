@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:14:42
+ * @LastEditTime: 2023-12-19 16:46:17
  * @Description: newApp
  */
 package config
@@ -110,17 +110,17 @@ func (n *NewAppRouter) New() error {
  */
 func (n *NewAppDatabase) getTemplate() string {
 	return `
-	/*
-* @Author: Jerry.Yang
-* @Date: {{.Time}}
+/*
+ * @Author: Jerry.Yang
+ * @Date: {{.Time}}
  * @LastEditors: Jerry.Yang
  * @LastEditTime: {{.Time}}
-* @Description: database config
-*/
+ * @Description: database config
+ */
 package config
 
 import (
-	"github.com/yangjerry110/tool/pkg/db/gormdb"
+	"github.com/yangjerry110/tool/db"
 )
 
 type DataBase struct{}
@@ -137,8 +137,9 @@ func (d *DataBase) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return gormdb.CreateDbConf()
+	return db.CreateGormDbConf()
 }
+
 `
 }
 
@@ -160,18 +161,16 @@ func (n *NewAppLogger) getTemplate() string {
  */
 func (n *NewAppRouter) getTemplate() string {
 	return `
-	/*
-* @Author: Jerry.Yang
-* @Date: {{.Time}}
+/*
+ * @Author: Jerry.Yang
+ * @Date: {{.Time}}
  * @LastEditors: Jerry.Yang
  * @LastEditTime: {{.Time}}
-* @Description: database config
-*/
+ * @Description: database config
+ */
 package config
 
-import (
-	"github.com/yangjerry110/tool/pkg/router/gin"
-)
+import "github.com/yangjerry110/tool/router"
 
 type Router struct{}
 
@@ -187,7 +186,7 @@ func (r *Router) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return gin.CreateRouterConf()
+	return router.CreateGinConf()
 }
 `
 }
