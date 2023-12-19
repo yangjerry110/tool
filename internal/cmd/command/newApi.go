@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:59:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 10:42:27
+ * @LastEditTime: 2023-12-19 15:26:22
  * @Description: newApi Command
  */
 package command
@@ -35,6 +35,16 @@ func (n *NewApi) New() error {
 	// if nil return err
 	if n.CliContext == nil {
 		return errors.ErrCmdCommandNoCliContext
+	}
+
+	// set projectPath
+	if err := config.CreateConfig(&config.ProjectPath{}).SetConfig(); err != nil {
+		panic(err)
+	}
+
+	// set projectImportPath
+	if err := config.CreateConfig(&config.ProjectImportPath{}).SetConfig(); err != nil {
+		panic(err)
 	}
 
 	// Get protobufName

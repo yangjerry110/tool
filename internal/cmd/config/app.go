@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2023-12-18 17:05:46
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2023-12-19 15:29:56
+ * @Description: app conf
+ */
 package config
 
 import (
@@ -28,6 +35,12 @@ var AppConf = &App{}
  * @return {*}
  */
 func (a *App) SetConfig() error {
+
+	// judge cliContext
+	// if nil return err
+	if a.CliContext == nil {
+		return errors.ErrCmdCommandNoCliContext
+	}
 
 	// get first args
 	// this first arg is appName

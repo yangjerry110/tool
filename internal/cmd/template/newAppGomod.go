@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:59:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 15:03:15
+ * @LastEditTime: 2023-12-19 16:09:48
  * @Description: newApp go mod
  */
 package template
@@ -31,7 +31,7 @@ func (n *NewAppGoMod) New() error {
 	data.ImportPath = config.ProjectImportPathConf.ImportPath
 
 	// Return
-	return SaveTemplate(config.ProjectPathConf.Path, "go.mod", n.getTemplate(), data)
+	return SaveTemplate(config.ProjectPathConf.Path, "go.mod", n.getTemplate(), data, "mod")
 }
 
 /**
@@ -42,5 +42,6 @@ func (n *NewAppGoMod) New() error {
  */
 func (n *NewAppGoMod) getTemplate() string {
 	return `module {{.ImportPath}}
-	go 1.20`
+
+go 1.20`
 }

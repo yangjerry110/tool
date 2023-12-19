@@ -2,26 +2,35 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 15:12:29
+ * @LastEditTime: 2023-12-19 16:11:41
  * @Description: newApp
  */
 package command
 
 import (
-	"os/exec"
-
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/golib/cli"
 	"github.com/yangjerry110/tool/internal/cmd/config"
+	"github.com/yangjerry110/tool/internal/cmd/folder"
+	internalfolder "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder"
+	internalFolderConfig "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/config"
+	internalFolderYamlConfig "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/config/yamlConfig"
+	internalFolderDao "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/dao"
+	internalFolderErrors "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/errors"
+	internalFolderModel "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/model"
+	internalFolderService "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/service"
+	folderProto "github.com/yangjerry110/tool/internal/cmd/folder/proto"
+	floderRouter "github.com/yangjerry110/tool/internal/cmd/folder/router"
 	"github.com/yangjerry110/tool/internal/cmd/template"
 	internalTemplateConfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config"
 	yamlconfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config/yamlConfig"
 	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/dao"
-	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/errors"
+	internalTemplateErrors "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/errors"
 	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/model"
 	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/service"
 	"github.com/yangjerry110/tool/internal/cmd/template/proto"
 	"github.com/yangjerry110/tool/internal/cmd/template/router"
+	"github.com/yangjerry110/tool/internal/errors"
 )
 
 type NewApp struct {
@@ -36,8 +45,14 @@ type NewApp struct {
  */
 func (n *NewApp) New() error {
 
+	// judge cliContext
+	// if nil return err
+	if n.CliContext == nil {
+		return errors.ErrCmdCommandNoCliContext
+	}
+
 	// Set App conf
-	if err := config.CreateConfig(&config.App{}).SetConfig(); err != nil {
+	if err := config.CreateConfig(&config.App{CliContext: n.CliContext}).SetConfig(); err != nil {
 		return err
 	}
 
@@ -49,6 +64,91 @@ func (n *NewApp) New() error {
 
 	// Set ImportPath
 	config.ProjectImportPathConf.ImportPath = importPath
+
+	// newFolder
+	if err := n.newFloder(); err != nil {
+		return err
+	}
+
+	// newTemplate
+	if err := n.newTemplate(); err != nil {
+		return err
+	}
+
+	// // Action go mod tidy
+	// if err := exec.Command("go", "mod", "tidy").Run(); err != nil {
+	// 	return err
+	// }
+	return nil
+}
+
+/**
+ * @description: newFloder
+ * @author: Jerry.Yang
+ * @date: 2023-12-19 16:03:54
+ * @return {*}
+ */
+func (n *NewApp) newFloder() error {
+
+	// NewAppFloder
+	if err := folder.CreateFlod(&folder.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppRouter
+	if err := folder.CreateFlod(&floderRouter.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppProto
+	if err := folder.CreateFlod(&folderProto.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppInternal
+	if err := folder.CreateFlod(&internalfolder.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppConfig
+	if err := folder.CreateFlod(&internalFolderConfig.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppConfig YamlConfig
+	if err := folder.CreateFlod(&internalFolderYamlConfig.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppDao
+	if err := folder.CreateFlod(&internalFolderDao.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppErrors
+	if err := folder.CreateFlod(&internalFolderErrors.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppModel
+	if err := folder.CreateFlod(&internalFolderModel.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppService
+	if err := folder.CreateFlod(&internalFolderService.NewApp{}).New(); err != nil {
+		return err
+	}
+	return nil
+}
+
+/**
+ * @description: newTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-12-19 15:50:00
+ * @return {*}
+ */
+func (n *NewApp) newTemplate() error {
 
 	// NewAppDatabaseYamlConfig
 	if err := template.CreateTemplate(&yamlconfig.NewAppDatabase{}).New(); err != nil {
@@ -86,7 +186,7 @@ func (n *NewApp) New() error {
 	}
 
 	// NewAppErrors
-	if err := template.CreateTemplate(&errors.NewAppError{}).New(); err != nil {
+	if err := template.CreateTemplate(&internalTemplateErrors.NewAppError{}).New(); err != nil {
 		return err
 	}
 
@@ -130,8 +230,8 @@ func (n *NewApp) New() error {
 		return err
 	}
 
-	// Action go mod tidy
-	if err := exec.Command("go", "mod", "tidy").Run(); err != nil {
+	// NewAppMain
+	if err := template.CreateTemplate(&template.NewAppMain{}).New(); err != nil {
 		return err
 	}
 	return nil
