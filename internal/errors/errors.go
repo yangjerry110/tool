@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:17:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-13 17:40:32
+ * @LastEditTime: 2023-12-18 17:07:33
  * @Description: cache errors
  */
 package errors
@@ -48,6 +48,7 @@ var (
 	ErrCmdServiceNoImportProjectPath = errors.New("service err : no projectImportPath")
 	// cmd confing
 	ErrCmdConfNoProtobufName = errors.New("conf err : no protobufName")
+	ErrCmdConfNoAppName      = errors.New("conf err :  no appName")
 	// service
 	// protocGenToolService
 	ErrProtocGenToolServiceNoPlugin       = errors.New("protocGenTool service Err : no plugin")

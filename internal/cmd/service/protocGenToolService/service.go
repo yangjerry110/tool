@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-18 16:47:39
+ * @LastEditTime: 2023-12-19 14:24:37
  * @Description:
  */
 package protocgentoolservice
@@ -13,7 +13,7 @@ import (
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	newfilesetservice "github.com/yangjerry110/tool/internal/cmd/service/newFileSetService"
 	"github.com/yangjerry110/tool/internal/cmd/template"
-	"github.com/yangjerry110/tool/internal/cmd/template/service"
+	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/service"
 )
 
 type Service struct{}
@@ -103,7 +103,7 @@ func (s *Service) newService() error {
 func (s *Service) appendService() error {
 
 	// Define
-	filePath := config.ProjectPathConf.Path
+	filePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
 	fileName := fmt.Sprintf("%sService.go", config.ProtobufFileConf.FileName)
 	newFileSetService := &newfilesetservice.Service{}
 

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 19:11:06
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-18 16:49:48
+ * @LastEditTime: 2023-12-19 14:25:05
  * @Description: service
  */
 package newfilesetservice
@@ -35,7 +35,7 @@ type Service struct {
 func (s *Service) NewFileSet(filePath string, fileName string) error {
 
 	// define filePath + fileName
-	parseFilePath := fmt.Sprintf("%s%s", filePath, fileName)
+	parseFilePath := fmt.Sprintf("%s/%s", filePath, fileName)
 
 	// Read the source code from the file
 	code, err := ioutil.ReadFile(parseFilePath)

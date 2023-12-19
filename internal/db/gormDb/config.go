@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-11 11:06:17
+ * @LastEditTime: 2023-12-19 10:54:12
  * @Description: gorm config
  */
 package gormdb
@@ -33,7 +33,7 @@ func (g *GormDbConfig) SetConfig() error {
 	 * @step
 	 * @返回结果
 	 **/
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "redis.yaml", FileType: "yaml", ConfData: GormDbConfs}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "database.yaml", FileType: "yaml", ConfData: GormDbConfs}).SetConfig(); err != nil {
 		return err
 	}
 	return nil
