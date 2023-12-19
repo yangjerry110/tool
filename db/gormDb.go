@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 11:43:44
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:00:05
+ * @LastEditTime: 2023-12-19 16:38:48
  * @Description: gormDb
  */
 package db
@@ -22,10 +22,7 @@ type GormDb struct{}
  * @return {*}
  */
 func CreateGormDbConf() error {
-	if err := conf.CreateConf(&gormdb.GormDbConfig{}).SetConfig(); err != nil {
-		return err
-	}
-	return nil
+	return conf.CreateConf(&gormdb.GormDbConfig{}).SetConfig()
 }
 
 /**

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 11:39:44
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 11:42:53
+ * @LastEditTime: 2023-12-19 16:38:38
  * @Description:
  */
 package cache
@@ -20,10 +20,7 @@ import (
  * @return {*}
  */
 func CreateRedisConf() error {
-	if err := conf.CreateConf(&cacheredis.RedisConf{}).SetConfig(); err != nil {
-		return err
-	}
-	return nil
+	return conf.CreateConf(&cacheredis.RedisConf{}).SetConfig()
 }
 
 /**

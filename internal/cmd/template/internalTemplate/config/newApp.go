@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:07:57
+ * @LastEditTime: 2023-12-19 16:14:42
  * @Description: newApp
  */
 package config
@@ -149,7 +149,7 @@ func (d *DataBase) SetConfig() error {
  * @return {*}
  */
 func (n *NewAppLogger) getTemplate() string {
-	return ""
+	return "package config"
 }
 
 /**
