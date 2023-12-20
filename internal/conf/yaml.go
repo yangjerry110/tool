@@ -2,14 +2,17 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 16:24:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-08 17:35:54
+ * @LastEditTime: 2023-12-20 14:50:42
  * @Description: yaml conf
  */
 package conf
 
 import (
-	"github.com/spf13/viper"
+	"fmt"
+	"io/ioutil"
+
 	"github.com/yangjerry110/tool/internal/errors"
+	"gopkg.in/yaml.v3"
 )
 
 type Yaml struct {
@@ -46,20 +49,23 @@ func (y *Yaml) SetConfig() error {
 	// (1) Use Signal to update, but Signal, only user connection and user behavior, is not sure whether it is feasible, thinking
 	// (2) Use the last update time of the file, in this case, you need to load a conf file to add a goroutine, is the cost a little too big, thinking
 	// (3) Using viper, hhhhh, look at the implementation of viper, the number of coroutines and so on are controlled, and the writing is OK
-	viper.AddConfigPath(y.FilePath)
-	viper.SetConfigName(y.FileName)
-	viper.SetConfigType(y.FileType)
+	// Using viper，viper is not ok;
+	// Use fastNotify monitor file
 
-	// judge is have err
-	// return err
-	if err := viper.ReadInConfig(); err != nil {
+	// Read file content
+	fileContent, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", y.FilePath, y.FileName))
+	if err != nil {
 		return err
 	}
 
-	// watch config
-	viper.WatchConfig()
+	// Yaml Unmarshal
+	if err := yaml.Unmarshal(fileContent, y.ConfData); err != nil {
+		return err
+	}
 
-	// set decode config
-	viper.Unmarshal(&y.ConfData)
+	// Watch file
+	if err := CreateConf(&Watch{WatchFile: &WatchFile{FilePath: y.FilePath, FileName: y.FileName, FileType: y.FileType, ConfData: y.ConfData}}).SetConfig(); err != nil {
+		return err
+	}
 	return nil
 }

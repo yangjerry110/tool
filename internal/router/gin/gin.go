@@ -2,12 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 15:46:20
+ * @LastEditTime: 2023-12-20 11:32:49
  * @Description: gin router
  */
 package gin
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
@@ -56,8 +58,10 @@ func GetGinDefaultRouter() *gin.Engine {
  */
 func (g *Gin) Register(routerName string, registerRouter router.Register) error {
 
-	// Set router
-	router.RegisterRouters.Store(routerName, registerRouter)
+	// register router
+	if err := registerRouter.Register(); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -78,14 +82,8 @@ func (g *Gin) Run(runConf conf.Conf) error {
 	// Register Swagger
 	g.Register("swagger", &SwaggerGinRouter{})
 
-	// Circular ginRouters, executing registered ginrouters
-	router.RegisterRouters.Range(func(routerName, registerRouter interface{}) bool {
-		ginRouter := registerRouter.(*router.Register)
-		if err := router.Register(*ginRouter).Register(); err != nil {
-			panic(err)
-		}
-		return true
-	})
+	fmt.Printf("routerConf : %+v", RouteConf)
+	fmt.Print("\r\n")
 
 	// Run
 	return defaultGinRouter.Run(RouteConf.Addr)

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:31:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 11:01:24
+ * @LastEditTime: 2023-12-20 11:09:50
  * @Description:
  */
 package conf
@@ -66,6 +66,12 @@ func (p *Path) SetConfig() error {
  * @return {*}
  */
 func (c *ConfigPath) SetConfig() error {
+
+	// If ConfigPath != ""
+	// Return
+	if PathConfig.ConfigPath != "" {
+		return nil
+	}
 
 	// Judge args
 	// If len args != 0;

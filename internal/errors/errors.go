@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:17:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-18 17:07:33
+ * @LastEditTime: 2023-12-20 14:49:37
  * @Description: cache errors
  */
 package errors
@@ -26,6 +26,9 @@ var (
 	ErrYamlConfIsNoFilePath = errors.New("err : yaml_conf is no filePath")
 	ErrYamlConfIsNoFileName = errors.New("err : yaml_conf is no fileName")
 	ErrYamlConfIsNoConfData = errors.New("err : yaml_conf is no confData")
+	// watch conf
+	ErrWatchConfNoConfFile  = errors.New("err : watch_conf is no confFile")
+	ErrWatchConfNoWatchFile = errors.New("err : watch_conf is no watchFile")
 
 	// gormDb conf
 	ErrGormDbConfIsNotExist = errors.New("err : gormDb_conf is not exist")

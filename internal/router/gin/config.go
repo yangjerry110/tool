@@ -2,7 +2,7 @@
 * @Author: Jerry.Yang
 * @Date: 2023-12-13 18:39:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 11:04:23
+ * @LastEditTime: 2023-12-20 16:45:51
 * @Description: gin conf
 */
 package gin
@@ -42,7 +42,7 @@ func (c *Config) SetConfig() error {
 	 * @step
 	 * @返回结果
 	 **/
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "router.yaml", FileType: "yaml", ConfData: RouteConf}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "router.yaml", FileType: "yaml", ConfData: &RouteConf}).SetConfig(); err != nil {
 		return err
 	}
 	return nil
