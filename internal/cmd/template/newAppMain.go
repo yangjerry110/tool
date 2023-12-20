@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 15:22:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 21:10:19
+ * @LastEditTime: 2023-12-20 17:01:08
  * @Description: newApp Main
  */
 package template
@@ -50,7 +50,10 @@ func (n *NewAppMain) getTemplate() string {
  */
 package main
 
-import "{{.ImportPath}}/router"
+import (
+	"{{.ImportPath}}/router"
+	_ "{{.ImportPath}}/docs"
+)
 
 /**
  * @description: main

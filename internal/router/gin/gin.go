@@ -2,14 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 11:32:49
+ * @LastEditTime: 2023-12-20 17:08:21
  * @Description: gin router
  */
 package gin
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
@@ -82,8 +80,8 @@ func (g *Gin) Run(runConf conf.Conf) error {
 	// Register Swagger
 	g.Register("swagger", &SwaggerGinRouter{})
 
-	fmt.Printf("routerConf : %+v", RouteConf)
-	fmt.Print("\r\n")
+	// Register ping
+	g.Register("ping", &Ping{})
 
 	// Run
 	return defaultGinRouter.Run(RouteConf.Addr)
