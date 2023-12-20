@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 11:17:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 15:44:59
+ * @LastEditTime: 2023-12-20 16:54:00
  * @Description: swagger
  */
 package gin
@@ -26,7 +26,7 @@ func (s *SwaggerGinRouter) Register() error {
 
 	// Get Default Router
 	// Define apidoc router
-	GetGinDefaultRouter().GET("/api/*any", s.apidoc)
+	GetGinDefaultRouter().GET("/api/swagger/*any", s.apidoc)
 	return nil
 }
 
