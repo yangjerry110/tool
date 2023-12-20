@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:31:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 10:40:45
+ * @LastEditTime: 2023-12-20 11:01:24
  * @Description:
  */
 package conf
@@ -75,7 +75,7 @@ func (c *ConfigPath) SetConfig() error {
 
 	// Judge len args
 	// If != 0
-	if len(args) >= 1 {
+	if len(args) >= 2 {
 
 		// Secend arg
 		// For first is other

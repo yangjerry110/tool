@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 17:36:56
+ * @LastEditTime: 2023-12-20 10:44:47
  * @Description: newApp
  */
 package command
@@ -78,8 +78,8 @@ func (n *NewApp) New() error {
 		return err
 	}
 
-	// // Action go mod tidy
-	// if err := exec.Command("go", "mod", "tidy").Run(); err != nil {
+	// // Swag Init
+	// if err := exec.Command("swag", "init").Run(); err != nil {
 	// 	return err
 	// }
 	return nil
