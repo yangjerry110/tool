@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:59:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 15:26:22
+ * @LastEditTime: 2023-12-20 17:30:16
  * @Description: newApi Command
  */
 package command
@@ -76,7 +76,10 @@ func (n *NewApi) New() error {
 
 	// Exec Command
 	// Exec swag init
-	if err := exec.Command("swag", "init").Run(); err != nil {
+	swagInitCmd := exec.Command("swag", "init")
+	swagInitCmd.Stdout = os.Stdout
+	swagInitCmd.Stderr = os.Stderr
+	if err := swagInitCmd.Run(); err != nil {
 		return err
 	}
 	return nil

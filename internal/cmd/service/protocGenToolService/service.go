@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:24:37
+ * @LastEditTime: 2023-12-20 17:17:11
  * @Description:
  */
 package protocgentoolservice
@@ -109,11 +109,15 @@ func (s *Service) appendService() error {
 
 	// First, re-render the interface portion of the service based on the protocHttpRules we've obtained
 	if err := newfilesetservice.CreateNewFileSetService(newFileSetService).NewFileSet(filePath, fileName); err != nil {
+		fmt.Printf("newFileSet Err : %+v", err)
+		fmt.Print("\r\n")
 		return err
 	}
 
 	// Save the contents of the rendered file
 	if err := template.SaveTemplate(filePath, fileName, newFileSetService.FileContent, nil); err != nil {
+		fmt.Printf("SaveTemplate Err : %+v", err)
+		fmt.Print("\r\n")
 		return err
 	}
 

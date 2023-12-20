@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 17:03:45
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 21:30:55
+ * @LastEditTime: 2023-12-20 17:18:35
  * @Description:
  */
 package protobuf
@@ -24,7 +24,7 @@ type NewAppDemoProto struct{}
  */
 func (n *NewAppDemoProto) New() error {
 	filePath := fmt.Sprintf("%s/vo/protobuf", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "demo.proto.go", n.getTemplate(), nil, "proto.go")
+	return template.SaveTemplate(filePath, "demo.pb.go", n.getTemplate(), nil, "pb.go")
 }
 
 /**
