@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:46:17
+ * @LastEditTime: 2023-12-21 11:00:50
  * @Description: newApp
  */
 package config
@@ -37,6 +37,14 @@ type NewAppLogger struct{}
  * @return {*}
  */
 type NewAppRouter struct{}
+
+/**
+ * @description: NewAppRedis
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 10:59:34
+ * @return {*}
+ */
+type NewAppRedis struct{}
 
 /**
  * @description: New
@@ -100,6 +108,28 @@ func (n *NewAppRouter) New() error {
 	// return
 	filePath := fmt.Sprintf("%s/%s", config.ProjectPathConf.Path, "internal/config")
 	return template.SaveTemplate(filePath, "router.go", n.getTemplate(), data)
+}
+
+/**
+ * @description: New
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 11:00:11
+ * @return {*}
+ */
+func (n *NewAppRedis) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+
+	// return
+	filePath := fmt.Sprintf("%s/%s", config.ProjectPathConf.Path, "internal/config")
+	return template.SaveTemplate(filePath, "redis.go", n.getTemplate(), data)
 }
 
 /**
@@ -189,4 +219,37 @@ func (r *Router) SetConfig() error {
 	return router.CreateGinConf()
 }
 `
+}
+
+/**
+ * @description: getTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 11:01:13
+ * @return {*}
+ */
+func (n *NewAppRedis) getTemplate() string {
+	return `
+/*
+ * @Author: Jerry.Yang
+ * @Date: {{.Time}}
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: {{.Time}}
+ * @Description: database config
+ */
+	package config
+
+	import "github.com/yangjerry110/tool/cache"
+	
+	type Redis struct{}
+	
+	/**
+	 * @description: SetConfig
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	 */
+	func (r *Redis) SetConfig() error {
+		return cache.CreateRedisConf()
+	}
+	`
 }

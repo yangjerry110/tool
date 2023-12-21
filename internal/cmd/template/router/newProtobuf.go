@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 16:02:45
+ * @LastEditTime: 2023-12-20 18:16:42
  * @Description: new protobuf
  */
 package router
@@ -76,13 +76,14 @@ func (n *NewProtobuf) getTemplate() string {
    import (
 	   "net/http"
 	   "github.com/gin-gonic/gin"
-	   "{{.ProjectImportPath}}/logger"
+	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
+	   "github.com/yangjerry110/tool/router"
 	   "{{.ProjectImportPath}}/internal/service"
 	   "{{.ProjectImportPath}}/vo/protobuf"
    )
    
    type {{.RouterNameUp}}Router interface {
-	   CreateRouter()
+	   Register() error
 	   {{- range .Routers}}
 	   {{.RouterFuncUp}}(ctx *gin.Context)
 	   {{- end}}
@@ -91,12 +92,12 @@ func (n *NewProtobuf) getTemplate() string {
    type {{.RouterNameUp}} struct{}
    
    /**
-	* @description: CreateRouter
+	* @description: Register
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func ({{.FirstRouterName}} *{{.RouterNameUp}}) CreateRouter() {
+   func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register() error {
    
 	   /**
 		* @step
@@ -112,6 +113,7 @@ func (n *NewProtobuf) getTemplate() string {
 		**/
 	   router.{{.RouterMethod}}("{{.RouterPath}}", {{.FirstRouterName}}.{{.RouterFuncUp}})
 	   {{- end}}
+	   return nil
   }
 
   {{- range .Routers}}
@@ -129,7 +131,7 @@ func (n *NewProtobuf) getTemplate() string {
 	  * @should bind
 	  **/
 	  if err := ctx.ShouldBind(inputVo); err != nil {
-		  logger.Logger().Errorf("{{.RouterFunc}} shouldBind Err : %+v", err)
+		  qlog.Errorf("{{.RouterFunc}} shouldBind Err : %+v", err)
 		  return 
 	  } 
 	  
@@ -139,7 +141,7 @@ func (n *NewProtobuf) getTemplate() string {
 	  **/
 	  outputVo, err := service.Create{{.RouterNameUp}}Service().{{.RouterFunc}}(ctx, inputVo)
 	  if err != nil {
-		  logger.Logger().Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
+		  qlog.Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
 		  ctx.JSON(http.StatusOK,&protobuf.{{.OutputRespName}}{RetCode:-1,RetMsg:err.Error()})
 		  return
 	  }

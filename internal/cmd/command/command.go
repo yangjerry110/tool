@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:35:36
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 15:14:14
+ * @LastEditTime: 2023-12-21 15:49:00
  * @Description: command
  */
 package command
@@ -40,6 +40,18 @@ func (c *Command) New() error {
 	// set newApi command
 	// set newApi command to cliApp.Commands
 	if err := c.setNewApiCommand(); err != nil {
+		return err
+	}
+
+	// Set newModel command
+	// Set newModel command to cliApp.Commands
+	if err := c.setNewModelCommand(); err != nil {
+		return err
+	}
+
+	// Set newDao command
+	// Set newDao command to cliApp.Commands
+	if err := c.setNewDaoCommand(); err != nil {
 		return err
 	}
 	return nil
@@ -85,5 +97,48 @@ func (c *Command) setNewApiCommand() error {
 
 	// set cliApp commands
 	c.CliApp.Commands = append(c.CliApp.Commands, newApiCommand)
+	return nil
+}
+
+/**
+ * @description: setNewModelCommand
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 14:26:26
+ * @return {*}
+ */
+func (c *Command) setNewModelCommand() error {
+
+	// newModel command
+	newModelCommand := cli.Command{}
+	newModelCommand.Name = "newModel"
+	newModelCommand.Aliases = []string{"nmodel"}
+	newModelCommand.Usage = "new an model => new model"
+	newModelCommand.Action = func(ctx *cli.Context) error {
+		return CreateCommand(&NewModel{CliContext: ctx}).New()
+	}
+
+	// Set cliApp Commands
+	c.CliApp.Commands = append(c.CliApp.Commands, newModelCommand)
+	return nil
+}
+
+/**
+ * @description: setNewDaoCommand
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 15:48:15
+ * @return {*}
+ */
+func (c *Command) setNewDaoCommand() error {
+	// newDao command
+	newDaoCommand := cli.Command{}
+	newDaoCommand.Name = "newDao"
+	newDaoCommand.Aliases = []string{"ndao"}
+	newDaoCommand.Usage = "new an dao => new dao"
+	newDaoCommand.Action = func(ctx *cli.Context) error {
+		return CreateCommand(&NewDao{CliContext: ctx}).New()
+	}
+
+	// Set cliApp Commands
+	c.CliApp.Commands = append(c.CliApp.Commands, newDaoCommand)
 	return nil
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 19:11:06
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:15:26
+ * @LastEditTime: 2023-12-20 17:41:14
  * @Description: service
  */
 package newfilesetservice
@@ -117,7 +117,7 @@ func (s *Service) Visit(node ast.Node) (w ast.Visitor) {
 			contextParamNames = append(contextParamNames, &ast.Ident{Name: "ctx"})
 
 			// Set ContextType
-			contextParamType := &ast.SelectorExpr{X: ast.NewIdent("context"), Sel: ast.NewIdent("context")}
+			contextParamType := &ast.SelectorExpr{X: ast.NewIdent("context"), Sel: ast.NewIdent("Context")}
 
 			// Set ContextParam
 			contextParam := &ast.Field{Names: contextParamNames, Type: contextParamType}

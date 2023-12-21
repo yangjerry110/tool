@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-20 14:11:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 16:49:51
+ * @LastEditTime: 2023-12-21 14:46:26
  * @Description: watch
  */
 package conf
@@ -99,9 +99,6 @@ func (w *Watch) SetConfig() error {
  * @return {*}
  */
 func (w *Watch) watchFile() error {
-
-	fmt.Printf("watchFile start!!!!")
-	fmt.Print("\r\n")
 
 	// NewWatcher
 	watcher, err := fsnotify.NewWatcher()

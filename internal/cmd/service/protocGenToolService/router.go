@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:46:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-13 17:02:34
+ * @LastEditTime: 2023-12-20 18:22:20
  * @Description: router service
  */
 package protocgentoolservice
@@ -71,18 +71,18 @@ func (r *Router) Generate() error {
 		return err
 	}
 
-	// Judge is fistCreate
-	// Judge is append
-	// append func to base
-	if config.ProtocGenToolConf.IsFirstCreate && !config.ProtocGenToolConf.IsAppend {
-		appendBaseRouter := router.AppendBase{}
-		appendBaseRouter.RouterName = config.ProtobufFileConf.FileName
-		appendBaseRouter.RouterNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
-		appendBaseRouter.Time = template.GetFormatNowTime()
-		if err := template.CreateTemplate(&appendBaseRouter).New(); err != nil {
-			return err
-		}
-	}
+	// // Judge is fistCreate
+	// // Judge is append
+	// // append func to base
+	// if config.ProtocGenToolConf.IsFirstCreate && !config.ProtocGenToolConf.IsAppend {
+	// 	appendBaseRouter := router.AppendBase{}
+	// 	appendBaseRouter.RouterName = config.ProtobufFileConf.FileName
+	// 	appendBaseRouter.RouterNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+	// 	appendBaseRouter.Time = template.GetFormatNowTime()
+	// 	if err := template.CreateTemplate(&appendBaseRouter).New(); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 

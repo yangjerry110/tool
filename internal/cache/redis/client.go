@@ -2,13 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 10:48:51
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-08 11:29:40
+ * @LastEditTime: 2023-12-21 15:24:27
  * @Description: cache redis
  */
 package cacheredis
 
 import (
-	"context"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -26,14 +25,36 @@ type RedisClient struct{}
 var RedisClients = map[string]*redis.Client{}
 
 /**
+ * @description: CreateAllClient
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 15:24:53
+ * @return {*}
+ */
+func (r *RedisClient) CreateAllClient() error {
+
+	// If RedisClientConfs == 0
+	// Return
+	if len(RedisClientConfs) == 0 {
+		return nil
+	}
+
+	// For RedisClientConfs
+	for redisClientName := range RedisClientConfs {
+		if err := r.CreateClient(redisClientName); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+/**
  * @description: CreateClient
- * @param {context.Context} ctx
  * @param {string} clientName
  * @author: Jerry.Yang
  * @date: 2023-12-08 11:25:53
  * @return {*}
  */
-func (r *RedisClient) CreateClient(ctx context.Context, clientName string) error {
+func (r *RedisClient) CreateClient(clientName string) error {
 
 	// get conf by clientName
 	redisConf, isExistredisConf := RedisClientConfs[clientName]
@@ -67,13 +88,12 @@ func (r *RedisClient) CreateClient(ctx context.Context, clientName string) error
 
 /**
  * @description: GetClient
- * @param {context.Context} ctx
  * @param {string} clientName
  * @author: Jerry.Yang
  * @date: 2023-12-08 11:22:24
  * @return {*}
  */
-func (r *RedisClient) GetClient(ctx context.Context, clientName string) (*redis.Client, error) {
+func (r *RedisClient) GetClient(clientName string) (*redis.Client, error) {
 
 	// judge clientName is exist
 	existClient, isExistClient := RedisClients[clientName]

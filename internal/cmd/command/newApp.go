@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 10:44:47
+ * @LastEditTime: 2023-12-21 14:17:47
  * @Description: newApp
  */
 package command
@@ -13,17 +13,20 @@ import (
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/cmd/folder"
 	internalfolder "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder"
+	internalFolderCache "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/cache"
 	internalFolderConfig "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/config"
 	internalFolderYamlConfig "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/config/yamlConfig"
 	internalFolderDao "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/dao"
 	internalFolderErrors "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/errors"
 	internalFolderModel "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/model"
+	internalFolderQuery "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/query"
 	internalFolderService "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/service"
 	folderProto "github.com/yangjerry110/tool/internal/cmd/folder/proto"
 	floderRouter "github.com/yangjerry110/tool/internal/cmd/folder/router"
 	"github.com/yangjerry110/tool/internal/cmd/folder/vo"
 	folderVoProtobuf "github.com/yangjerry110/tool/internal/cmd/folder/vo/protobuf"
 	"github.com/yangjerry110/tool/internal/cmd/template"
+	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/cache"
 	internalTemplateConfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config"
 	yamlconfig "github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/config/yamlConfig"
 	"github.com/yangjerry110/tool/internal/cmd/template/internalTemplate/dao"
@@ -113,6 +116,11 @@ func (n *NewApp) newFloder() error {
 		return err
 	}
 
+	// NewAppCache
+	if err := folder.CreateFlod(&internalFolderCache.NewAppCache{}).New(); err != nil {
+		return err
+	}
+
 	// NewAppConfig
 	if err := folder.CreateFlod(&internalFolderConfig.NewApp{}).New(); err != nil {
 		return err
@@ -120,6 +128,11 @@ func (n *NewApp) newFloder() error {
 
 	// NewAppConfig YamlConfig
 	if err := folder.CreateFlod(&internalFolderYamlConfig.NewApp{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppQuery
+	if err := folder.CreateFlod(&internalFolderQuery.NewAppQuery{}).New(); err != nil {
 		return err
 	}
 
@@ -178,6 +191,11 @@ func (n *NewApp) newTemplate() error {
 		return err
 	}
 
+	// NewAppRedisYamlConfig
+	if err := template.CreateTemplate(&yamlconfig.NewAppRedis{}).New(); err != nil {
+		return err
+	}
+
 	// NewAppDatabaseConfig
 	if err := template.CreateTemplate(&internalTemplateConfig.NewAppDatabase{}).New(); err != nil {
 		return err
@@ -190,6 +208,16 @@ func (n *NewApp) newTemplate() error {
 
 	// NewAppRouterConfig
 	if err := template.CreateTemplate(&internalTemplateConfig.NewAppRouter{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppRedisConfig
+	if err := template.CreateTemplate(&internalTemplateConfig.NewAppRedis{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppCacheRedis
+	if err := template.CreateTemplate(&cache.NewAppCacheRedis{}).New(); err != nil {
 		return err
 	}
 

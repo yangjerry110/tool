@@ -2,15 +2,20 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 10:54:12
+ * @LastEditTime: 2023-12-21 15:10:25
  * @Description: gorm config
  */
 package gormdb
 
-import "github.com/yangjerry110/tool/internal/conf"
+import (
+	"github.com/yangjerry110/tool/internal/conf"
+	"gorm.io/gorm/logger"
+)
 
 type GormDbConfig struct {
-	Dsn string `yaml:"dsn"`
+	Dsn                    string          `yaml:"dsn"`
+	SkipDefaultTransaction bool            `yaml:"skip_default_transaction"`
+	LoggerLevel            logger.LogLevel `yaml:"logger_level"`
 }
 
 /**

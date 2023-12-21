@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:17:11
+ * @LastEditTime: 2023-12-20 18:25:34
  * @Description:
  */
 package protocgentoolservice
@@ -82,6 +82,15 @@ func (s *Service) newService() error {
 		templateNewProtobufService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
 		templateNewProtobufService.Time = template.GetFormatNowTime()
 		templateNewProtobufServices = append(templateNewProtobufServices, templateNewProtobufService)
+
+		// Append base
+		templateAppendBase := &service.AppendBase{}
+		templateAppendBase.ServiceName = protocHttpRule.FuncName
+		templateAppendBase.ServiceNameUp = template.FirstUpper(protocHttpRule.FuncName)
+		templateAppendBase.Time = template.GetFormatNowTime()
+		if err := template.CreateTemplate(templateAppendBase).New(); err != nil {
+			return err
+		}
 	}
 
 	// set templateNewProtoServices
