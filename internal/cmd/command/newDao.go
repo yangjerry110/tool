@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-21 14:58:22
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:47:24
+ * @LastEditTime: 2023-12-21 16:52:27
  * @Description: newDao
  */
 package command
@@ -49,6 +49,12 @@ func (n *NewDao) New() error {
 		return err
 	}
 
+	// Ask Model Name
+	modelName, err := n.askModelName()
+	if err != nil {
+		return err
+	}
+
 	// Set NewDao
 	templateNewDao := &dao.NewDao{}
 	templateNewDao.DaoName = config.DaoConf.DaoName
@@ -56,10 +62,22 @@ func (n *NewDao) New() error {
 	templateNewDao.DbName = dbName
 	templateNewDao.FirstDaoName = config.DaoConf.DaoName[:1]
 	templateNewDao.ProjectImportPath = config.ProjectImportPathConf.ImportPath
+	templateNewDao.ModelName = modelName
 	templateNewDao.Time = template.GetFormatNowTime()
 
 	// Action NewDao
 	if err := template.CreateTemplate(templateNewDao).New(); err != nil {
+		return err
+	}
+
+	// Append Base
+	templateNewDaoAppendBase := &dao.NewDaoAppendBase{}
+	templateNewDaoAppendBase.DaoName = config.DaoConf.DaoName
+	templateNewDaoAppendBase.DaoNameUp = template.FirstUpper(config.DaoConf.DaoName)
+	templateNewDaoAppendBase.Time = template.GetFormatNowTime()
+
+	// Action Append Base
+	if err := template.CreateTemplate(templateNewDaoAppendBase).New(); err != nil {
 		return err
 	}
 	return nil
@@ -97,4 +115,38 @@ func (n *NewDao) askDbName() (string, error) {
 		return "", err
 	}
 	return answer.DbName, nil
+}
+
+/**
+ * @description: askModelName
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 16:18:07
+ * @return {*}
+ */
+func (n *NewDao) askModelName() (string, error) {
+
+	// define question
+	questions := []*survey.Question{
+		{
+			Name: "modelName",
+			Prompt: &survey.Input{
+				Message: "please input modelName ? ",
+				Default: "",
+			},
+		},
+	}
+
+	// set answer
+	type Answer struct {
+		ModelName string `survey:"modelName"`
+	}
+
+	// action ask
+	// Set the answer data to Answer
+	answer := &Answer{}
+	err := survey.Ask(questions, answer)
+	if err != nil {
+		return "", err
+	}
+	return answer.ModelName, nil
 }

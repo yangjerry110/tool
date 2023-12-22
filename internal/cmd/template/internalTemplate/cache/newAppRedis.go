@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-21 11:12:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:27:06
+ * @LastEditTime: 2023-12-21 16:39:13
  * @Description:
  */
 package cache
@@ -45,5 +45,28 @@ func (n *NewAppCacheRedis) New() error {
  * @return {*}
  */
 func (n *NewAppCacheRedis) getTemplate() string {
-	return `package cache`
+	return `package cache
+
+	import (
+		"github.com/go-redis/redis/v8"
+		"github.com/yangjerry110/tool/cache"
+	)
+	
+	/**
+	 * @description: CreateRedisClient
+	 * @param {string} redisName
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	 */
+	func CreateRedisClient(redisName string) *redis.Client {
+	
+		// Get Client
+		client, err := cache.CreateRedisCache().GetClient(redisName)
+		if err != nil {
+			panic(err)
+		}
+		return client
+	}
+	`
 }

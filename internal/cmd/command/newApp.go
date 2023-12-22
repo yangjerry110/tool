@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 14:17:47
+ * @LastEditTime: 2023-12-21 16:01:57
  * @Description: newApp
  */
 package command
@@ -213,6 +213,11 @@ func (n *NewApp) newTemplate() error {
 
 	// NewAppRedisConfig
 	if err := template.CreateTemplate(&internalTemplateConfig.NewAppRedis{}).New(); err != nil {
+		return err
+	}
+
+	// NewAppConfig
+	if err := template.CreateTemplate(&internalTemplateConfig.NewAppConfig{}).New(); err != nil {
 		return err
 	}
 

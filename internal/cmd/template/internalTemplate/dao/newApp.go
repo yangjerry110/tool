@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:03:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:06:02
+ * @LastEditTime: 2023-12-21 16:10:26
  * @Description: newApp
  */
 package dao
@@ -23,8 +23,18 @@ type NewAppBaseDao struct{}
  * @return {*}
  */
 func (n *NewAppBaseDao) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+
 	filePath := fmt.Sprintf("%s/internal/dao", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), nil)
+	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), data)
 }
 
 /**
@@ -34,5 +44,34 @@ func (n *NewAppBaseDao) New() error {
  * @return {*}
  */
 func (n *NewAppBaseDao) getTemplate() string {
-	return `package dao`
+	return `/*
+	* @Author: Jerry.Yang
+	* @Date: {{.Time}}
+	* @LastEditors: Jerry.Yang
+	* @LastEditTime: {{.Time}}
+	* @Description: base
+	*/
+   package dao
+   
+   import (
+	   "github.com/yangjerry110/tool/db"
+	   "gorm.io/gorm"
+   )
+   
+   /**
+	* @description: CreateClient
+	* @param {string} dbName
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+   func CreateClient(dbName string) *gorm.DB {
+   
+	   dbClient, err := db.CreateGormDb().GetClient(dbName)
+	   if err != nil {
+		   panic(err)
+	   }
+	   return dbClient
+   }
+   `
 }

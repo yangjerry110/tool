@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 11:00:50
+ * @LastEditTime: 2023-12-21 16:00:50
  * @Description: newApp
  */
 package config
@@ -45,6 +45,14 @@ type NewAppRouter struct{}
  * @return {*}
  */
 type NewAppRedis struct{}
+
+/**
+ * @description: NewAppConfig
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 15:59:32
+ * @return {*}
+ */
+type NewAppConfig struct{}
 
 /**
  * @description: New
@@ -130,6 +138,28 @@ func (n *NewAppRedis) New() error {
 	// return
 	filePath := fmt.Sprintf("%s/%s", config.ProjectPathConf.Path, "internal/config")
 	return template.SaveTemplate(filePath, "redis.go", n.getTemplate(), data)
+}
+
+/**
+ * @description: New
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 16:00:53
+ * @return {*}
+ */
+func (n *NewAppConfig) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+
+	// return
+	filePath := fmt.Sprintf("%s/%s", config.ProjectPathConf.Path, "internal/config")
+	return template.SaveTemplate(filePath, "config.go", n.getTemplate(), data)
 }
 
 /**
@@ -252,4 +282,65 @@ func (n *NewAppRedis) getTemplate() string {
 		return cache.CreateRedisConf()
 	}
 	`
+}
+
+/**
+ * @description: getTemplate
+ * @author: Jerry.Yang
+ * @date: 2023-12-21 16:00:35
+ * @return {*}
+ */
+func (n *NewAppConfig) getTemplate() string {
+	return `/*
+	* @Author: Jerry.Yang
+	* @Date: {{.Time}}
+	* @LastEditors: Jerry.Yang
+	* @LastEditTime: {{.Time}}
+	* @Description: Config
+	*/
+   package config
+   
+   import (
+	   "github.com/yangjerry110/tool/cache"
+	   "github.com/yangjerry110/tool/conf"
+	   "github.com/yangjerry110/tool/db"
+   )
+   
+   type Config struct{}
+   
+   /**
+	* @description: SetConfig
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+   func (c *Config) SetConfig() error {
+   
+	   // Set Database
+	   if err := conf.CreateConf(&DataBase{}).SetConfig(); err != nil {
+		   return err
+	   }
+   
+	   // Set Redis
+	   if err := conf.CreateConf(&Redis{}).SetConfig(); err != nil {
+		   return err
+	   }
+   
+	   // Set router
+	   if err := conf.CreateConf(&Router{}).SetConfig(); err != nil {
+		   return err
+	   }
+   
+	   // Get All Db Clients
+	   if err := db.CreateGormDb().CreateAllClient(); err != nil {
+		   return err
+	   }
+   
+	   // Get All Redis Clients
+	   if err := cache.CreateRedisCache().CreateAllClient(); err != nil {
+		   return err
+	   }
+	   return nil
+   }
+   `
 }

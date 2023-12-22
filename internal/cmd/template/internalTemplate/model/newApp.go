@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:11:10
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 14:12:59
+ * @LastEditTime: 2023-12-21 16:21:50
  * @Description: newApp Model
  */
 package model
@@ -34,5 +34,9 @@ func (n *NewAppBaseModel) New() error {
  * @return {*}
  */
 func (n *NewAppBaseModel) getTemplate() string {
-	return `package model`
+	return `package model
+	
+	// Delete status
+	var Is_Deleted = 1
+	var No_Deleted = 0`
 }
