@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 16:00:50
+ * @LastEditTime: 2023-12-22 15:55:46
  * @Description: newApp
  */
 package config
@@ -246,7 +246,7 @@ func (r *Router) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return router.CreateGinConf()
+	return router.CreateGinConfigConf()
 }
 `
 }

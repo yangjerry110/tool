@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 16:37:28
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:40:01
+ * @LastEditTime: 2023-12-22 15:55:14
  * @Description: gin router
  */
 package router
@@ -21,6 +21,16 @@ import (
  */
 func CreateGinConf() error {
 	return conf.CreateConf(&gin.Gin{}).SetConfig()
+}
+
+/**
+ * @description: CreateGinConfigConf
+ * @author: Jerry.Yang
+ * @date: 2023-12-22 15:55:04
+ * @return {*}
+ */
+func CreateGinConfigConf() error {
+	return conf.CreateConf(&gin.Config{}).SetConfig()
 }
 
 /**

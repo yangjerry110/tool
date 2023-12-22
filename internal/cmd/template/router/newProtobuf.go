@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 18:16:42
+ * @LastEditTime: 2023-12-22 14:33:43
  * @Description: new protobuf
  */
 package router
@@ -103,7 +103,7 @@ func (n *NewProtobuf) getTemplate() string {
 		* @step
 		* @获取router
 		**/
-	   router := GetRouter()
+	   router := router.GetGinDefaultRouter()
 		{{- range .Routers}}
 		
 		/** 
