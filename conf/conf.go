@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 17:39:35
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:29:13
+ * @LastEditTime: 2023-12-22 16:33:51
  * @Description: conf
  */
 package conf
@@ -49,6 +49,6 @@ func CreateConfigPathConf() conf.Conf {
  * @date: 2023-12-22 10:54:45
  * @return {*}
  */
-func CreateYamlConf(fileName string, confData interface{}) error {
-	return conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: fileName, FileType: "yaml", ConfData: confData}).SetConfig()
+func CreateYamlConf(fileName string, confData interface{}) conf.Conf {
+	return conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: fileName, FileType: "yaml", ConfData: confData})
 }

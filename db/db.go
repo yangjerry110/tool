@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 14:48:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:21:25
+ * @LastEditTime: 2023-12-22 16:34:13
  * @Description: db
  */
 package db
@@ -19,8 +19,8 @@ import (
  * @date: 2023-12-19 11:44:51
  * @return {*}
  */
-func CreateGormDbConf() error {
-	return conf.CreateConf(&gormdb.GormDbConfig{}).SetConfig()
+func CreateGormDbConf() conf.Conf {
+	return conf.CreateConf(&gormdb.GormDbConfig{})
 }
 
 /**

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 15:55:46
+ * @LastEditTime: 2023-12-22 16:36:38
  * @Description: newApp
  */
 package config
@@ -197,7 +197,7 @@ func (d *DataBase) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return db.CreateGormDbConf()
+	return db.CreateGormDbConf().SetConfig()
 }
 
 `
@@ -246,7 +246,7 @@ func (r *Router) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return router.CreateGinConfigConf()
+	return router.CreateGinConfigConf().SetConfig()
 }
 `
 }
@@ -279,7 +279,7 @@ func (n *NewAppRedis) getTemplate() string {
 	 * @return {*}
 	 */
 	func (r *Redis) SetConfig() error {
-		return cache.CreateRedisConf()
+		return cache.CreateRedisConf().SetConfig()
 	}
 	`
 }

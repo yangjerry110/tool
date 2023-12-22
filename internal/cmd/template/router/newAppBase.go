@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:51:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 21:49:22
+ * @LastEditTime: 2023-12-22 16:36:17
  * @Description: newApp base router
  */
 package router
@@ -68,15 +68,15 @@ func (n *NewAppBaseRouter) getTemplate() string {
 	*/
    func RunRouter() {
    
-	   // Register Demo
-	   if err := router.CreateRouter().Register("demo", &Demo{}); err != nil {
-		   panic(err)
-	   }
-   
-	   // Run router
-	   if err := router.CreateRouter().Run(&config.Router{}); err != nil {
-		   panic(err)
-	   }
+		// Register Qiwei
+		if err := router.CreateGinRouter().Register("qiwei", &Qiwei{}); err != nil {
+			panic(err)
+		}
+
+		// Run router
+		if err := router.CreateGinRouter().Run(&config.Config{}); err != nil {
+			panic(err)
+		}
    }
    `
 }

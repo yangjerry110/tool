@@ -192,7 +192,7 @@ func (n *NewModel) actionGen(databaseConfName string) error {
 func (n *NewModel) getGormDb(databaseConfName string) (*gorm.DB, error) {
 
 	// CreateClient
-	if err := db.CreateDb(&toolgormdb.GormDbClient{Config: &gorm.Config{}}).CreateClient(databaseConfName); err != nil {
+	if err := db.CreateDb(&toolgormdb.GormDbClient{}).CreateClient(databaseConfName); err != nil {
 		return nil, err
 	}
 

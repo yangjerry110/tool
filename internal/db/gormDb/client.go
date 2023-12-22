@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:22:05
+ * @LastEditTime: 2023-12-22 16:53:13
  * @Description: gorm db client
  */
 package gormdb
@@ -11,11 +11,10 @@ import (
 	"github.com/yangjerry110/tool/internal/errors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-type GormDbClient struct {
-	Config *gorm.Config
-}
+type GormDbClient struct{}
 
 /**
  * @description: GormDbClients
@@ -64,9 +63,14 @@ func (g *GormDbClient) CreateClient(dbName string) error {
 		return errors.ErrGormDbConfIsNotExist
 	}
 
+	// Set dbConfig
+	config := &gorm.Config{}
+	config.SkipDefaultTransaction = gormDbConf.SkipDefaultTransaction
+	config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
+
 	// init client
 	// init conf
-	db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), g.Config)
+	db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
 	if err != nil {
 		return err
 	}
