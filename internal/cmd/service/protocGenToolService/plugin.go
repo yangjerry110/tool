@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 15:00:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 10:43:26
+ * @LastEditTime: 2023-12-22 16:21:04
  * @Description: plugin protoc_gen_tool
  */
 package protocgentoolservice
 
 import (
-	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/internal/cmd/config"
+	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
 	"google.golang.org/protobuf/compiler/protogen"
 )

@@ -2,7 +2,7 @@
 * @Author: Jerry.Yang
 * @Date: 2023-12-13 18:39:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 16:45:51
+ * @LastEditTime: 2023-12-22 16:17:03
 * @Description: gin conf
 */
 package gin

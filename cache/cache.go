@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-11-30 16:16:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-08 11:40:45
+ * @LastEditTime: 2023-12-22 16:22:16
  * @Description: cache
  */
 package cache
@@ -10,26 +10,25 @@ package cache
 import (
 	"github.com/yangjerry110/tool/internal/cache"
 	cacheredis "github.com/yangjerry110/tool/internal/cache/redis"
+	"github.com/yangjerry110/tool/internal/conf"
 )
 
 /**
- * @description: DefaultCache
+ * @description: CreateRedisConf
  * @author: Jerry.Yang
- * @date: 2023-12-08 11:39:40
+ * @date: 2023-12-19 11:41:29
  * @return {*}
  */
-var DefaultCache = &cacheredis.RedisClient{}
+func CreateRedisConf() error {
+	return conf.CreateConf(&cacheredis.RedisConf{}).SetConfig()
+}
 
 /**
- * @description: CreateCache
- * @param {...cache.Cache} caches
+ * @description: CreateRedisCache
  * @author: Jerry.Yang
- * @date: 2023-12-08 11:39:32
+ * @date: 2023-12-19 11:42:54
  * @return {*}
  */
-func CreateCache(caches ...cache.Cache) cache.Cache {
-	if len(caches) == 0 {
-		return DefaultCache
-	}
-	return caches[0]
+func CreateRedisCache() cache.Cache {
+	return cache.CreateCache(&cacheredis.RedisClient{})
 }

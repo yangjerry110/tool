@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 14:29:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-11 14:31:00
+ * @LastEditTime: 2023-12-22 16:24:53
  * @Description: perm
  */
 package perm
@@ -13,23 +13,11 @@ import (
 )
 
 /**
- * @description: default perm
+ * @description: CreateRsaPerm
  * @author: Jerry.Yang
- * @date: 2023-12-11 14:29:49
+ * @date: 2023-12-22 16:24:45
  * @return {*}
  */
-var DefaultPerm = &rsaperm.RsaPerm{}
-
-/**
- * @description: CreatePerm
- * @param {...perm.PermInterface} PermInterfaces
- * @author: Jerry.Yang
- * @date: 2023-12-11 14:30:34
- * @return {*}
- */
-func CreatePerm(PermInterfaces ...perm.PermInterface) perm.PermInterface {
-	if len(PermInterfaces) == 0 {
-		return &rsaperm.RsaPerm{}
-	}
-	return PermInterfaces[0]
+func CreateRsaPerm() perm.PermInterface {
+	return perm.CreatePerm(&rsaperm.RsaPerm{})
 }
