@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 14:36:41
+ * @LastEditTime: 2023-12-26 10:57:09
  * @Description:
  */
 package protocgentoolservice
@@ -137,6 +137,8 @@ func (s *Service) appendService() error {
 
 			// Set AppendService
 			templateAppendProtobufService := &service.AppendProtobuf{}
+			templateAppendProtobufService.ProjectPath = config.ProjectPathConf.Path
+			templateAppendProtobufService.ServiceName = config.ProtobufFileConf.FileName
 			templateAppendProtobufService.FirstServiceName = config.ProtobufFileConf.FileName[:1]
 			templateAppendProtobufService.InputReqName = appendProtocHttpRule.InputName
 			templateAppendProtobufService.OutputRespName = appendProtocHttpRule.OutputName

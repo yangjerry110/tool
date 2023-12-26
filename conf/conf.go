@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 17:39:35
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:33:51
+ * @LastEditTime: 2023-12-26 14:25:02
  * @Description: conf
  */
 package conf
@@ -39,6 +39,16 @@ func CreatePathConf(configPath string) conf.Conf {
  */
 func CreateConfigPathConf() conf.Conf {
 	return conf.CreateConf(&conf.ConfigPath{})
+}
+
+/**
+ * @description: GetPathConf
+ * @author: Jerry.Yang
+ * @date: 2023-12-26 14:24:47
+ * @return {*}
+ */
+func GetPathConf() *conf.Path {
+	return conf.PathConfig
 }
 
 /**
