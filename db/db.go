@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 14:48:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:34:13
+ * @LastEditTime: 2024-01-26 16:34:26
  * @Description: db
  */
 package db
@@ -21,6 +21,18 @@ import (
  */
 func CreateGormDbConf() conf.Conf {
 	return conf.CreateConf(&gormdb.GormDbConfig{})
+}
+
+/**
+ * @description: ResetGormDbConfigSkipDefaultTransaction
+ * @param {string} clientName
+ * @param {bool} skipDefaultTransaction
+ * @author: Jerry.Yang
+ * @date: 2024-01-26 16:34:30
+ * @return {*}
+ */
+func ResetGormDbConfigSkipDefaultTransaction(clientName string, skipDefaultTransaction bool) error {
+	return gormdb.ResetConfigSkipDefaultTransaction(clientName, skipDefaultTransaction)
 }
 
 /**

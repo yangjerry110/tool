@@ -2,13 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:10:25
+ * @LastEditTime: 2024-01-26 16:32:44
  * @Description: gorm config
  */
 package gormdb
 
 import (
 	"github.com/yangjerry110/tool/internal/conf"
+	"github.com/yangjerry110/tool/internal/errors"
 	"gorm.io/gorm/logger"
 )
 
@@ -41,5 +42,31 @@ func (g *GormDbConfig) SetConfig() error {
 	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "database.yaml", FileType: "yaml", ConfData: GormDbConfs}).SetConfig(); err != nil {
 		return err
 	}
+	return nil
+}
+
+/**
+ * @description: ResetConfigSkipDefaultTransaction
+ * @param {string} clientName
+ * @param {bool} skipDefaultTransaction
+ * @author: Jerry.Yang
+ * @date: 2024-01-26 16:32:42
+ * @return {*}
+ */
+func ResetConfigSkipDefaultTransaction(clientName string, skipDefaultTransaction bool) error {
+
+	// get gormDbConf by clientName
+	gormDbConf, isExistGormDbConf := GormDbConfs[clientName]
+	if !isExistGormDbConf {
+		return errors.ErrGormDbConfIsNotExist
+	}
+
+	// Set GormDbConf
+	gormDbConf.SkipDefaultTransaction = skipDefaultTransaction
+
+	// Set GormDbConfs
+	GormDbConfs[clientName] = gormDbConf
+
+	// Return
 	return nil
 }
