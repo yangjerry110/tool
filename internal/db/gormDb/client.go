@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:53:13
+ * @LastEditTime: 2024-01-30 11:27:32
  * @Description: gorm db client
  */
 package gormdb
@@ -98,4 +98,81 @@ func (g *GormDbClient) GetClient(dbName string) (*gorm.DB, error) {
 
 	// return client
 	return gormDbClient, nil
+}
+
+// begin
+//
+// transaction begin
+// Author yangjie04@qutoutiao.net
+// Date 2024-01-30 11:26:07
+func (g *GormDbClient) TransactionBegin(dbName string) error {
+
+	// get gormDb conf
+	// judge conf is exist
+	gormDbConf, isExist := GormDbConfs[dbName]
+	if !isExist {
+		return errors.ErrGormDbConfIsNotExist
+	}
+
+	// Set dbConfig
+	config := &gorm.Config{}
+	config.SkipDefaultTransaction = true
+	config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
+
+	// init client
+	// init conf
+	db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
+	if err != nil {
+		return err
+	}
+
+	// set begin db to clients
+	GormDbClients[dbName] = db.Begin()
+	return nil
+}
+
+// commit
+//
+// transaction commit
+// Author yangjie04@qutoutiao.net
+// Date 2024-01-30 11:25:37
+func (g *GormDbClient) TransactionCommit(dbName string) error {
+
+	// Get db client by GormDbCliens
+	gormDbClient, isExist := GormDbClients[dbName]
+	if !isExist {
+		return errors.ErrGormDbClientIsNotExist
+	}
+
+	// Set rollback
+	gormDbClient.Commit()
+
+	// Reset db client
+	if err := g.CreateClient(dbName); err != nil {
+		return err
+	}
+	return nil
+}
+
+// rollback
+//
+// transaction rollback
+// Author yangjie04@qutoutiao.net
+// Date 2024-01-30 11:25:37
+func (g *GormDbClient) TransactionRollback(dbName string) error {
+
+	// Get db client by GormDbCliens
+	gormDbClient, isExist := GormDbClients[dbName]
+	if !isExist {
+		return errors.ErrGormDbClientIsNotExist
+	}
+
+	// Set rollback
+	gormDbClient.Rollback()
+
+	// Reset db client
+	if err := g.CreateClient(dbName); err != nil {
+		return err
+	}
+	return nil
 }

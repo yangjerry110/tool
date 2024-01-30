@@ -15,6 +15,9 @@ type DbInterface interface {
 	CreateAllClient() error
 	CreateClient(dbName string) error
 	GetClient(dbName string) (*gorm.DB, error)
+	TransactionBegin(dbName string) error
+	TransactionCommit(dbName string) error
+	TransactionRollback(dbName string) error
 }
 
 /**
