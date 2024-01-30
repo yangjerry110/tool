@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:31:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-01-30 15:45:44
+ * @LastEditTime: 2024-01-30 15:49:06
  * @Description:
  */
 package conf
@@ -70,6 +70,10 @@ func (p *Path) SetConfig() error {
  * @return {*}
  */
 func (c *ConfigPath) SetConfig() error {
+
+	// fmt.Sprint
+	fmt.Printf("PathConfig : %+v", PathConfig)
+	fmt.Print("\r\n")
 
 	// If ConfigPath != ""
 	// Return
