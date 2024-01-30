@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:31:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-01-30 15:49:06
+ * @LastEditTime: 2024-01-30 15:51:37
  * @Description:
  */
 package conf
@@ -54,10 +54,6 @@ func (p *Path) SetConfig() error {
 		return errors.ErrPathConfigIsNotConfigPath
 	}
 
-	// fmt.Sprint
-	fmt.Printf("PathConf : %+v", p)
-	fmt.Print("\r\n")
-
 	// set
 	PathConfig = p
 	return nil
@@ -70,10 +66,6 @@ func (p *Path) SetConfig() error {
  * @return {*}
  */
 func (c *ConfigPath) SetConfig() error {
-
-	// fmt.Sprint
-	fmt.Printf("PathConfig : %+v", PathConfig)
-	fmt.Print("\r\n")
 
 	// If ConfigPath != ""
 	// Return
@@ -95,10 +87,6 @@ func (c *ConfigPath) SetConfig() error {
 		// For first is other
 		firstArg := args[1]
 
-		// fmt.Sprint
-		fmt.Printf("configPath : %+v", firstArg)
-		fmt.Print("\r\n")
-
 		// Set path.ConfigPath
 		if err := CreateConf(&Path{ConfigPath: firstArg}).SetConfig(); err != nil {
 			return err
@@ -116,10 +104,6 @@ func (c *ConfigPath) SetConfig() error {
 
 	// Splicing configPath
 	configPath := fmt.Sprintf("%s/internal/config/yamlConfig", currentPath)
-
-	// fmt.Sprint
-	fmt.Printf("configPath : %+v", configPath)
-	fmt.Print("\r\n")
 
 	// Set path.ConfigPath
 	if err := CreateConf(&Path{ConfigPath: configPath}).SetConfig(); err != nil {
