@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-01-30 11:27:32
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2024-02-27 14:55:38
  * @Description: gorm db client
  */
 package gormdb
@@ -23,6 +23,7 @@ type GormDbClient struct{}
  * @return {*}
  */
 var GormDbClients = map[string]*gorm.DB{}
+var GormDbTransactionClients = map[string]*gorm.DB{}
 
 /**
  * @description: CreateAllClient
@@ -89,6 +90,12 @@ func (g *GormDbClient) CreateClient(dbName string) error {
  */
 func (g *GormDbClient) GetClient(dbName string) (*gorm.DB, error) {
 
+	// if GormDbTransactionClients exist
+	gormDbTransactionClient, isExistGormDbTransactionClient := GormDbTransactionClients[dbName]
+	if isExistGormDbTransactionClient {
+		return gormDbTransactionClient, nil
+	}
+
 	// get gormClient
 	// judge client is exist ?
 	gormDbClient, isExist := GormDbClients[dbName]
@@ -107,27 +114,34 @@ func (g *GormDbClient) GetClient(dbName string) (*gorm.DB, error) {
 // Date 2024-01-30 11:26:07
 func (g *GormDbClient) TransactionBegin(dbName string) error {
 
-	// get gormDb conf
-	// judge conf is exist
-	gormDbConf, isExist := GormDbConfs[dbName]
+	// // get gormDb conf
+	// // judge conf is exist
+	// gormDbConf, isExist := GormDbConfs[dbName]
+	// if !isExist {
+	// 	return errors.ErrGormDbConfIsNotExist
+	// }
+
+	// // Set dbConfig
+	// config := &gorm.Config{}
+	// config.SkipDefaultTransaction = true
+	// config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
+
+	// // init client
+	// // init conf
+	// db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// get gormClient
+	// judge client is exist ?
+	gormDbClient, isExist := GormDbClients[dbName]
 	if !isExist {
-		return errors.ErrGormDbConfIsNotExist
-	}
-
-	// Set dbConfig
-	config := &gorm.Config{}
-	config.SkipDefaultTransaction = true
-	config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
-
-	// init client
-	// init conf
-	db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
-	if err != nil {
-		return err
+		return errors.ErrGormDbClientIsNotExist
 	}
 
 	// set begin db to clients
-	GormDbClients[dbName] = db.Begin()
+	GormDbTransactionClients[dbName] = gormDbClient.Begin()
 	return nil
 }
 
@@ -139,7 +153,7 @@ func (g *GormDbClient) TransactionBegin(dbName string) error {
 func (g *GormDbClient) TransactionCommit(dbName string) error {
 
 	// Get db client by GormDbCliens
-	gormDbClient, isExist := GormDbClients[dbName]
+	gormDbClient, isExist := GormDbTransactionClients[dbName]
 	if !isExist {
 		return errors.ErrGormDbClientIsNotExist
 	}
@@ -148,9 +162,7 @@ func (g *GormDbClient) TransactionCommit(dbName string) error {
 	gormDbClient.Commit()
 
 	// Reset db client
-	if err := g.CreateClient(dbName); err != nil {
-		return err
-	}
+	GormDbTransactionClients[dbName] = nil
 	return nil
 }
 
@@ -162,7 +174,7 @@ func (g *GormDbClient) TransactionCommit(dbName string) error {
 func (g *GormDbClient) TransactionRollback(dbName string) error {
 
 	// Get db client by GormDbCliens
-	gormDbClient, isExist := GormDbClients[dbName]
+	gormDbClient, isExist := GormDbTransactionClients[dbName]
 	if !isExist {
 		return errors.ErrGormDbClientIsNotExist
 	}
@@ -171,8 +183,6 @@ func (g *GormDbClient) TransactionRollback(dbName string) error {
 	gormDbClient.Rollback()
 
 	// Reset db client
-	if err := g.CreateClient(dbName); err != nil {
-		return err
-	}
+	GormDbTransactionClients[dbName] = nil
 	return nil
 }

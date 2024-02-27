@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 19:11:06
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:41:14
+ * @LastEditTime: 2024-02-06 17:38:35
  * @Description: service
  */
 package newfilesetservice
@@ -56,6 +56,8 @@ func (s *Service) NewFileSet(filePath string, fileName string) error {
 	// Use ast.Inspect to modify this AST
 	// ast.Inspect(file, s.Inspect)
 
+	// ast.Print(fset, file)
+
 	// Gets the contents of the rendered file
 	fileBytes := []byte{}
 	buffer := bytes.NewBuffer(fileBytes)
@@ -84,6 +86,8 @@ func (s *Service) NewFileSet(filePath string, fileName string) error {
  */
 func (s *Service) Visit(node ast.Node) (w ast.Visitor) {
 
+	// If node == interface
+	// Append new interface func
 	if interfaceType, ok := node.(*ast.InterfaceType); ok {
 
 		// Define interfaceType methods
@@ -187,7 +191,6 @@ func (s *Service) Visit(node ast.Node) (w ast.Visitor) {
 		// Set method
 		interfaceType.Methods = &ast.FieldList{List: interfaceTypeMethods}
 	}
-
 	return s
 }
 
