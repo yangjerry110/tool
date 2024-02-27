@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: yangjie04 yangjie04@qutoutiao.net
- * @LastEditTime: 2024-02-27 14:55:38
+ * @LastEditTime: 2024-02-27 15:28:32
  * @Description: gorm db client
  */
 package gormdb
@@ -114,34 +114,27 @@ func (g *GormDbClient) GetClient(dbName string) (*gorm.DB, error) {
 // Date 2024-01-30 11:26:07
 func (g *GormDbClient) TransactionBegin(dbName string) error {
 
-	// // get gormDb conf
-	// // judge conf is exist
-	// gormDbConf, isExist := GormDbConfs[dbName]
-	// if !isExist {
-	// 	return errors.ErrGormDbConfIsNotExist
-	// }
-
-	// // Set dbConfig
-	// config := &gorm.Config{}
-	// config.SkipDefaultTransaction = true
-	// config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
-
-	// // init client
-	// // init conf
-	// db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// get gormClient
-	// judge client is exist ?
-	gormDbClient, isExist := GormDbClients[dbName]
+	// get gormDb conf
+	// judge conf is exist
+	gormDbConf, isExist := GormDbConfs[dbName]
 	if !isExist {
-		return errors.ErrGormDbClientIsNotExist
+		return errors.ErrGormDbConfIsNotExist
+	}
+
+	// Set dbConfig
+	config := &gorm.Config{}
+	config.SkipDefaultTransaction = true
+	config.Logger = logger.Default.LogMode(gormDbConf.LoggerLevel)
+
+	// init client
+	// init conf
+	db, err := gorm.Open(mysql.Open(gormDbConf.Dsn), config)
+	if err != nil {
+		return err
 	}
 
 	// set begin db to clients
-	GormDbTransactionClients[dbName] = gormDbClient.Begin()
+	GormDbTransactionClients[dbName] = db.Begin()
 	return nil
 }
 
