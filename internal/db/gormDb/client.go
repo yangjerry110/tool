@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
- * @LastEditors: yangjie04 yangjie04@qutoutiao.net
- * @LastEditTime: 2024-02-27 15:28:32
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2024-02-29 17:00:35
  * @Description: gorm db client
  */
 package gormdb
@@ -92,7 +92,7 @@ func (g *GormDbClient) GetClient(dbName string) (*gorm.DB, error) {
 
 	// if GormDbTransactionClients exist
 	gormDbTransactionClient, isExistGormDbTransactionClient := GormDbTransactionClients[dbName]
-	if isExistGormDbTransactionClient {
+	if isExistGormDbTransactionClient && gormDbTransactionClient != nil {
 		return gormDbTransactionClient, nil
 	}
 
