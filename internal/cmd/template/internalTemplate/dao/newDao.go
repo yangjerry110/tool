@@ -82,7 +82,7 @@ func (n *NewDao) getTemplate() string {
 	   * @step
 	   * @执行结果
 	   **/
-	  if err := CreateClient({{.DbName}}).Where({{.DaoName}}Model).Find(result).Error; err != nil {
+	  if err := CreateClient({{.DbName}}).Where({{.DaoName}}Model).Find(&result).Error; err != nil {
 		  qlog.Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		  return nil, err
 	  }

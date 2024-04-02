@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:18:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 16:04:34
+ * @LastEditTime: 2024-03-05 10:58:53
  * @Description: new protobuf
  */
 package service
@@ -67,12 +67,6 @@ func (n *NewProtobuf) getTemplate() string {
 	   "{{.ProjectImportPath}}/vo/protobuf"
    )
 
-   type {{.ServiceNameUp}}Service interface {
-	{{- range .Services}}
-	{{.ServiceFuncUp}}(ctx context.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error)
-	{{- end}}
-	}
-
 	type {{.ServiceNameUp}} struct{}
 
 	{{- range .Services}}
@@ -90,8 +84,8 @@ func (n *NewProtobuf) getTemplate() string {
 		* @step
 		* @result
 		**/
-	   result := &protobuf.{{.OutputRespName}}{}
-	   return result, nil
+	   resp := &protobuf.{{.OutputRespName}}{}
+	   return resp, nil
    }
    {{- end}}
    `

@@ -8,10 +8,8 @@
 package newfilesetservice
 
 import (
-	"bytes"
 	"fmt"
 	"go/ast"
-	"go/format"
 	"go/parser"
 	"go/token"
 	"io/ioutil"
@@ -50,30 +48,28 @@ func (s *Service) NewFileSet(filePath string, fileName string) error {
 		return err
 	}
 
-	// Use ast.Walk to modify the AST
-	ast.Walk(s, file)
-	// Because ast.walk is read-only, inspect needs to be used to modify it
-	// Use ast.Inspect to modify this AST
-	// ast.Inspect(file, s.Inspect)
+	// // Use ast.Walk to modify the AST
+	// ast.Walk(s, file)
+	// // Because ast.walk is read-only, inspect needs to be used to modify it
+	// // Use ast.Inspect to modify this AST
+	// // ast.Inspect(file, s.Inspect)
 
-	// ast.Print(fset, file)
+	// // Gets the contents of the rendered file
+	// fileBytes := []byte{}
+	// buffer := bytes.NewBuffer(fileBytes)
+	// err = format.Node(buffer, fset, file)
+	// if err != nil {
+	// 	return err
+	// }
 
-	// Gets the contents of the rendered file
-	fileBytes := []byte{}
-	buffer := bytes.NewBuffer(fileBytes)
-	err = format.Node(buffer, fset, file)
-	if err != nil {
-		return err
-	}
+	// // Get fileContent
+	// fileContent := buffer.String()
+	// s.FileContent = fileContent
 
 	// Set AppendFunc
 	if err := s.setAppendFunc(file); err != nil {
 		return err
 	}
-
-	// Get fileContent
-	fileContent := buffer.String()
-	s.FileContent = fileContent
 	return nil
 }
 

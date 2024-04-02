@@ -2,13 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-26 10:57:09
+ * @LastEditTime: 2024-03-05 15:26:44
  * @Description:
  */
 package protocgentoolservice
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	newfilesetservice "github.com/yangjerry110/tool/internal/cmd/service/newFileSetService"
@@ -26,6 +27,22 @@ type Service struct{}
  */
 func (s *Service) Generate() error {
 
+	// is exist service path
+	if err := s.isExistServicePath(); err != nil {
+		return err
+	}
+
+	// is exist service file
+	if err := s.isExistServiceFile(); err != nil {
+		return err
+	}
+
+	// if isAppend or if isNew
+	// new interface service
+	if err := s.newInterfaceService(); err != nil {
+		return err
+	}
+
 	// Judge isFirstCreate isAppend
 	// If IsFirstCreate and is not isAppend
 	// Create New service
@@ -41,6 +58,54 @@ func (s *Service) Generate() error {
 		if err := s.appendService(); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+// newInterfaceService
+//
+// new interface service的相关的
+// Author Jerry.Yang
+// Date 2024-03-05 10:58:46
+func (s *Service) newInterfaceService() error {
+
+	// Assemble the parameters related to the template service
+	templateNewInterfaceProtobuf := service.NewInterfaceProtobuf{}
+	// The serviceName here is protobufFileName
+	// so first is fist protobufFileName
+	templateNewInterfaceProtobuf.FirstServiceName = config.ProtobufFileConf.FileName[:1]
+	// Previously set
+	templateNewInterfaceProtobuf.ProjectImportPath = config.ProjectImportPathConf.ImportPath
+	// Previously set
+	templateNewInterfaceProtobuf.ProjectPath = config.ProjectPathConf.Path
+	// The serviceName here is protobufFileName
+	templateNewInterfaceProtobuf.ServiceName = config.ProtobufFileConf.FileName
+	// The serviceName here is protobufFileName
+	// so up is protobufFileName up
+	templateNewInterfaceProtobuf.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+	// set time
+	templateNewInterfaceProtobuf.Time = template.GetFormatNowTime()
+
+	// templateNewProtoServices
+	templateNewInterfaceProtobufServices := []*service.NewInterfaceProtobufService{}
+	// set templateNewInterfaceProtobufServices by httpRules
+	for _, protocHttpRule := range config.ProtocHttpRules {
+		templateNewInterfaceProtobufService := &service.NewInterfaceProtobufService{}
+		templateNewInterfaceProtobufService.FirstServiceName = config.ProtobufFileConf.FileName[:1]
+		templateNewInterfaceProtobufService.InputReqName = protocHttpRule.InputName
+		templateNewInterfaceProtobufService.OutputRespName = protocHttpRule.OutputName
+		templateNewInterfaceProtobufService.ServiceFuncUp = template.FirstUpper(protocHttpRule.FuncName)
+		templateNewInterfaceProtobufService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+		templateNewInterfaceProtobufService.Time = template.GetFormatNowTime()
+		templateNewInterfaceProtobufServices = append(templateNewInterfaceProtobufServices, templateNewInterfaceProtobufService)
+	}
+
+	// set templateNewProtoServices
+	templateNewInterfaceProtobuf.Services = templateNewInterfaceProtobufServices
+
+	// Save Template
+	if err := template.CreateTemplate(&templateNewInterfaceProtobuf).New(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -93,11 +158,11 @@ func (s *Service) newService() error {
 	}
 
 	// Append base
-	templateAppendBase := &service.AppendBase{}
-	templateAppendBase.ServiceName = config.ProtobufFileConf.FileName
-	templateAppendBase.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
-	templateAppendBase.Time = template.GetFormatNowTime()
-	if err := template.CreateTemplate(templateAppendBase).New(); err != nil {
+	templateAppendBaseService := &service.AppendBaseService{}
+	templateAppendBaseService.ServiceName = config.ProtobufFileConf.FileName
+	templateAppendBaseService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+	templateAppendBaseService.Time = template.GetFormatNowTime()
+	if err := template.CreateTemplate(templateAppendBaseService).New(); err != nil {
 		return err
 	}
 	return nil
@@ -123,12 +188,12 @@ func (s *Service) appendService() error {
 		return err
 	}
 
-	// Save the contents of the rendered file
-	if err := template.SaveTemplate(filePath, fileName, newFileSetService.FileContent, nil); err != nil {
-		fmt.Printf("SaveTemplate Err : %+v", err)
-		fmt.Print("\r\n")
-		return err
-	}
+	// // Save the contents of the rendered file
+	// if err := template.SaveTemplate(filePath, fileName, newFileSetService.FileContent, nil); err != nil {
+	// 	fmt.Printf("SaveTemplate Err : %+v", err)
+	// 	fmt.Print("\r\n")
+	// 	return err
+	// }
 
 	// If len AppendFuncs != 0
 	// Append func to template
@@ -150,6 +215,84 @@ func (s *Service) appendService() error {
 			if err := template.CreateTemplate(templateAppendProtobufService).New(); err != nil {
 				return err
 			}
+		}
+	}
+	return nil
+}
+
+// isExistServicePath
+//
+// is exist service path
+// Date 2024-03-04 17:22:25
+// Author Jerry.Yang
+func (s *Service) isExistServicePath() error {
+
+	// interfaceService path
+	interfaceServicePath := fmt.Sprintf("%s/internal/service/interfaceService", config.ProjectPathConf.Path)
+	// service path
+	servicePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
+
+	// If exist interfaceService path
+	_, err := os.Stat(interfaceServicePath)
+	if err != nil {
+		// if not exist
+		// mkdir all interfaceServicePath 077
+		err = os.MkdirAll(interfaceServicePath, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+
+	// if exist service path
+	_, err = os.Stat(servicePath)
+	if err != nil {
+		// if not exist
+		// mkdir all servicePath 077
+		err = os.MkdirAll(servicePath, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// isExistServiceFile
+//
+// is exist service file
+// Author Jerry.Yang
+// Date 2024-03-04 17:34:40
+func (s *Service) isExistServiceFile() error {
+
+	// servicePath
+	servicePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
+
+	// baseService file
+	baseServiceFileName := "baseService.go"
+	baseServiceFilePath := fmt.Sprintf("%s/%s", servicePath, baseServiceFileName)
+
+	// fileName
+	fileName := fmt.Sprintf("%sService.go", config.ProtobufFileConf.FileName)
+	filePath := fmt.Sprintf("%s/%s", servicePath, fileName)
+
+	// if exist baseServiceFilePath
+	_, err := os.Stat(baseServiceFilePath)
+	if err != nil {
+		// set newBaseService
+		templateNewBaseService := &service.NewBaseService{}
+		templateNewBaseService.ProjectImportPath = config.ProjectImportPathConf.ImportPath
+		templateNewBaseService.Time = template.GetFormatNowTime()
+		// newBaseService
+		if err := template.CreateTemplate(templateNewBaseService).New(); err != nil {
+			return err
+		}
+	}
+
+	// if exist filePath
+	_, err = os.Stat(filePath)
+	if err != nil {
+		// newservice
+		if err := s.newService(); err != nil {
+			return err
 		}
 	}
 	return nil

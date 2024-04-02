@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 19:04:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 19:07:53
+ * @LastEditTime: 2024-03-05 10:59:15
  * @Description: append protobuf
  */
 package service
@@ -59,7 +59,7 @@ func (a *AppendProtobuf) getTemplate() string {
 		* @step
 		* @result
 		**/
-	   result := &protobuf.{{.OutputRespName}}{}
-	   return result, nil
+	   resp := &protobuf.{{.OutputRespName}}{}
+	   return resp, nil
    }`
 }

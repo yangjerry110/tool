@@ -1,6 +1,7 @@
 package command
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -197,7 +198,8 @@ func (n *NewModel) getGormDb(databaseConfName string) (*gorm.DB, error) {
 	}
 
 	// Return GetClient
-	return db.CreateDb(&toolgormdb.GormDbClient{}).GetClient(databaseConfName)
+	ctx := context.Background()
+	return db.CreateDb(&toolgormdb.GormDbClient{}).GetClient(ctx, databaseConfName)
 }
 
 /**

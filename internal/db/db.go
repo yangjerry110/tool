@@ -2,22 +2,24 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:55:41
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:21:50
+ * @LastEditTime: 2024-04-02 17:04:22
  * @Description: db
  */
 package db
 
 import (
+	"context"
+
 	"gorm.io/gorm"
 )
 
 type DbInterface interface {
 	CreateAllClient() error
 	CreateClient(dbName string) error
-	GetClient(dbName string) (*gorm.DB, error)
-	TransactionBegin(dbName string) error
-	TransactionCommit(dbName string) error
-	TransactionRollback(dbName string) error
+	GetClient(ctx context.Context, dbName string) (*gorm.DB, error)
+	TransactionBegin(ctx context.Context, dbName string) error
+	TransactionCommit(ctx context.Context, dbName string) error
+	TransactionRollback(ctx context.Context, dbName string) error
 }
 
 /**
