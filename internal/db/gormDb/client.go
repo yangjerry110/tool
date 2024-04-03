@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-03 11:18:41
+ * @LastEditTime: 2024-04-03 11:36:54
  * @Description: gorm db client
  */
 package gormdb
@@ -118,12 +118,12 @@ func (g *GormDbClient) GetClient(ctx context.Context, dbName string) (*gorm.DB, 
 // transaction begin
 // Author yangjie04@qutoutiao.net
 // Date 2024-04-02 16:32:18
-func (g *GormDbClient) TransactionBegin(ctx context.Context, dbName string) (context.Context, error) {
+func (g *GormDbClient) TransactionBegin(ctx context.Context, dbName string) error {
 
 	// get db client by dbName
 	dbClient, dbClientIsExist := gormDbClients.Load(dbName)
 	if !dbClientIsExist {
-		return ctx, errors.ErrGormDbClientIsNotExist
+		return errors.ErrGormDbClientIsNotExist
 	}
 
 	// set begin db to ctx
@@ -132,11 +132,14 @@ func (g *GormDbClient) TransactionBegin(ctx context.Context, dbName string) (con
 	// judge transactionDbClient err
 	// if err != nil; return err
 	if transactionDbClient.Error != nil {
-		return ctx, transactionDbClient.Error
+		return transactionDbClient.Error
 	}
 
 	// set context transactionBegion client
-	return context.WithValue(ctx, g.transactionKey(dbName), transactionDbClient), nil
+	if err := context.WithValue(ctx, g.transactionKey(dbName), transactionDbClient).Err(); err != nil {
+		return err
+	}
+	return nil
 }
 
 // commit
