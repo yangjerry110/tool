@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:55:41
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-03 11:37:23
+ * @LastEditTime: 2024-04-03 14:52:34
  * @Description: db
  */
 package db
@@ -17,7 +17,7 @@ type DbInterface interface {
 	CreateAllClient() error
 	CreateClient(dbName string) error
 	GetClient(ctx context.Context, dbName string) (*gorm.DB, error)
-	TransactionBegin(ctx context.Context, dbName string) error
+	TransactionBegin(ctx context.Context, dbName string) (context.Context, error)
 	TransactionCommit(ctx context.Context, dbName string) error
 	TransactionRollback(ctx context.Context, dbName string) error
 }
