@@ -2,13 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-02 17:05:20
+ * @LastEditTime: 2024-04-03 10:53:33
  * @Description: gorm db client
  */
 package gormdb
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
 	"github.com/yangjerry110/tool/internal/errors"
@@ -96,7 +97,7 @@ func (g *GormDbClient) CreateClient(dbName string) error {
 func (g *GormDbClient) GetClient(ctx context.Context, dbName string) (*gorm.DB, error) {
 
 	// get context transaction db client
-	transactionDbClient, isExisttransactionDbClient := ctx.Value("transaction").(*gorm.DB)
+	transactionDbClient, isExisttransactionDbClient := ctx.Value(g.transactionKey(dbName)).(*gorm.DB)
 	if isExisttransactionDbClient && transactionDbClient != nil {
 		return transactionDbClient, nil
 	}
@@ -135,7 +136,7 @@ func (g *GormDbClient) TransactionBegin(ctx context.Context, dbName string) erro
 	}
 
 	// set context transactionBegion client
-	if err := context.WithValue(ctx, transactionKey, transactionDbClient).Err(); err != nil {
+	if err := context.WithValue(ctx, g.transactionKey(dbName), transactionDbClient).Err(); err != nil {
 		return err
 	}
 	return nil
@@ -149,7 +150,7 @@ func (g *GormDbClient) TransactionBegin(ctx context.Context, dbName string) erro
 func (g *GormDbClient) TransactionCommit(ctx context.Context, dbName string) error {
 
 	// get db client by ctx
-	transactionDbClient, isExisttransactionDbClient := ctx.Value("transaction").(*gorm.DB)
+	transactionDbClient, isExisttransactionDbClient := ctx.Value(g.transactionKey(dbName)).(*gorm.DB)
 	if !isExisttransactionDbClient {
 		return errors.ErrGormDbClientIsNotExist
 	}
@@ -160,7 +161,7 @@ func (g *GormDbClient) TransactionCommit(ctx context.Context, dbName string) err
 	}
 
 	// Reset db client
-	if err := context.WithValue(ctx, transactionKey, nil).Err(); err != nil {
+	if err := context.WithValue(ctx, g.transactionKey(dbName), nil).Err(); err != nil {
 		return err
 	}
 	return nil
@@ -174,7 +175,7 @@ func (g *GormDbClient) TransactionCommit(ctx context.Context, dbName string) err
 func (g *GormDbClient) TransactionRollback(ctx context.Context, dbName string) error {
 
 	// get db client by ctx
-	transactionDbClient, isExisttransactionDbClient := ctx.Value("transaction").(*gorm.DB)
+	transactionDbClient, isExisttransactionDbClient := ctx.Value(g.transactionKey(dbName)).(*gorm.DB)
 	if !isExisttransactionDbClient {
 		return errors.ErrGormDbClientIsNotExist
 	}
@@ -185,8 +186,19 @@ func (g *GormDbClient) TransactionRollback(ctx context.Context, dbName string) e
 	}
 
 	// Reset db client
-	if err := context.WithValue(ctx, transactionKey, nil).Err(); err != nil {
+	if err := context.WithValue(ctx, g.transactionKey(dbName), nil).Err(); err != nil {
 		return err
 	}
 	return nil
+}
+
+/**
+ * @description: transactionKey
+ * @param {string} dbName
+ * @author: Jerry.Yang
+ * @date: 2024-04-03 10:52:12
+ * @return {*}
+ */
+func (g *GormDbClient) transactionKey(dbName string) transactionContextKey {
+	return transactionContextKey(fmt.Sprintf("%s-%s", dbName, transactionKey))
 }
