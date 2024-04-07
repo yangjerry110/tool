@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 10:56:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-03 15:17:58
+ * @LastEditTime: 2024-04-03 16:47:51
  * @Description: gorm db client
  */
 package gormdb
@@ -18,7 +18,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type GormDbClient struct{}
+type GormDbClient struct {
+	SyncOnce  sync.Once
+	SyncMutex sync.Mutex
+}
 
 /**
  * @description: GormDbClients
@@ -45,12 +48,15 @@ func (g *GormDbClient) CreateAllClient() error {
 		return nil
 	}
 
-	// For GormDbConf
-	for dbName := range GormDbConfs {
-		if err := g.CreateClient(dbName); err != nil {
-			return err
+	// sync once
+	g.SyncOnce.Do(func() {
+		// For GormDbConf
+		for dbName := range GormDbConfs {
+			if err := g.CreateClient(dbName); err != nil {
+				panic(err)
+			}
 		}
-	}
+	})
 	return nil
 }
 
@@ -62,6 +68,11 @@ func (g *GormDbClient) CreateAllClient() error {
  * @return {*}
  */
 func (g *GormDbClient) CreateClient(dbName string) error {
+
+	// lock
+	g.SyncMutex.Lock()
+	// unlock
+	defer g.SyncMutex.Unlock()
 
 	// get gormDb conf
 	// judge conf is exist
@@ -115,6 +126,8 @@ func (g *GormDbClient) GetClient(ctx context.Context, dbName string) (*gorm.DB, 
 
 // begin
 //
+// 事务开启，我们使用的return context.Context
+// 假如我们使用的全局变量，则需要加上互斥锁，这里我们使用的链式返回，就不加互斥锁了
 // transaction begin
 // Author yangjie04@qutoutiao.net
 // Date 2024-04-02 16:32:18
