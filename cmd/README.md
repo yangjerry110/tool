@@ -20,15 +20,15 @@
 ```
 
 - 安装新应用
-``` bash
+``` 
     gen-tool new newApp
 ```
-``` bash
+``` 
     根据提示 input 项目地址
 ```
-``` bash
+``` 
     生成newApp之后，进入到newApp根目录，执行 `go mod tidy`
 ```
-``` base
+``` 
     获取命令行 gen-tool --help
 ```
