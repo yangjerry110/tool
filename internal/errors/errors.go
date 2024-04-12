@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:17:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 14:49:37
+ * @LastEditTime: 2024-04-10 15:07:27
  * @Description: cache errors
  */
 package errors
@@ -71,6 +71,12 @@ var (
 	// router
 	// gin router
 	ErrGinRouterIsNoDefault = errors.New("gin router Err : is no default")
+
+	// logger
+	// logger level
+	ErrLoggerLevelUnknowLevel = errors.New("logger level; unknow level")
+	// logger formatter
+	ErrLoggerFormatterUnkownFormatter = errors.New("logger formatter; unkown formatter")
 )
 
 // ErrRsaPermNoPrivatePath
