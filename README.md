@@ -2,13 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2023-11-30 16:16:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 16:49:16
+ * @LastEditTime: 2024-04-12 16:53:22
  * @Description: 
 -->
 ## tool
 
 ### 1.cmd
-> 查看文档[https://github.com/yangjerry110/tool/tree/master/cmd]
+> [查看文档](https://github.com/yangjerry110/tool/tree/master/cmd)
 
 ### 2.cache
 >1.设置redis的conf
