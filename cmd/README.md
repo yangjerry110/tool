@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-04-27 11:35:01
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 16:37:00
+ * @LastEditTime: 2024-04-12 17:04:22
  * @Description: 
 -->
 
@@ -28,4 +28,7 @@
 ```
 ``` bash
     生成newApp之后，进入到newApp根目录，执行 `go mod tidy`
+```
+``` base
+    获取命令行 gen-tool --help
 ```
