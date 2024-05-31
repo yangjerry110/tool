@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 15:22:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-05-31 10:33:42
+ * @LastEditTime: 2024-05-31 11:47:05
  * @Description: errors
  */
 package errors
@@ -18,8 +18,19 @@ import (
  * @date: 2024-05-31 10:33:37
  * @return {*}
  */
-func New(err string) error {
+func New(err string) toolErrors.ErrorInterface {
 	return toolError().New(err)
+}
+
+/**
+ * @description: NewError
+ * @param {error} err
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 11:47:07
+ * @return {*}
+ */
+func NewError(err error) toolErrors.ErrorInterface {
+	return toolError().NewError(err)
 }
 
 /**
@@ -96,7 +107,7 @@ func WithCallFuncName(funcName string) toolErrors.ErrorInterface {
  * @date: 2024-05-30 17:18:39
  * @return {*}
  */
-func WithError(err string) toolErrors.ErrorInterface {
+func WithError(err error) toolErrors.ErrorInterface {
 	return toolError().WithError(err)
 }
 

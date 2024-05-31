@@ -1,6 +1,7 @@
 package toolErrors
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
 	"runtime"
@@ -16,7 +17,7 @@ type ToolError struct {
 	callFuncName string
 	lineNo       int
 	fields       map[string]interface{}
-	error        string
+	errmsg       string
 }
 
 /**
@@ -26,7 +27,25 @@ type ToolError struct {
  * @date: 2024-05-31 10:32:03
  * @return {*}
  */
-func (e *ToolError) New(err string) error {
+func (e *ToolError) New(err string) ErrorInterface {
+
+	/**
+	 * @step
+	 * @default withFunc
+	 **/
+	e.runtimeDept = 2
+	e.WithFunc().WithError(errors.New(err))
+	return e
+}
+
+/**
+ * @description: NewError
+ * @param {error} err
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 11:45:53
+ * @return {*}
+ */
+func (e *ToolError) NewError(err error) ErrorInterface {
 
 	/**
 	 * @step
@@ -207,7 +226,7 @@ func (e *ToolError) WithFields(fieldName string, fieldVal interface{}) ErrorInte
  * @date: 2024-05-30 17:08:29
  * @return {*}
  */
-func (e *ToolError) WithError(err string) ErrorInterface {
+func (e *ToolError) WithError(err error) ErrorInterface {
 
 	/**
 	 * @step
@@ -269,7 +288,7 @@ func (e *ToolError) WithError(err string) ErrorInterface {
 	 * @step
 	 * @error
 	 **/
-	if err != "" {
+	if err != nil {
 		errMsg = fmt.Sprintf("%s Err : %s", errMsg, err)
 	}
 
@@ -277,7 +296,7 @@ func (e *ToolError) WithError(err string) ErrorInterface {
 	 * @step
 	 * @set error
 	 **/
-	e.error = errMsg
+	e.errmsg = errMsg
 	return e
 }
 
@@ -289,7 +308,7 @@ func (e *ToolError) WithError(err string) ErrorInterface {
  * @return {*}
  */
 func (e *ToolError) Error() string {
-	return e.error
+	return e.errmsg
 }
 
 /**
