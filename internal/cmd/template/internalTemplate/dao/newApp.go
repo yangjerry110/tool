@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:03:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 16:10:26
+ * @LastEditTime: 2024-04-26 16:09:58
  * @Description: newApp
  */
 package dao
@@ -54,6 +54,7 @@ func (n *NewAppBaseDao) getTemplate() string {
    package dao
    
    import (
+	   "context"
 	   "github.com/yangjerry110/tool/db"
 	   "gorm.io/gorm"
    )
@@ -65,9 +66,9 @@ func (n *NewAppBaseDao) getTemplate() string {
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func CreateClient(dbName string) *gorm.DB {
+   func CreateClient(ctx context.Context,dbName string) *gorm.DB {
    
-	   dbClient, err := db.CreateGormDb().GetClient(dbName)
+	   dbClient, err := db.CreateGormDb().GetClient(ctx,dbName)
 	   if err != nil {
 		   panic(err)
 	   }

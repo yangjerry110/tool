@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-20 11:07:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 15:59:59
+ * @LastEditTime: 2024-05-30 14:12:51
  * @Description: ginrun_test
  */
 package test
@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/yangjerry110/tool/internal/conf"
+	"github.com/yangjerry110/tool/internal/router"
 	"github.com/yangjerry110/tool/internal/router/gin"
 )
 
@@ -34,7 +35,7 @@ func TestGinRun(t *testing.T) {
 
 	for {
 
-		fmt.Printf("routerConf : %+v", gin.RouteConf)
+		fmt.Printf("routerConf : %+v", router.RouteConf)
 		fmt.Print("\r\n")
 
 		time.Sleep(10 * time.Second)

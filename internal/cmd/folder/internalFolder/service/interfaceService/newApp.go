@@ -1,11 +1,4 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2023-12-19 15:46:04
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-26 15:53:26
- * @Description:
- */
-package service
+package interfaceService
 
 import (
 	"fmt"
@@ -25,7 +18,7 @@ type NewApp struct{}
 func (n *NewApp) New() error {
 
 	// protoPath
-	path := fmt.Sprintf("%s/%s/%s", config.ProjectPathConf.Path, "internal", "service")
+	path := fmt.Sprintf("%s/%s/%s/interfaceService", config.ProjectPathConf.Path, "internal", "service")
 
 	// Action MkDir
 	err := os.MkdirAll(path, 0777)

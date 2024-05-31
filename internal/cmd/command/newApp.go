@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 16:01:57
+ * @LastEditTime: 2024-04-26 15:57:42
  * @Description: newApp
  */
 package command
@@ -21,6 +21,7 @@ import (
 	internalFolderModel "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/model"
 	internalFolderQuery "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/query"
 	internalFolderService "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/service"
+	internalFolderInterfaceService "github.com/yangjerry110/tool/internal/cmd/folder/internalFolder/service/interfaceService"
 	folderProto "github.com/yangjerry110/tool/internal/cmd/folder/proto"
 	floderRouter "github.com/yangjerry110/tool/internal/cmd/folder/router"
 	"github.com/yangjerry110/tool/internal/cmd/folder/vo"
@@ -151,6 +152,11 @@ func (n *NewApp) newFloder() error {
 		return err
 	}
 
+	// NewAppInterfaceService
+	if err := folder.CreateFlod(&internalFolderInterfaceService.NewApp{}).New(); err != nil {
+		return err
+	}
+
 	// NewAppService
 	if err := folder.CreateFlod(&internalFolderService.NewApp{}).New(); err != nil {
 		return err
@@ -246,6 +252,11 @@ func (n *NewApp) newTemplate() error {
 		return err
 	}
 
+	// NewAppDemoInterfaceService
+	if err := template.CreateTemplate(&service.NewAppDemoInterfaceService{}).New(); err != nil {
+		return err
+	}
+
 	// NewAppDemoService
 	if err := template.CreateTemplate(&service.NewAppDemoService{}).New(); err != nil {
 		return err
@@ -262,7 +273,7 @@ func (n *NewApp) newTemplate() error {
 	}
 
 	// NewAppBaseRouter
-	if err := template.CreateTemplate(&router.NewAppBaseRouter{}).New(); err != nil {
+	if err := template.CreateTemplate(&router.NewAppRouter{}).New(); err != nil {
 		return err
 	}
 

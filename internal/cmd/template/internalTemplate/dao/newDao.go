@@ -82,7 +82,7 @@ func (n *NewDao) getTemplate() string {
 	   * @step
 	   * @执行结果
 	   **/
-	  if err := CreateClient({{.DbName}}).Where({{.DaoName}}Model).Find(&result).Error; err != nil {
+	  if err := CreateClient(ctx,{{.DbName}}).Where({{.DaoName}}Model).Find(&result).Error; err != nil {
 		  qlog.Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}List Err : %+v", err)
 		  return nil, err
 	  }
@@ -109,7 +109,7 @@ func (n *NewDao) getTemplate() string {
 	   * @step
 	   * @执行结果
 	   **/
-	  if err := CreateClient({{.DbName}}).Where({{.DaoName}}Model).First(result).Error; err != nil {
+	  if err := CreateClient(ctx,{{.DbName}}).Where({{.DaoName}}Model).First(result).Error; err != nil {
 		  qlog.Errorf("{{.DaoName}}Dao Get{{.DaoNameUp}}Info Err : %+v", err)
 		  return nil, err
 	  }
@@ -130,7 +130,7 @@ func (n *NewDao) getTemplate() string {
 	  * @step
 	  * @执行结果
 	  **/
-	 if err := CreateClient({{.DbName}}).Save({{.DaoName}}Model).Error; err != nil {
+	 if err := CreateClient(ctx,{{.DbName}}).Save({{.DaoName}}Model).Error; err != nil {
 		 qlog.Errorf("{{.DaoName}}Dao Save{{.DaoNameUp}} Err : %+v", err)
 		 return 0, err
 	 }
@@ -151,7 +151,7 @@ func (n *NewDao) getTemplate() string {
 	  * @step
 	  * @执行结果
 	  **/
-	 if err := CreateClient({{.DbName}}).Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
+	 if err := CreateClient(ctx,{{.DbName}}).Where({{.DaoName}}Model).Update("is_deleted = ?", model.Is_Deleted).Error; err != nil {
 		 qlog.Errorf("{{.DaoName}}Dao Delete{{.DaoNameUp}} Err : %+v", err)
 		 return false, err
 	 }

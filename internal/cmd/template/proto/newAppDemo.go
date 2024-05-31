@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:43:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 16:55:30
+ * @LastEditTime: 2024-04-26 16:20:23
  * @Description:
  */
 package proto
@@ -23,8 +23,20 @@ type NewAppDemoProto struct{}
  * @return {*}
  */
 func (n *NewAppDemoProto) New() error {
+
+	// The structure that needs to be rendered
+	type Data struct {
+		Time              string
+		ImportProjectPath string
+	}
+
+	// Set Data
+	data := &Data{}
+	data.Time = template.GetFormatNowTime()
+	data.ImportProjectPath = config.ProjectImportPathConf.ImportPath
+
 	filePath := fmt.Sprintf("%s/protobuf", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "demo.proto", n.getTemplate(), nil, "proto")
+	return template.SaveTemplate(filePath, "demo.proto", n.getTemplate(), data, "proto")
 }
 
 /**
@@ -37,7 +49,7 @@ func (n *NewAppDemoProto) getTemplate() string {
 	return `// demo.proto
 syntax = "proto3";
 package demo;
-option go_package = "git.qutoutiao.net/ee/tool-api/vo/protobuf";
+option go_package = "{{.ImportProjectPath}}/vo/protobuf";
 import "http.proto";
 
 // 服务相关的注释

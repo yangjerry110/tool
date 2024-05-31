@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:08:21
+ * @LastEditTime: 2024-04-12 17:35:40
  * @Description: gin router
  */
 package gin
@@ -10,42 +10,23 @@ package gin
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
-	"github.com/yangjerry110/tool/internal/errors"
 	"github.com/yangjerry110/tool/internal/router"
 )
 
-type Gin struct{}
+type Gin struct {
+	*gin.Engine
+}
 
-/**
- * @description: defaultGinRouter
- * @author: Jerry.Yang
- * @date: 2023-12-13 17:39:12
- * @return {*}
- */
-var defaultGinRouter *gin.Engine
+// Gin Init
+//
+// Init
+// Date 2024-04-12 17:21:38
+// Author Jerry.Yang
+func (g *Gin) Init() router.RouterInterface {
 
-/**
- * @description: GetGinDefaultRouter
- * @author: Jerry.Yang
- * @date: 2023-12-13 17:39:04
- * @return {*}
- */
-func GetGinDefaultRouter() *gin.Engine {
-
-	// First Resgister
-	// if Err != nil; return err
-	if err := router.CreateRouter(&Gin{}).SetDefaultRouter(); err != nil {
-		panic(err)
-	}
-
-	// Judge defaultRouter
-	// If == nil; return err
-	if defaultGinRouter == nil {
-		panic(errors.ErrGinRouterIsNoDefault)
-	}
-
-	// Return DefaultRouter
-	return defaultGinRouter
+	// create g.Engine
+	g.Engine = gin.Default()
+	return g
 }
 
 /**
@@ -57,7 +38,7 @@ func GetGinDefaultRouter() *gin.Engine {
 func (g *Gin) Register(routerName string, registerRouter router.Register) error {
 
 	// register router
-	if err := registerRouter.Register(); err != nil {
+	if err := registerRouter.Register(g.Engine); err != nil {
 		return err
 	}
 	return nil
@@ -78,30 +59,11 @@ func (g *Gin) Run(runConf conf.Conf) error {
 	}
 
 	// Register Swagger
-	g.Register("swagger", &SwaggerGinRouter{})
+	g.Register("swagger", &Swagger{})
 
 	// Register ping
 	g.Register("ping", &Ping{})
 
 	// Run
-	return defaultGinRouter.Run(RouteConf.Addr)
-}
-
-// setDefaultRouter
-//
-// Return error
-// Date 2023-12-14 11:35:30
-// Author Jerry.Yang
-func (g *Gin) SetDefaultRouter() error {
-
-	// Judge defaultGinRouter
-	// if not nil; return
-	if defaultGinRouter != nil {
-		return nil
-	}
-
-	// Register gin router
-	// Register Default
-	defaultGinRouter = gin.Default()
-	return nil
+	return g.Engine.Run(router.RouteConf.Addr)
 }

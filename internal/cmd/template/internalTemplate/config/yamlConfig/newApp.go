@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:33:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 11:11:25
+ * @LastEditTime: 2024-04-26 16:10:39
  * @Description: yamlConfig newApp
  */
 package yamlconfig
@@ -130,13 +130,13 @@ func (n *NewAppRouter) getTemplate() string {
  */
 func (n *NewAppRedis) getTemplate() string {
 	return `redis:
-	addr: 127.0.0.1:6379  #[MUST]redis地址
-	password: "password"          #redis密码
-	database: 0           #redis db index, {default: 0}
-   #    dial_timeout: 5000    #连接超时时间，单位: millisecond, {default: 5000}
-   #    read_timeout: 1000    #读超时时间，单位: millisecond, {default: 1000}
-   #    write_timeout: 1000   #写超时时间，单位: millisecond, {default: 1000}
-   #    max_retries: 1        #最大重试次数, {default: 1}
-   #    pool_size: 0          #最大连接数大小, {default: runtime.NumCPU*10}
-   #    min_idle_conns: 0     #一直保持的空闲连接数(无论是否有请求),一般为0即可 {default: 0}`
+ addr: 127.0.0.1:6379  #[MUST]redis地址
+ password: "password"          #redis密码
+ database: 0           #redis db index, {default: 0}
+ #    dial_timeout: 5000    #连接超时时间，单位: millisecond, {default: 5000}
+ #    read_timeout: 1000    #读超时时间，单位: millisecond, {default: 1000}
+ #    write_timeout: 1000   #写超时时间，单位: millisecond, {default: 1000}
+ #    max_retries: 1        #最大重试次数, {default: 1}
+ #    pool_size: 0          #最大连接数大小, {default: runtime.NumCPU*10}
+ #    min_idle_conns: 0     #一直保持的空闲连接数(无论是否有请求),一般为0即可 {default: 0}`
 }

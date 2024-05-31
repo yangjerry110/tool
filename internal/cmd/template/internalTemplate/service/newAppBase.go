@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:16:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 17:40:23
+ * @LastEditTime: 2024-04-26 16:28:17
  * @Description: newApp service
  */
 package service
@@ -26,15 +26,17 @@ func (n *NewAppBaseService) New() error {
 
 	// The structure that needs to be rendered
 	type Data struct {
-		Time string
+		Time              string
+		ImportProjectPath string
 	}
 
 	// Set Data
 	data := &Data{}
 	data.Time = template.GetFormatNowTime()
+	data.ImportProjectPath = config.ProjectImportPathConf.ImportPath
 
 	filePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), data)
+	return template.SaveTemplate(filePath, "baseService.go", n.getTemplate(), data)
 }
 
 /**
@@ -52,6 +54,8 @@ func (n *NewAppBaseService) getTemplate() string {
 	* @Description: base
 	*/
    package service
+
+   import "{{.ImportProjectPath}}/internal/service/interfaceService"
    
    /**
 	* @description: CreateDemoService
@@ -60,7 +64,7 @@ func (n *NewAppBaseService) getTemplate() string {
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func CreateDemoService(DemoServices ...DemoService) DemoService {
+   func CreateDemoService(DemoServices ...interfaceService.DemoService) interfaceService.DemoService {
 	   if len(DemoServices) == 0 {
 		   return &Demo{}
 	   }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:36:38
+ * @LastEditTime: 2024-04-26 16:13:23
  * @Description: newApp
  */
 package config
@@ -302,7 +302,7 @@ func (n *NewAppConfig) getTemplate() string {
    
    import (
 	   "github.com/yangjerry110/tool/cache"
-	   "github.com/yangjerry110/tool/conf"
+	   "github.com/yangjerry110/tool/router"
 	   "github.com/yangjerry110/tool/db"
    )
    
@@ -316,18 +316,8 @@ func (n *NewAppConfig) getTemplate() string {
 	*/
    func (c *Config) SetConfig() error {
    
-	   // Set Database
-	   if err := conf.CreateConf(&DataBase{}).SetConfig(); err != nil {
-		   return err
-	   }
-   
-	   // Set Redis
-	   if err := conf.CreateConf(&Redis{}).SetConfig(); err != nil {
-		   return err
-	   }
-   
-	   // Set router
-	   if err := conf.CreateConf(&Router{}).SetConfig(); err != nil {
+	   // set gin conf
+	   if err := router.CreateGinConf().SetConfig(); err != nil {
 		   return err
 	   }
    

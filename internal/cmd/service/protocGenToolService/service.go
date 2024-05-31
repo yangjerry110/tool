@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-03-05 15:26:44
+ * @LastEditTime: 2024-04-25 14:53:20
  * @Description:
  */
 package protocgentoolservice
@@ -290,8 +290,14 @@ func (s *Service) isExistServiceFile() error {
 	// if exist filePath
 	_, err = os.Stat(filePath)
 	if err != nil {
-		// newservice
-		if err := s.newService(); err != nil {
+		// set newService
+		templateNewService := &service.NewService{}
+		templateNewService.ProjectPath = config.ProjectPathConf.Path
+		templateNewService.ServiceName = config.ProtobufFileConf.FileName
+		templateNewService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+		templateNewService.Time = template.GetFormatNowTime()
+		// newService
+		if err := template.CreateTemplate(templateNewService).New(); err != nil {
 			return err
 		}
 	}

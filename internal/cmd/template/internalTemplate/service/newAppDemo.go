@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:57:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 17:08:50
+ * @LastEditTime: 2024-04-26 15:54:28
  * @Description:
  */
 package service
@@ -26,12 +26,14 @@ func (n *NewAppDemoService) New() error {
 
 	// The structure that needs to be rendered
 	type Data struct {
-		Time string
+		Time              string
+		ImportProjectPath string
 	}
 
 	// Set Data
 	data := &Data{}
 	data.Time = template.GetFormatNowTime()
+	data.ImportProjectPath = config.ProjectImportPathConf.ImportPath
 
 	filePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
 	return template.SaveTemplate(filePath, "demoService.go", n.getTemplate(), data)
@@ -56,15 +58,8 @@ package service
 
 import (
 	"context"
-	"git.qutoutiao.net/ee/tool-api/vo/protobuf"
+	"{{.ImportProjectPath}}/vo/protobuf"
 )
-
-type DemoService interface {
-	AddDemo(ctx context.Context, inputVo *protobuf.AddDemoReq) (*protobuf.Empty, error)
-	DeleteDemo(ctx context.Context, inputVo *protobuf.DeleteDemoReq) (*protobuf.Empty, error)
-	UpdateDemo(ctx context.Context, inputVo *protobuf.UpdateDemoReq) (*protobuf.Empty, error)
-	GetDemo(ctx context.Context, inputVo *protobuf.GetDemoReq) (*protobuf.GetDemoResp, error)
-}
 
 type Demo struct{}
 

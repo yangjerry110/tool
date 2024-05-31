@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:51:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:36:17
+ * @LastEditTime: 2024-04-26 15:56:36
  * @Description: newApp base router
  */
 package router
@@ -14,7 +14,7 @@ import (
 	"github.com/yangjerry110/tool/internal/cmd/template"
 )
 
-type NewAppBaseRouter struct{}
+type NewAppRouter struct{}
 
 /**
  * @description: New
@@ -22,7 +22,7 @@ type NewAppBaseRouter struct{}
  * @date: 2023-12-19 14:53:24
  * @return {*}
  */
-func (n *NewAppBaseRouter) New() error {
+func (n *NewAppRouter) New() error {
 
 	// The structure that needs to be rendered
 	type Data struct {
@@ -36,7 +36,7 @@ func (n *NewAppBaseRouter) New() error {
 	data.ImportPath = config.ProjectImportPathConf.ImportPath
 
 	filePath := fmt.Sprintf("%s/router", config.ProjectPathConf.Path)
-	return template.SaveTemplate(filePath, "base.go", n.getTemplate(), data)
+	return template.SaveTemplate(filePath, "router.go", n.getTemplate(), data)
 }
 
 /**
@@ -45,7 +45,7 @@ func (n *NewAppBaseRouter) New() error {
  * @date: 2023-12-19 14:52:38
  * @return {*}
  */
-func (n *NewAppBaseRouter) getTemplate() string {
+func (n *NewAppRouter) getTemplate() string {
 	return `/*
 	* @Author: Jerry.Yang
 	* @Date: {{.Time}}
@@ -68,8 +68,8 @@ func (n *NewAppBaseRouter) getTemplate() string {
 	*/
    func RunRouter() {
    
-		// Register Qiwei
-		if err := router.CreateGinRouter().Register("qiwei", &Qiwei{}); err != nil {
+		// Register Demo
+		if err := router.CreateGinRouter().Register("Demo", &Demo{}); err != nil {
 			panic(err)
 		}
 

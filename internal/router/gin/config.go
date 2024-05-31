@@ -2,7 +2,7 @@
 * @Author: Jerry.Yang
 * @Date: 2023-12-13 18:39:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:50:10
+ * @LastEditTime: 2024-04-12 17:34:57
 * @Description: gin conf
 */
 package gin
@@ -11,43 +11,8 @@ import (
 	toolredis "github.com/yangjerry110/tool/internal/cache/redis"
 	"github.com/yangjerry110/tool/internal/conf"
 	gormdb "github.com/yangjerry110/tool/internal/db/gormDb"
+	"github.com/yangjerry110/tool/internal/router"
 )
-
-/**
- * @description: config
- * @author: Jerry.Yang
- * @date: 2023-12-14 10:49:13
- * @return {*}
- */
-type Config struct {
-	Addr string `yaml:"addr"`
-}
-
-/**
- * @description: GinConf
- * @author: Jerry.Yang
- * @date: 2023-12-13 18:40:07
- * @return {*}
- */
-var RouteConf = &Config{}
-
-/**
- * @description: SetConfig
- * @author: Jerry.Yang
- * @date: 2023-12-13 18:41:43
- * @return {*}
- */
-func (c *Config) SetConfig() error {
-
-	/**
-	 * @step
-	 * @返回结果
-	 **/
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "router.yaml", FileType: "yaml", ConfData: &RouteConf}).SetConfig(); err != nil {
-		return err
-	}
-	return nil
-}
 
 /**
  * @description: SetConfig
@@ -73,7 +38,7 @@ func (g *Gin) SetConfig() error {
 	}
 
 	// Set gin config
-	if err := conf.CreateConf(&Config{}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&router.Config{}).SetConfig(); err != nil {
 		return err
 	}
 	return nil

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 11:17:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:05:02
+ * @LastEditTime: 2024-04-12 17:29:11
  * @Description: swagger
  */
 package gin
@@ -14,7 +14,7 @@ import (
 	"github.com/swaggo/swag"
 )
 
-type SwaggerGinRouter struct{}
+type Swagger struct{}
 
 /**
  * @description: Register
@@ -22,11 +22,11 @@ type SwaggerGinRouter struct{}
  * @date: 2023-12-14 15:45:31
  * @return {*}
  */
-func (s *SwaggerGinRouter) Register() error {
+func (s *Swagger) Register(ginEngine *gin.Engine) error {
 
 	// Get Default Router
 	// Define apidoc router
-	GetGinDefaultRouter().GET("/api/apidoc/*any", s.apidoc)
+	ginEngine.GET("/api/apidoc/*any", s.apidoc)
 	return nil
 }
 
@@ -37,7 +37,7 @@ func (s *SwaggerGinRouter) Register() error {
  * @date: 2023-12-14 15:45:02
  * @return {*}
  */
-func (s *SwaggerGinRouter) apidoc(ctx *gin.Context) {
+func (s *Swagger) apidoc(ctx *gin.Context) {
 
 	any := ctx.Param("any")
 

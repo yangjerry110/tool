@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-20 17:05:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:08:07
+ * @LastEditTime: 2024-04-12 17:28:47
  * @Description: Health check
  */
 package gin
@@ -21,8 +21,8 @@ type Ping struct{}
  * @date: 2023-12-20 17:07:11
  * @return {*}
  */
-func (p *Ping) Register() error {
-	defaultGinRouter.GET("/ping", func(ctx *gin.Context) {
+func (p *Ping) Register(ginEngine *gin.Engine) error {
+	ginEngine.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "success")
 	})
 	return nil
