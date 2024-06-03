@@ -52,7 +52,7 @@ func (e *ToolError) NewError(err error) ErrorInterface {
 	 * @step
 	 * @default withFunc
 	 **/
-	e.WithStackTrace().WithFunc().WithError(err)
+	e.WithStackTrace().WithError(err)
 	return e
 }
 
@@ -306,7 +306,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @packageName
 	 **/
 	if e.packageName != "" {
-		errMsg = fmt.Sprintf("packageName : %s; \r\n", e.packageName)
+		errMsg = fmt.Sprintf("packageName : %s; \n", e.packageName)
 	}
 
 	/**
@@ -314,7 +314,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @fileName
 	 **/
 	if e.fileName != "" {
-		errMsg = fmt.Sprintf("%sflieName : %s; \r\n", errMsg, e.fileName)
+		errMsg = fmt.Sprintf("%sflieName : %s; \n", errMsg, e.fileName)
 	}
 
 	/**
@@ -322,7 +322,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @funcName
 	 **/
 	if e.funcName != "" {
-		errMsg = fmt.Sprintf("%sfuncName : %s; \r\n", errMsg, e.funcName)
+		errMsg = fmt.Sprintf("%sfuncName : %s; \n", errMsg, e.funcName)
 	}
 
 	/**
@@ -330,7 +330,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @lineNo
 	 **/
 	if e.lineNo != 0 {
-		errMsg = fmt.Sprintf("%slineNo:%d; \r\n", errMsg, e.lineNo)
+		errMsg = fmt.Sprintf("%slineNo:%d; \n", errMsg, e.lineNo)
 	}
 
 	/**
@@ -338,7 +338,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @callfuncName
 	 **/
 	if e.callFuncName != "" {
-		errMsg = fmt.Sprintf("%scallFuncName : %s; \r\n", errMsg, e.callFuncName)
+		errMsg = fmt.Sprintf("%scallFuncName : %s; \n", errMsg, e.callFuncName)
 	}
 
 	/**
@@ -347,7 +347,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			errMsg = fmt.Sprintf("%s%s = %s; \r\n", errMsg, fieldName, fieldVal)
+			errMsg = fmt.Sprintf("%s%s = %s; \n", errMsg, fieldName, fieldVal)
 		}
 	}
 
@@ -356,7 +356,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @error
 	 **/
 	if e.error != nil {
-		errMsg = fmt.Sprintf("%s%s \r\n", errMsg, e.error)
+		errMsg = fmt.Sprintf("%s%s \n", errMsg, e.error)
 	}
 
 	/**
@@ -364,7 +364,7 @@ func (e *ToolError) GetError() ErrorInterface {
 	 * @stackTrace
 	 **/
 	if e.stackTrace != "" {
-		errMsg = fmt.Sprintf("%sstackTrace: \r\n%s", errMsg, e.stackTrace)
+		errMsg = fmt.Sprintf("%sstackTrace: \n%s", errMsg, e.stackTrace)
 	}
 
 	/**
