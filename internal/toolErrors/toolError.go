@@ -14,10 +14,12 @@ type ToolError struct {
 	packageName  string
 	fileName     string
 	funcName     string
+	stackTrace   string
 	callFuncName string
 	lineNo       int
 	fields       map[string]interface{}
 	errmsg       string
+	error        error
 }
 
 /**
@@ -33,8 +35,7 @@ func (e *ToolError) New(err string) ErrorInterface {
 	 * @step
 	 * @default withFunc
 	 **/
-	e.runtimeDept = 2
-	e.WithFunc().WithError(errors.New(err))
+	e.WithStackTrace().WithError(errors.New(err))
 	return e
 }
 
@@ -42,7 +43,7 @@ func (e *ToolError) New(err string) ErrorInterface {
  * @description: NewError
  * @param {error} err
  * @author: Jerry.Yang
- * @date: 2024-05-31 11:45:53
+ * @date: NewError
  * @return {*}
  */
 func (e *ToolError) NewError(err error) ErrorInterface {
@@ -51,8 +52,7 @@ func (e *ToolError) NewError(err error) ErrorInterface {
 	 * @step
 	 * @default withFunc
 	 **/
-	e.runtimeDept = 2
-	e.WithFunc().WithError(err)
+	e.WithStackTrace().WithFunc().WithError(err)
 	return e
 }
 
@@ -130,9 +130,6 @@ func (e *ToolError) WithFunc() ErrorInterface {
 	 * @if exist; get
 	 **/
 	runtimeDept := e.getRuntimeDept()
-	if e.runtimeDept != 0 {
-		runtimeDept = e.runtimeDept
-	}
 
 	/**
 	 * @step
@@ -141,11 +138,52 @@ func (e *ToolError) WithFunc() ErrorInterface {
 	pc, _, _, ok := runtime.Caller(runtimeDept)
 	if ok {
 		funcName := runtime.FuncForPC(pc).Name()
-		funcNameArr := strings.Split(funcName, ".")
-		if len(funcNameArr) > 1 {
-			e.funcName = funcNameArr[1]
+		e.funcName = funcName
+	}
+	return e
+}
+
+/**
+ * @description: WithStackTrace
+ * @author: Jerry.Yang
+ * @date: 2024-06-03 11:14:16
+ * @return {*}
+ */
+func (e *ToolError) WithStackTrace() ErrorInterface {
+
+	/**
+	 * @step
+	 * @Only the first 10 layers of the survey stack are retrieved
+	 **/
+	pc := make([]uintptr, 10)
+
+	/**
+	 * @step
+	 * @get runtimeDept
+	 **/
+	runtimeDept := e.getRuntimeDept()
+	n := runtime.Callers(runtimeDept+2, pc)
+	frames := runtime.CallersFrames(pc[:n])
+
+	/**
+	 * @step
+	 * @for
+	 * @get stackTrace
+	 **/
+	var stackTrace strings.Builder
+	for {
+		frame, more := frames.Next()
+		stackTrace.WriteString(fmt.Sprintf("%s\n\t%s:%d\n", frame.Function, frame.File, frame.Line))
+		if !more {
+			break
 		}
 	}
+
+	/**
+	 * @step
+	 * @set stackTrace
+	 **/
+	e.stackTrace = stackTrace.String()
 	return e
 }
 
@@ -204,6 +242,12 @@ func (e *ToolError) WithFields(fieldName string, fieldVal interface{}) ErrorInte
 
 	/**
 	 * @step
+	 * @getRuntimeDept
+	 **/
+	e.getRuntimeDept()
+
+	/**
+	 * @step
 	 * @judge e.fields
 	 * @if == nil; new
 	 **/
@@ -227,6 +271,29 @@ func (e *ToolError) WithFields(fieldName string, fieldVal interface{}) ErrorInte
  * @return {*}
  */
 func (e *ToolError) WithError(err error) ErrorInterface {
+	e.error = err
+	return e
+}
+
+/**
+ * @description: SetRuntimeDept
+ * @param {int} runtimeDept
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 15:03:22
+ * @return {*}
+ */
+func (e *ToolError) SetRuntimeDept(runtimeDept int) ErrorInterface {
+	e.runtimeDept = runtimeDept
+	return e
+}
+
+/**
+ * @description: GetError
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 15:57:29
+ * @return {*}
+ */
+func (e *ToolError) GetError() ErrorInterface {
 
 	/**
 	 * @step
@@ -239,7 +306,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @packageName
 	 **/
 	if e.packageName != "" {
-		errMsg = fmt.Sprintf("%s;", e.packageName)
+		errMsg = fmt.Sprintf("packageName : %s; \r\n", e.packageName)
 	}
 
 	/**
@@ -247,7 +314,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @fileName
 	 **/
 	if e.fileName != "" {
-		errMsg = fmt.Sprintf("%s %s;", errMsg, e.fileName)
+		errMsg = fmt.Sprintf("%sflieName : %s; \r\n", errMsg, e.fileName)
 	}
 
 	/**
@@ -255,7 +322,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @funcName
 	 **/
 	if e.funcName != "" {
-		errMsg = fmt.Sprintf("%s %s;", errMsg, e.funcName)
+		errMsg = fmt.Sprintf("%sfuncName : %s; \r\n", errMsg, e.funcName)
 	}
 
 	/**
@@ -263,7 +330,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @lineNo
 	 **/
 	if e.lineNo != 0 {
-		errMsg = fmt.Sprintf("%s lineNo:%d;", errMsg, e.lineNo)
+		errMsg = fmt.Sprintf("%slineNo:%d; \r\n", errMsg, e.lineNo)
 	}
 
 	/**
@@ -271,7 +338,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @callfuncName
 	 **/
 	if e.callFuncName != "" {
-		errMsg = fmt.Sprintf("%s %s;", errMsg, e.callFuncName)
+		errMsg = fmt.Sprintf("%scallFuncName : %s; \r\n", errMsg, e.callFuncName)
 	}
 
 	/**
@@ -280,7 +347,7 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			errMsg = fmt.Sprintf("%s %s = %s;", errMsg, fieldName, fieldVal)
+			errMsg = fmt.Sprintf("%s%s = %s; \r\n", errMsg, fieldName, fieldVal)
 		}
 	}
 
@@ -288,8 +355,16 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 	 * @step
 	 * @error
 	 **/
-	if err != nil {
-		errMsg = fmt.Sprintf("%s Err : %s", errMsg, err)
+	if e.error != nil {
+		errMsg = fmt.Sprintf("%s%s \r\n", errMsg, e.error)
+	}
+
+	/**
+	 * @step
+	 * @stackTrace
+	 **/
+	if e.stackTrace != "" {
+		errMsg = fmt.Sprintf("%sstackTrace: \r\n%s", errMsg, e.stackTrace)
 	}
 
 	/**
@@ -308,6 +383,16 @@ func (e *ToolError) WithError(err error) ErrorInterface {
  * @return {*}
  */
 func (e *ToolError) Error() string {
+	return e.GetError().String()
+}
+
+/**
+ * @description: String
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 15:43:35
+ * @return {*}
+ */
+func (e *ToolError) String() string {
 	return e.errmsg
 }
 
@@ -326,7 +411,7 @@ func (e *ToolError) getRuntimeDept() int {
 	 * @return 1
 	 **/
 	if e.isGetRuntime {
-		return 1
+		return e.runtimeDept + 1
 	}
 
 	/**
@@ -337,7 +422,8 @@ func (e *ToolError) getRuntimeDept() int {
 	 **/
 	if !e.isGetRuntime {
 		e.isGetRuntime = true
-		return 2
+		e.runtimeDept = 3
+		return e.runtimeDept
 	}
-	return 2
+	return e.runtimeDept
 }

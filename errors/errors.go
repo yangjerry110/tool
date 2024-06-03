@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 15:22:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-05-31 11:47:05
+ * @LastEditTime: 2024-06-03 14:09:41
  * @Description: errors
  */
 package errors
@@ -19,7 +19,7 @@ import (
  * @return {*}
  */
 func New(err string) toolErrors.ErrorInterface {
-	return toolError().New(err)
+	return toolErrors.New(err)
 }
 
 /**
@@ -30,7 +30,7 @@ func New(err string) toolErrors.ErrorInterface {
  * @return {*}
  */
 func NewError(err error) toolErrors.ErrorInterface {
-	return toolError().NewError(err)
+	return toolErrors.NewError(err)
 }
 
 /**
@@ -41,7 +41,7 @@ func NewError(err error) toolErrors.ErrorInterface {
  * @return {*}
  */
 func WithPackage() toolErrors.ErrorInterface {
-	return toolError().WithPackage()
+	return toolErrors.WithPackage()
 }
 
 /**
@@ -52,7 +52,7 @@ func WithPackage() toolErrors.ErrorInterface {
  * @return {*}
  */
 func WithFile() toolErrors.ErrorInterface {
-	return toolError().WithFile()
+	return toolErrors.WithFile()
 }
 
 /**
@@ -63,7 +63,17 @@ func WithFile() toolErrors.ErrorInterface {
  * @return {*}
  */
 func WithFunc() toolErrors.ErrorInterface {
-	return toolError().WithFunc()
+	return toolErrors.WithFunc()
+}
+
+/**
+ * @description: WithStackTrace
+ * @author: Jerry.Yang
+ * @date: 2024-06-03 14:09:11
+ * @return {*}
+ */
+func WithStackTrace() toolErrors.ErrorInterface {
+	return toolErrors.WithStackTrace()
 }
 
 /**
@@ -74,7 +84,7 @@ func WithFunc() toolErrors.ErrorInterface {
  * @return {*}
  */
 func WithLineNo() toolErrors.ErrorInterface {
-	return toolError().WithLineNo()
+	return toolErrors.WithLineNo()
 }
 
 /**
@@ -86,7 +96,7 @@ func WithLineNo() toolErrors.ErrorInterface {
  * @return {*}
  */
 func WithFields(fieldName string, fieldVal interface{}) toolErrors.ErrorInterface {
-	return toolError().WithFields(fieldName, fieldVal)
+	return toolErrors.WithFields(fieldName, fieldVal)
 }
 
 /**
@@ -97,18 +107,29 @@ func WithFields(fieldName string, fieldVal interface{}) toolErrors.ErrorInterfac
  * @return {*}
  */
 func WithCallFuncName(funcName string) toolErrors.ErrorInterface {
-	return toolError().WithCallFuncName(funcName)
+	return toolErrors.WithCallFuncName(funcName)
 }
 
 /**
  * @description: WithError
- * @param {error} err
+ * @param {error} errmsg
  * @author: Jerry.Yang
  * @date: 2024-05-30 17:18:39
  * @return {*}
  */
 func WithError(err error) toolErrors.ErrorInterface {
-	return toolError().WithError(err)
+	return toolErrors.WithError(err)
+}
+
+/**
+ * @description: SetRuntimeDept
+ * @param {int} runtimeDept
+ * @author: Jerry.Yang
+ * @date: 2024-05-31 15:04:15
+ * @return {*}
+ */
+func SetRuntimeDept(runtimeDept int) toolErrors.ErrorInterface {
+	return toolErrors.SetRuntimeDept(runtimeDept)
 }
 
 /**
@@ -119,5 +140,5 @@ func WithError(err error) toolErrors.ErrorInterface {
  * @return {*}
  */
 func Error() string {
-	return toolError().Error()
+	return toolErrors.Error()
 }

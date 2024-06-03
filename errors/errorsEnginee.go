@@ -2,7 +2,7 @@
 * @Author: Jerry.Yang
 * @Date: 2024-05-30 15:17:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-05-30 19:22:40
+ * @LastEditTime: 2024-06-03 10:58:37
 * @Description: errorsEnginee
 */
 package errors
@@ -27,25 +27,5 @@ var defaultErrorsEnginee toolErrors.ErrorInterface
  * @return {*}
  */
 func SetErrorsEnginee(errorsEnginee toolErrors.ErrorInterface) toolErrors.ErrorInterface {
-	defaultErrorsEnginee = errorsEnginee
-	return defaultErrorsEnginee
-}
-
-/**
- * @description: Error
- * @author: Jerry.Yang
- * @date: 2024-05-30 15:21:12
- * @return {*}
- */
-func toolError() toolErrors.ErrorInterface {
-
-	/**
-	 * @step
-	 * @judge defaultErrorsEngine
-	 * @if == nil
-	 **/
-	if defaultErrorsEnginee == nil {
-		return &toolErrors.ToolError{}
-	}
-	return defaultErrorsEnginee
+	return toolErrors.SetToolErrorsEnginee(errorsEnginee)
 }

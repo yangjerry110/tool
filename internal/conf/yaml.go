@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 16:24:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 14:50:42
+ * @LastEditTime: 2024-05-31 14:41:02
  * @Description: yaml conf
  */
 package conf
@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 
 	"github.com/yangjerry110/tool/internal/errors"
+	"github.com/yangjerry110/tool/internal/toolErrors"
 	"gopkg.in/yaml.v3"
 )
 
@@ -32,7 +33,7 @@ func (y *Yaml) SetConfig() error {
 
 	// judge filePath
 	if y.FilePath == "" {
-		return errors.ErrYamlConfIsNoFilePath
+		return toolErrors.NewError(errors.ErrYamlConfIsNoFilePath)
 	}
 
 	// judge fileName

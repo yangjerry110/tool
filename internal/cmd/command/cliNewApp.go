@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:46:20
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-13 14:20:30
+ * @LastEditTime: 2024-05-31 15:39:58
  * @Description:
  */
 package command
@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/golib/cli"
+	"github.com/yangjerry110/tool/internal/toolErrors"
 )
 
 type CliNewApp struct{}
@@ -33,7 +34,7 @@ func (c *CliNewApp) New() error {
 
 	// set commands
 	if err := CreateCommand(&Command{CliApp: app}).New(); err != nil {
-		return err
+		return toolErrors.NewError(err)
 	}
 
 	// run app
