@@ -173,7 +173,7 @@ func (e *ToolError) WithStackTrace() ErrorInterface {
 	var stackTrace strings.Builder
 	for {
 		frame, more := frames.Next()
-		stackTrace.WriteString(fmt.Sprintf("%s<br>\t%s:%d<br>", frame.Function, frame.File, frame.Line))
+		stackTrace.WriteString(fmt.Sprintf("%s<br> %s:%d<br>", frame.Function, frame.File, frame.Line))
 		if !more {
 			break
 		}
