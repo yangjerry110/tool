@@ -422,7 +422,7 @@ func (e *ToolError) getRuntimeDept() int {
 	 **/
 	if !e.isGetRuntime {
 		e.isGetRuntime = true
-		e.runtimeDept = 0
+		e.runtimeDept = 2
 		return e.runtimeDept
 	}
 	return e.runtimeDept
