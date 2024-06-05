@@ -22,6 +22,16 @@ type ToolError struct {
 }
 
 /**
+ * @description: init
+ * @author: Jerry.Yang
+ * @date: 2024-06-05 16:12:35
+ * @return {*}
+ */
+func (e *ToolError) init() {
+	e = &ToolError{}
+}
+
+/**
  * @description: New
  * @param {string} err
  * @author: Jerry.Yang
@@ -29,6 +39,12 @@ type ToolError struct {
  * @return {*}
  */
 func (e *ToolError) New(err string) error {
+
+	/**
+	 * @step
+	 * @init
+	 **/
+	e.init()
 
 	/**
 	 * @step
@@ -46,6 +62,12 @@ func (e *ToolError) New(err string) error {
  * @return {*}
  */
 func (e *ToolError) NewError(err error) error {
+
+	/**
+	 * @step
+	 * @init
+	 **/
+	e.init()
 
 	/**
 	 * @step
