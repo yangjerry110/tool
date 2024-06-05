@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 14:21:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-03 10:58:06
+ * @LastEditTime: 2024-06-05 16:20:48
  * @Description: internal error
  */
 package toolErrors
@@ -34,15 +34,5 @@ func SetToolErrorsEnginee(ErrorInterface ErrorInterface) ErrorInterface {
  * @return {*}
  */
 func toolErrorsEnginee() ErrorInterface {
-
-	/**
-	 * @step
-	 * @judge defaultErrorsEnginee
-	 * @if == nil
-	 * @set toolErrors
-	 **/
-	if defaultErrorsEngine == nil {
-		return SetToolErrorsEnginee(&ToolError{})
-	}
-	return defaultErrorsEngine
+	return &ToolError{}
 }
