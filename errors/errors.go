@@ -18,7 +18,7 @@ import (
  * @date: 2024-05-31 10:33:37
  * @return {*}
  */
-func New(err string) toolErrors.ErrorInterface {
+func New(err string) error {
 	return toolErrors.New(err)
 }
 
@@ -29,7 +29,7 @@ func New(err string) toolErrors.ErrorInterface {
  * @date: 2024-05-31 11:47:07
  * @return {*}
  */
-func NewError(err error) toolErrors.ErrorInterface {
+func NewError(err error) error {
 	return toolErrors.NewError(err)
 }
 

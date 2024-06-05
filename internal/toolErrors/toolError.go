@@ -1,7 +1,6 @@
 package toolErrors
 
 import (
-	"errors"
 	"fmt"
 	"path/filepath"
 	"runtime"
@@ -29,13 +28,13 @@ type ToolError struct {
  * @date: 2024-05-31 10:32:03
  * @return {*}
  */
-func (e *ToolError) New(err string) ErrorInterface {
+func (e *ToolError) New(err string) error {
 
 	/**
 	 * @step
 	 * @default withFunc
 	 **/
-	e.WithStackTrace().WithError(errors.New(err))
+	e.WithStackTrace().WithErrMsg(err)
 	return e
 }
 
@@ -46,7 +45,7 @@ func (e *ToolError) New(err string) ErrorInterface {
  * @date: NewError
  * @return {*}
  */
-func (e *ToolError) NewError(err error) ErrorInterface {
+func (e *ToolError) NewError(err error) error {
 
 	/**
 	 * @step
@@ -276,6 +275,18 @@ func (e *ToolError) WithError(err error) ErrorInterface {
 }
 
 /**
+ * @description: WithErrMsg
+ * @param {string} err
+ * @author: Jerry.Yang
+ * @date: 2024-06-05 15:56:07
+ * @return {*}
+ */
+func (e *ToolError) WithErrMsg(err string) ErrorInterface {
+	e.errmsg = err
+	return e
+}
+
+/**
  * @description: SetRuntimeDept
  * @param {int} runtimeDept
  * @author: Jerry.Yang
@@ -357,6 +368,14 @@ func (e *ToolError) GetError() ErrorInterface {
 	 **/
 	if e.error != nil {
 		errMsg = fmt.Sprintf("%s%s  \r\n  ", errMsg, e.error)
+	}
+
+	/**
+	 * @step
+	 * @errMsg
+	 **/
+	if e.errmsg != "" {
+		errMsg = fmt.Sprintf("%s%s \r\n", errMsg, e.errmsg)
 	}
 
 	/**

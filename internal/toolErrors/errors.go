@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 14:32:55
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-03 11:15:43
+ * @LastEditTime: 2024-06-05 15:57:08
  * @Description: errors
  */
 package toolErrors
 
 type ErrorInterface interface {
-	New(err string) ErrorInterface
-	NewError(err error) ErrorInterface
+	New(err string) error
+	NewError(err error) error
 	WithPackage() ErrorInterface
 	WithFile() ErrorInterface
 	WithFunc() ErrorInterface
@@ -18,6 +18,7 @@ type ErrorInterface interface {
 	WithFields(fieldName string, fieldVal interface{}) ErrorInterface
 	WithCallFuncName(funcName string) ErrorInterface
 	WithError(err error) ErrorInterface
+	WithErrMsg(err string) ErrorInterface
 	GetError() ErrorInterface
 	SetRuntimeDept(runtimeDept int) ErrorInterface
 	Error() string
@@ -31,7 +32,7 @@ type ErrorInterface interface {
  * @date: 2024-05-31 10:33:37
  * @return {*}
  */
-func New(err string) ErrorInterface {
+func New(err string) error {
 	return toolErrorsEnginee().New(err)
 }
 
@@ -42,7 +43,7 @@ func New(err string) ErrorInterface {
  * @date: 2024-05-31 11:47:07
  * @return {*}
  */
-func NewError(err error) ErrorInterface {
+func NewError(err error) error {
 	return toolErrorsEnginee().NewError(err)
 }
 
