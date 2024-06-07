@@ -1,448 +1,158 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2024-05-31 11:17:30
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2024-06-07 11:08:14
+ * @Description:
+ */
 package toolErrors
 
 import (
 	"fmt"
-	"path/filepath"
-	"runtime"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type ToolError struct {
-	isGetRuntime bool
-	runtimeDept  int
-	packageName  string
-	fileName     string
-	funcName     string
-	stackTrace   string
-	callFuncName string
-	lineNo       int
-	fields       map[string]interface{}
-	errmsg       string
-	error        error
+	message string
+	isStack bool
+	err     error
+	fields  map[string]interface{}
 }
 
 /**
  * @description: New
- * @param {string} err
+ * @param {string} message
  * @author: Jerry.Yang
- * @date: 2024-05-31 10:32:03
+ * @date: 2024-06-06 15:49:57
  * @return {*}
  */
-func (e *ToolError) New(err string) error {
-
-	/**
-	 * @step
-	 * @default withFunc
-	 **/
-	e.WithStackTrace().WithErrMsg(err)
-	return e
+func (e *ToolError) New(message string) error {
+	e.message = message
+	return e.WithStack().GetError()
 }
 
 /**
  * @description: NewError
  * @param {error} err
  * @author: Jerry.Yang
- * @date: NewError
+ * @date: 2024-06-06 16:46:42
  * @return {*}
  */
 func (e *ToolError) NewError(err error) error {
-
-	/**
-	 * @step
-	 * @default withFunc
-	 **/
-	e.WithStackTrace().WithError(err)
-	return e
+	e.err = err
+	return e.WithStack().GetError()
 }
 
 /**
- * @description: WithPackage
- * @param {string} packageName
+ * @description: WithStack
+ * @param {error} err
  * @author: Jerry.Yang
- * @date: 2024-05-30 15:00:31
+ * @date: 2024-06-06 15:50:14
  * @return {*}
  */
-func (e *ToolError) WithPackage() ErrorInterface {
-
-	/**
-	 * @step
-	 * @get runtimeDept
-	 **/
-	runtimeDept := e.getRuntimeDept()
-
-	/**
-	 * @step
-	 * @Get the data for the upper two levels
-	 **/
-	_, file, _, ok := runtime.Caller(runtimeDept)
-
-	/**
-	 * @step
-	 * @get packageName
-	 **/
-	if ok {
-		packageName := filepath.Base(filepath.Dir(file))
-		e.packageName = packageName
-	}
-	return e
-}
-
-/**
- * @description: WithFile
- * @param {string} fileName
- * @author: Jerry.Yang
- * @date: 2024-05-30 16:14:40
- * @return {*}
- */
-func (e *ToolError) WithFile() ErrorInterface {
-
-	/**
-	 * @step
-	 * @get runtimeDept
-	 **/
-	runtimeDept := e.getRuntimeDept()
-
-	/**
-	 * @step
-	 * @Get the data for the upper two levels
-	 **/
-	_, fileName, _, ok := runtime.Caller(runtimeDept)
-	if ok {
-		e.fileName = fileName
-	}
-	return e
-}
-
-/**
- * @description: WithFunc
- * @param {string} funcName
- * @author: Jerry.Yang
- * @date: 2024-05-30 15:00:41
- * @return {*}
- */
-func (e *ToolError) WithFunc() ErrorInterface {
-
-	/**
-	 * @step
-	 * @get runtimeDept
-	 * @judge runtimeDept
-	 * @if exist; get
-	 **/
-	runtimeDept := e.getRuntimeDept()
-
-	/**
-	 * @step
-	 * @get funcName
-	 **/
-	pc, _, _, ok := runtime.Caller(runtimeDept)
-	if ok {
-		funcName := runtime.FuncForPC(pc).Name()
-		e.funcName = funcName
-	}
-	return e
-}
-
-/**
- * @description: WithStackTrace
- * @author: Jerry.Yang
- * @date: 2024-06-03 11:14:16
- * @return {*}
- */
-func (e *ToolError) WithStackTrace() ErrorInterface {
-
-	/**
-	 * @step
-	 * @Only the first 10 layers of the survey stack are retrieved
-	 **/
-	pc := make([]uintptr, 10)
-
-	/**
-	 * @step
-	 * @get runtimeDept
-	 **/
-	runtimeDept := e.getRuntimeDept()
-	n := runtime.Callers(runtimeDept+2, pc)
-	frames := runtime.CallersFrames(pc[:n])
-
-	/**
-	 * @step
-	 * @for
-	 * @get stackTrace
-	 **/
-	var stackTrace strings.Builder
-	for {
-		frame, more := frames.Next()
-		stackTrace.WriteString(fmt.Sprintf("%s  \r\n  %s:%d   ", frame.Function, frame.File, frame.Line))
-		if !more {
-			break
-		}
-	}
-
-	/**
-	 * @step
-	 * @set stackTrace
-	 **/
-	e.stackTrace = stackTrace.String()
-	return e
-}
-
-/**
- * @description: WithLineNo
- * @param {int} lineNo
- * @author: Jerry.Yang
- * @date: 2024-05-30 16:15:02
- * @return {*}
- */
-func (e *ToolError) WithLineNo() ErrorInterface {
-
-	/**
-	 * @step
-	 * @get runtimeDept
-	 **/
-	runtimeDept := e.getRuntimeDept()
-
-	/**
-	 * @step
-	 * @set lineNo
-	 **/
-	_, _, lineNo, ok := runtime.Caller(runtimeDept)
-	if ok {
-		e.lineNo = lineNo
-	}
-	return e
-}
-
-/**
- * @description: WithCallFuncName
- * @param {string} funcName
- * @author: Jerry.Yang
- * @date: 2024-05-30 17:13:03
- * @return {*}
- */
-func (e *ToolError) WithCallFuncName(funcName string) ErrorInterface {
-
-	/**
-	 * @step
-	 * @set callFuncName
-	 **/
-	e.callFuncName = funcName
+func (e *ToolError) WithStack() ErrorInterface {
+	e.isStack = true
 	return e
 }
 
 /**
  * @description: WithFields
- * @param {string} fieldName
- * @param {interface{}} fieldVal
+ * @param {string} name
+ * @param {interface{}} value
  * @author: Jerry.Yang
- * @date: 2024-05-30 15:00:52
+ * @date: 2024-06-06 16:10:59
  * @return {*}
  */
-func (e *ToolError) WithFields(fieldName string, fieldVal interface{}) ErrorInterface {
+func (e *ToolError) WithFields(name string, value interface{}) ErrorInterface {
 
 	/**
 	 * @step
-	 * @getRuntimeDept
-	 **/
-	e.getRuntimeDept()
-
-	/**
-	 * @step
-	 * @judge e.fields
-	 * @if == nil; new
+	 * @judge fields
+	 * @if == nil
+	 * @make
 	 **/
 	if e.fields == nil {
-		e.fields = make(map[string]interface{}, 0)
+		e.fields = make(map[string]interface{})
 	}
 
 	/**
 	 * @step
 	 * @set fields
 	 **/
-	e.fields[fieldName] = fieldVal
-	return e
-}
-
-/**
- * @description: WithError
- * @param {error} err
- * @author: Jerry.Yang
- * @date: 2024-05-30 17:08:29
- * @return {*}
- */
-func (e *ToolError) WithError(err error) ErrorInterface {
-	e.error = err
-	return e
-}
-
-/**
- * @description: WithErrMsg
- * @param {string} err
- * @author: Jerry.Yang
- * @date: 2024-06-05 15:56:07
- * @return {*}
- */
-func (e *ToolError) WithErrMsg(err string) ErrorInterface {
-	e.errmsg = err
-	return e
-}
-
-/**
- * @description: SetRuntimeDept
- * @param {int} runtimeDept
- * @author: Jerry.Yang
- * @date: 2024-05-31 15:03:22
- * @return {*}
- */
-func (e *ToolError) SetRuntimeDept(runtimeDept int) ErrorInterface {
-	e.runtimeDept = runtimeDept
-	return e
-}
-
-/**
- * @description: GetError
- * @author: Jerry.Yang
- * @date: 2024-05-31 15:57:29
- * @return {*}
- */
-func (e *ToolError) GetError() ErrorInterface {
-
-	/**
-	 * @step
-	 * @define
-	 **/
-	errMsg := ""
-
-	/**
-	 * @step
-	 * @packageName
-	 **/
-	if e.packageName != "" {
-		errMsg = fmt.Sprintf("packageName : %s;  \r\n  ", e.packageName)
-	}
-
-	/**
-	 * @step
-	 * @fileName
-	 **/
-	if e.fileName != "" {
-		errMsg = fmt.Sprintf("%sflieName : %s;  \r\n  ", errMsg, e.fileName)
-	}
-
-	/**
-	 * @step
-	 * @funcName
-	 **/
-	if e.funcName != "" {
-		errMsg = fmt.Sprintf("%sfuncName : %s;  \r\n  ", errMsg, e.funcName)
-	}
-
-	/**
-	 * @step
-	 * @lineNo
-	 **/
-	if e.lineNo != 0 {
-		errMsg = fmt.Sprintf("%slineNo:%d;  \r\n  ", errMsg, e.lineNo)
-	}
-
-	/**
-	 * @step
-	 * @callfuncName
-	 **/
-	if e.callFuncName != "" {
-		errMsg = fmt.Sprintf("%scallFuncName : %s;  \r\n  ", errMsg, e.callFuncName)
-	}
-
-	/**
-	 * @step
-	 * @fields
-	 **/
-	if len(e.fields) != 0 {
-		for fieldName, fieldVal := range e.fields {
-			errMsg = fmt.Sprintf("%s%s = %s;  \r\n  ", errMsg, fieldName, fieldVal)
-		}
-	}
-
-	/**
-	 * @step
-	 * @error
-	 **/
-	if e.error != nil {
-		errMsg = fmt.Sprintf("%s%s  \r\n  ", errMsg, e.error)
-	}
-
-	/**
-	 * @step
-	 * @errMsg
-	 **/
-	if e.errmsg != "" {
-		errMsg = fmt.Sprintf("%s%s \r\n", errMsg, e.errmsg)
-	}
-
-	/**
-	 * @step
-	 * @stackTrace
-	 **/
-	if e.stackTrace != "" {
-		errMsg = fmt.Sprintf("%sstackTrace:  \r\n  %s", errMsg, e.stackTrace)
-	}
-
-	/**
-	 * @step
-	 * @set error
-	 **/
-	e.errmsg = errMsg
+	e.fields[name] = value
 	return e
 }
 
 /**
  * @description: Error
- * @param {error} err
  * @author: Jerry.Yang
- * @date: 2024-05-30 15:01:02
+ * @date: 2024-06-06 15:56:45
  * @return {*}
  */
 func (e *ToolError) Error() string {
-	return e.GetError().String()
+	return e.String()
 }
 
 /**
  * @description: String
  * @author: Jerry.Yang
- * @date: 2024-05-31 15:43:35
+ * @date: 2024-06-06 16:15:13
  * @return {*}
  */
 func (e *ToolError) String() string {
-	return e.errmsg
+	return e.GetError().Error()
 }
 
 /**
- * @description: getRuntimeDept
+ * @description: getError
  * @author: Jerry.Yang
- * @date: 2024-05-30 17:49:27
+ * @date: 2024-06-06 16:08:47
  * @return {*}
  */
-func (e *ToolError) getRuntimeDept() int {
+func (e *ToolError) GetError() error {
 
 	/**
 	 * @step
-	 * @judge isGetRuntime
-	 * @if == true
-	 * @return 1
+	 * @define
 	 **/
-	if e.isGetRuntime {
-		return e.runtimeDept + 1
+	withMessages := []string{}
+
+	/**
+	 * @step
+	 * @set error
+	 * @judge message
+	 **/
+	if e.message != "" {
+		e.err = errors.New(e.message)
 	}
 
 	/**
 	 * @step
-	 * @init isGetRuntime
-	 * @if == false
-	 * @return 2
+	 * @judge isStack
 	 **/
-	if !e.isGetRuntime {
-		e.isGetRuntime = true
-		e.runtimeDept = 2
-		return e.runtimeDept
+	if e.isStack {
+		e.err = errors.WithStack(e.err)
 	}
-	return e.runtimeDept
+
+	/**
+	 * @step
+	 * @judge fields
+	 * @if len != 0
+	 * @set
+	 **/
+	if len(e.fields) != 0 {
+		for fieldName, fieldVal := range e.fields {
+			withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
+		}
+
+		/**
+		 * @step
+		 * @withMessage
+		 **/
+		withMessage := strings.Join(withMessages, ";")
+		e.err = errors.WithMessage(e.err, withMessage)
+	}
+	return e.err
 }
