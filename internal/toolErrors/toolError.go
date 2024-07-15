@@ -2,15 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-07 11:08:14
+ * @LastEditTime: 2024-07-15 17:00:37
  * @Description:
  */
 package toolErrors
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/pkg/errors"
 )
 
@@ -115,12 +112,6 @@ func (e *ToolError) GetError() error {
 
 	/**
 	 * @step
-	 * @define
-	 **/
-	withMessages := []string{}
-
-	/**
-	 * @step
 	 * @set error
 	 * @judge message
 	 **/
@@ -144,15 +135,9 @@ func (e *ToolError) GetError() error {
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
+			// withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
+			e.err = errors.WithMessagef(e.err, fieldName, fieldVal)
 		}
-
-		/**
-		 * @step
-		 * @withMessage
-		 **/
-		withMessage := strings.Join(withMessages, ";")
-		e.err = errors.WithMessage(e.err, withMessage)
 	}
 	return e.err
 }

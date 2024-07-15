@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-01-24 15:27:48
+ * @LastEditTime: 2024-06-27 16:55:56
  * @Description: new protobuf
  */
 package router
@@ -77,7 +77,6 @@ func (n *NewProtobuf) getTemplate() string {
 	   "net/http"
 	   "github.com/gin-gonic/gin"
 	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
-	   "github.com/yangjerry110/tool/router"
 	   "{{.ProjectImportPath}}/internal/service"
 	   "{{.ProjectImportPath}}/vo/protobuf"
    )
@@ -97,13 +96,8 @@ func (n *NewProtobuf) getTemplate() string {
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register() error {
+   func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register(router *gin.Engine) error {
    
-	   /**
-		* @step
-		* @获取router
-		**/
-	   router := router.GetGinDefaultRouter()
 		{{- range .Routers}}
 		
 		/** 
