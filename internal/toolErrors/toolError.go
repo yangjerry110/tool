@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-15 17:00:37
+ * @LastEditTime: 2024-07-25 18:39:54
  * @Description:
  */
 package toolErrors
@@ -99,7 +99,35 @@ func (e *ToolError) Error() string {
  * @return {*}
  */
 func (e *ToolError) String() string {
-	return e.GetError().Error()
+
+	/**
+	 * @step
+	 * @定义
+	 **/
+	var err error
+
+	/**
+	 * @step
+	 * @set error
+	 * @judge message
+	 **/
+	if e.message != "" {
+		err = errors.New(e.message)
+	}
+
+	/**
+	 * @step
+	 * @judge fields
+	 * @if len != 0
+	 * @set
+	 **/
+	if len(e.fields) != 0 {
+		for fieldName, fieldVal := range e.fields {
+			// withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
+			err = errors.WithMessagef(err, fieldName, fieldVal)
+		}
+	}
+	return err.Error()
 }
 
 /**
