@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 14:16:52
+ * @LastEditTime: 2024-07-26 14:25:22
  * @Description:
  */
 package toolErrors
@@ -88,7 +88,7 @@ func (e *ToolError) WithFields(name string, value interface{}) ErrorInterface {
  * @return {*}
  */
 func (e *ToolError) Error() string {
-	return e.err.Error()
+	return e.GetError().Error()
 }
 
 /**
@@ -98,7 +98,7 @@ func (e *ToolError) Error() string {
  * @return {*}
  */
 func (e *ToolError) String() string {
-	return e.err.Error()
+	return e.GetError().Error()
 }
 
 /**
