@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-25 18:39:54
+ * @LastEditTime: 2024-07-25 18:59:19
  * @Description:
  */
 package toolErrors
@@ -25,7 +25,7 @@ type ToolError struct {
  * @date: 2024-06-06 15:49:57
  * @return {*}
  */
-func (e *ToolError) New(message string) error {
+func (e *ToolError) New(message string) ErrorInterface {
 	e.message = message
 	return e.WithStack().GetError()
 }
@@ -37,7 +37,7 @@ func (e *ToolError) New(message string) error {
  * @date: 2024-06-06 16:46:42
  * @return {*}
  */
-func (e *ToolError) NewError(err error) error {
+func (e *ToolError) NewError(err error) ErrorInterface {
 	e.err = err
 	return e.WithStack().GetError()
 }
@@ -136,7 +136,7 @@ func (e *ToolError) String() string {
  * @date: 2024-06-06 16:08:47
  * @return {*}
  */
-func (e *ToolError) GetError() error {
+func (e *ToolError) GetError() ErrorInterface {
 
 	/**
 	 * @step
@@ -167,5 +167,5 @@ func (e *ToolError) GetError() error {
 			e.err = errors.WithMessagef(e.err, fieldName, fieldVal)
 		}
 	}
-	return e.err
+	return e
 }
