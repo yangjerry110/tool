@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 11:20:58
+ * @LastEditTime: 2024-07-26 14:08:07
  * @Description:
  */
 package toolErrors
@@ -12,7 +12,6 @@ import (
 )
 
 type ToolError struct {
-	message string
 	isStack bool
 	err     error
 	fields  map[string]interface{}
@@ -26,8 +25,8 @@ type ToolError struct {
  * @return {*}
  */
 func (e *ToolError) New(message string) error {
-	e.message = message
-	return e.WithStack()
+	e.err = errors.New(message)
+	return e.WithStack().GetError()
 }
 
 /**
@@ -112,19 +111,16 @@ func (e *ToolError) GetError() error {
 
 	/**
 	 * @step
-	 * @set error
-	 * @judge message
+	 * @定义
 	 **/
-	if e.message != "" {
-		e.err = errors.New(e.message)
-	}
+	var err error
 
 	/**
 	 * @step
 	 * @judge isStack
 	 **/
 	if e.isStack {
-		e.err = errors.WithStack(e.err)
+		err = errors.WithStack(e.err)
 	}
 
 	/**
@@ -135,8 +131,8 @@ func (e *ToolError) GetError() error {
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			e.err = errors.WithMessagef(e.err, fieldName, fieldVal)
+			err = errors.WithMessagef(err, fieldName, fieldVal)
 		}
 	}
-	return e.err
+	return err
 }
