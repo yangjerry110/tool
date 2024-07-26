@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 11:07:26
+ * @LastEditTime: 2024-07-26 11:20:58
  * @Description:
  */
 package toolErrors
@@ -27,7 +27,7 @@ type ToolError struct {
  */
 func (e *ToolError) New(message string) error {
 	e.message = message
-	return e.WithStack().GetError()
+	return e.WithStack()
 }
 
 /**
