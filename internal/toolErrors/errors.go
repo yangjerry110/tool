@@ -2,17 +2,17 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 14:32:55
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-25 18:58:28
+ * @LastEditTime: 2024-07-26 10:22:00
  * @Description: errors
  */
 package toolErrors
 
 type ErrorInterface interface {
-	New(message string) ErrorInterface
-	NewError(err error) ErrorInterface
+	New(message string) error
+	NewError(err error) error
 	WithStack() ErrorInterface
 	WithFields(name string, value interface{}) ErrorInterface
-	GetError() ErrorInterface
+	GetError() error
 	Error() string
 	String() string
 }

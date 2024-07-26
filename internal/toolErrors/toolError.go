@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-25 18:59:19
+ * @LastEditTime: 2024-07-26 10:29:53
  * @Description:
  */
 package toolErrors
@@ -25,7 +25,7 @@ type ToolError struct {
  * @date: 2024-06-06 15:49:57
  * @return {*}
  */
-func (e *ToolError) New(message string) ErrorInterface {
+func (e *ToolError) New(message string) error {
 	e.message = message
 	return e.WithStack().GetError()
 }
@@ -37,7 +37,7 @@ func (e *ToolError) New(message string) ErrorInterface {
  * @date: 2024-06-06 16:46:42
  * @return {*}
  */
-func (e *ToolError) NewError(err error) ErrorInterface {
+func (e *ToolError) NewError(err error) error {
 	e.err = err
 	return e.WithStack().GetError()
 }
@@ -99,35 +99,7 @@ func (e *ToolError) Error() string {
  * @return {*}
  */
 func (e *ToolError) String() string {
-
-	/**
-	 * @step
-	 * @定义
-	 **/
-	var err error
-
-	/**
-	 * @step
-	 * @set error
-	 * @judge message
-	 **/
-	if e.message != "" {
-		err = errors.New(e.message)
-	}
-
-	/**
-	 * @step
-	 * @judge fields
-	 * @if len != 0
-	 * @set
-	 **/
-	if len(e.fields) != 0 {
-		for fieldName, fieldVal := range e.fields {
-			// withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
-			err = errors.WithMessagef(err, fieldName, fieldVal)
-		}
-	}
-	return err.Error()
+	return e.GetError().Error()
 }
 
 /**
@@ -136,7 +108,7 @@ func (e *ToolError) String() string {
  * @date: 2024-06-06 16:08:47
  * @return {*}
  */
-func (e *ToolError) GetError() ErrorInterface {
+func (e *ToolError) GetError() error {
 
 	/**
 	 * @step
@@ -163,9 +135,8 @@ func (e *ToolError) GetError() ErrorInterface {
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			// withMessages = append(withMessages, fmt.Sprintf("%s = %+v", fieldName, fieldVal))
 			e.err = errors.WithMessagef(e.err, fieldName, fieldVal)
 		}
 	}
-	return e
+	return e.err
 }
