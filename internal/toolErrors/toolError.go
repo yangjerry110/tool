@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-31 11:17:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 14:08:07
+ * @LastEditTime: 2024-07-26 14:16:52
  * @Description:
  */
 package toolErrors
@@ -88,7 +88,7 @@ func (e *ToolError) WithFields(name string, value interface{}) ErrorInterface {
  * @return {*}
  */
 func (e *ToolError) Error() string {
-	return e.String()
+	return e.err.Error()
 }
 
 /**
@@ -98,7 +98,7 @@ func (e *ToolError) Error() string {
  * @return {*}
  */
 func (e *ToolError) String() string {
-	return e.GetError().Error()
+	return e.err.Error()
 }
 
 /**
@@ -117,22 +117,22 @@ func (e *ToolError) GetError() error {
 
 	/**
 	 * @step
-	 * @judge isStack
-	 **/
-	if e.isStack {
-		err = errors.WithStack(e.err)
-	}
-
-	/**
-	 * @step
 	 * @judge fields
 	 * @if len != 0
 	 * @set
 	 **/
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			err = errors.WithMessagef(err, fieldName, fieldVal)
+			e.err = errors.WithMessagef(e.err, fieldName, fieldVal)
 		}
+	}
+
+	/**
+	 * @step
+	 * @judge isStack
+	 **/
+	if e.isStack {
+		err = errors.WithStack(e.err)
 	}
 	return err
 }
