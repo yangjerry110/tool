@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 17:35:40
+ * @LastEditTime: 2024-08-07 15:47:12
  * @Description: gin router
  */
 package gin
@@ -41,6 +41,20 @@ func (g *Gin) Register(routerName string, registerRouter router.Register) error 
 	if err := registerRouter.Register(g.Engine); err != nil {
 		return err
 	}
+	return nil
+}
+
+/**
+ * @description: Use
+ * @param {gin.HandlerFunc} ginHandlerFunc
+ * @author: Jerry.Yang
+ * @date: 2024-08-07 15:47:17
+ * @return {*}
+ */
+func (g *Gin) Use(ginHandlerFunc gin.HandlerFunc) error {
+
+	// use gin.HandlerFunc
+	g.Engine.Use(ginHandlerFunc)
 	return nil
 }
 
