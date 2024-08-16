@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 16:37:28
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 17:37:17
+ * @LastEditTime: 2024-08-16 17:46:39
  * @Description: gin router
  */
 package router
@@ -31,4 +31,14 @@ func CreateGinConf() conf.Conf {
  */
 func CreateGinConfigConf() conf.Conf {
 	return conf.CreateConf(&router.Config{})
+}
+
+/**
+ * @description: RegisterGinEngine
+ * @author: Jerry.Yang
+ * @date: 2024-08-16 17:46:34
+ * @return {*}
+ */
+func RegisterGinEngine() router.RegisterEngine {
+	return &toolgin.Gin{}
 }
