@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 11:17:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 17:29:11
+ * @LastEditTime: 2024-08-16 17:28:54
  * @Description: swagger
  */
 package gin
@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/swag"
+	"github.com/yangjerry110/tool/internal/router"
 )
 
 type Swagger struct{}
@@ -22,11 +23,11 @@ type Swagger struct{}
  * @date: 2023-12-14 15:45:31
  * @return {*}
  */
-func (s *Swagger) Register(ginEngine *gin.Engine) error {
+func (s *Swagger) Register(registerEngine router.RegisterEngine) error {
 
 	// Get Default Router
 	// Define apidoc router
-	ginEngine.GET("/api/apidoc/*any", s.apidoc)
+	registerEngine.GetGinEngine().GET("/api/apidoc/*any", s.apidoc)
 	return nil
 }
 

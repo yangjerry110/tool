@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-20 14:11:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 14:46:26
+ * @LastEditTime: 2024-08-16 10:23:47
  * @Description: watch
  */
 package conf
@@ -161,7 +161,7 @@ func (w *Watch) watchFile() error {
 
 					// Set Conf
 					watchFileObj := watchFile.(*WatchFile)
-					if err := CreateConf(&Yaml{FilePath: watchFileObj.FilePath, FileName: watchFileObj.FileName, FileType: watchFileObj.FileType, ConfData: watchFileObj.ConfData}).SetConfig(); err != nil {
+					if err := CreateConf(&Yaml{FilePath: watchFileObj.FilePath, FileName: watchFileObj.FileName, FileType: watchFileObj.FileType, ConfData: &watchFileObj.ConfData}).SetConfig(); err != nil {
 						fmt.Printf("watchConf SetYamlConf Err : %+v; configFile : %+v", err, configFile)
 						fmt.Print("\r\n")
 						// return err

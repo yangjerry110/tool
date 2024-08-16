@@ -2,13 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 16:57:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-07 15:49:50
+ * @LastEditTime: 2024-08-16 17:37:16
  * @Description: router
  */
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/router"
 )
@@ -27,8 +26,8 @@ func Register(routerName string, routerRegister router.Register) error {
 // Use
 // Data 2024-08-07 15:49:38
 // Author Jerry.Yang
-func Use(ginHandlerFunc gin.HandlerFunc) error {
-	return routerEnginee().Use(ginHandlerFunc)
+func Use(useHandler router.UseHandler) error {
+	return routerEnginee().Use(useHandler)
 }
 
 // Run

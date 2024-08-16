@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-07 15:47:12
+ * @LastEditTime: 2024-08-16 17:35:46
  * @Description: gin router
  */
 package gin
@@ -38,7 +38,7 @@ func (g *Gin) Init() router.RouterInterface {
 func (g *Gin) Register(routerName string, registerRouter router.Register) error {
 
 	// register router
-	if err := registerRouter.Register(g.Engine); err != nil {
+	if err := registerRouter.Register(g); err != nil {
 		return err
 	}
 	return nil
@@ -46,15 +46,15 @@ func (g *Gin) Register(routerName string, registerRouter router.Register) error 
 
 /**
  * @description: Use
- * @param {gin.HandlerFunc} ginHandlerFunc
+ * @param {router.UseHandler} useHandler
  * @author: Jerry.Yang
- * @date: 2024-08-07 15:47:17
+ * @date: 2024-08-16 17:35:21
  * @return {*}
  */
-func (g *Gin) Use(ginHandlerFunc gin.HandlerFunc) error {
+func (g *Gin) Use(useHandler router.UseHandler) error {
 
 	// use gin.HandlerFunc
-	g.Engine.Use(ginHandlerFunc)
+	g.Engine.Use(useHandler.GetGinHandlerFunc())
 	return nil
 }
 
@@ -80,4 +80,14 @@ func (g *Gin) Run(runConf conf.Conf) error {
 
 	// Run
 	return g.Engine.Run(router.RouteConf.Addr)
+}
+
+/**
+ * @description: GetGinEngine
+ * @author: Jerry.Yang
+ * @date: 2024-08-16 17:30:08
+ * @return {*}
+ */
+func (g *Gin) GetGinEngine() *gin.Engine {
+	return g.Engine
 }

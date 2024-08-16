@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:59:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 17:30:16
+ * @LastEditTime: 2024-08-16 16:37:34
  * @Description: newApi Command
  */
 package command
@@ -17,6 +17,7 @@ import (
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
+	"github.com/yangjerry110/tool/internal/toolErrors"
 )
 
 type NewApi struct {
@@ -71,7 +72,9 @@ func (n *NewApi) New() error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return err
+		fmt.Printf("cmd Run Err : %+v", err)
+		fmt.Print("\r\n")
+		return toolErrors.NewError(err)
 	}
 
 	// Exec Command
@@ -80,7 +83,9 @@ func (n *NewApi) New() error {
 	swagInitCmd.Stdout = os.Stdout
 	swagInitCmd.Stderr = os.Stderr
 	if err := swagInitCmd.Run(); err != nil {
-		return err
+		fmt.Printf("swagInitCmd Run Err : %+v", err)
+		fmt.Print("\r\n")
+		return toolErrors.NewError(err)
 	}
 	return nil
 }
