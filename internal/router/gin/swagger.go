@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 11:17:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-16 17:28:54
+ * @LastEditTime: 2024-08-19 14:57:36
  * @Description: swagger
  */
 package gin
@@ -12,7 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/swag"
-	"github.com/yangjerry110/tool/internal/router"
+	"google.golang.org/grpc"
 )
 
 type Swagger struct{}
@@ -23,11 +23,22 @@ type Swagger struct{}
  * @date: 2023-12-14 15:45:31
  * @return {*}
  */
-func (s *Swagger) Register(registerEngine router.RegisterEngine) error {
+func (s *Swagger) Register(ginEngine *gin.Engine) error {
 
 	// Get Default Router
 	// Define apidoc router
-	registerEngine.GetGinEngine().GET("/api/apidoc/*any", s.apidoc)
+	ginEngine.GET("/api/apidoc/*any", s.apidoc)
+	return nil
+}
+
+/**
+ * @description: RegisterGrpc
+ * @param {*grpc.Server} grpcEngine
+ * @author: Jerry.Yang
+ * @date: 2024-08-19 14:57:02
+ * @return {*}
+ */
+func (s *Swagger) RegisterGrpc(grpcEngine *grpc.Server) error {
 	return nil
 }
 

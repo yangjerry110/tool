@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 16:57:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-19 11:33:55
+ * @LastEditTime: 2024-08-19 15:09:30
  * @Description: router
  */
 package router
@@ -11,9 +11,6 @@ import (
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/router"
 )
-
-var RegisterEngine router.RegisterEngine
-var UseHandler router.UseHandler
 
 // Register
 //
@@ -29,8 +26,8 @@ func Register(routerName string, routerRegister router.Register) error {
 // Use
 // Data 2024-08-07 15:49:38
 // Author Jerry.Yang
-func Use(useHandler router.UseHandler) error {
-	return routerEnginee().Use(useHandler)
+func Use(useName string, use router.Use) error {
+	return routerEnginee().Use(useName, use)
 }
 
 // Run

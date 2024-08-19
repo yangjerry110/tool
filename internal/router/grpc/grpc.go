@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-08-16 17:05:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-19 11:26:23
+ * @LastEditTime: 2024-08-19 15:22:08
  * @Description: grpc
  */
 package grpc
@@ -10,6 +10,7 @@ package grpc
 import (
 	"fmt"
 	"net"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
@@ -19,6 +20,7 @@ import (
 )
 
 type Grpc struct {
+	syncOnce   sync.Once
 	grpcServer *grpc.Server
 }
 
@@ -29,8 +31,10 @@ type Grpc struct {
  * @return {*}
  */
 func (g *Grpc) Init() router.RouterInterface {
-	grpcNewServer := grpc.NewServer()
-	g.grpcServer = grpcNewServer
+	g.syncOnce.Do(func() {
+		grpcNewServer := grpc.NewServer()
+		g.grpcServer = grpcNewServer
+	})
 	return g
 }
 
@@ -45,7 +49,7 @@ func (g *Grpc) Init() router.RouterInterface {
 func (g *Grpc) Register(routerName string, register router.Register) error {
 
 	// register
-	if err := register.Register(g); err != nil {
+	if err := register.RegisterGrpc(g.grpcServer); err != nil {
 		return err
 	}
 	return nil
@@ -58,7 +62,7 @@ func (g *Grpc) Register(routerName string, register router.Register) error {
  * @date:
  * @return {*}
  */
-func (g *Grpc) Use(useHandler router.UseHandler) error {
+func (g *Grpc) Use(userName string, useHandler router.Use) error {
 	return nil
 }
 

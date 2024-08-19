@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-08-19 10:49:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-19 11:15:43
+ * @LastEditTime: 2024-08-19 15:26:12
  * @Description: grpc
  */
 package router
@@ -34,11 +34,12 @@ func CreateGrpcRouterConf() error {
 }
 
 /**
- * @description: RegisterGrpcEngine
+ * @description: InitGrpcRouter
  * @author: Jerry.Yang
- * @date: 2024-08-19 11:16:05
+ * @date: 2024-08-19 15:25:53
  * @return {*}
  */
-func RegisterGrpcEngine() router.RegisterEngine {
-	return &routerGrpc.Grpc{}
+func InitGrpcRouter() error {
+	SetRouterEnginee(&routerGrpc.Grpc{})
+	return nil
 }

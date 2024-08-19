@@ -2,14 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-12 17:43:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 17:43:21
+ * @LastEditTime: 2024-08-19 15:24:19
  * @Description: router enginee
  */
 package router
 
 import (
 	"github.com/yangjerry110/tool/internal/router"
-	"github.com/yangjerry110/tool/internal/router/gin"
 )
 
 var defaultRouterEnginee router.RouterInterface
@@ -30,8 +29,5 @@ func SetRouterEnginee(routerInterface router.RouterInterface) router.RouterInter
 // Date 2024-04-12 17:42:03
 // Author Jerry.Yang
 func routerEnginee() router.RouterInterface {
-	if defaultRouterEnginee == nil {
-		SetRouterEnginee(&gin.Gin{})
-	}
 	return defaultRouterEnginee
 }
