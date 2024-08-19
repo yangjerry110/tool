@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:30:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-16 17:35:12
+ * @LastEditTime: 2024-08-19 11:00:35
  * @Description: router
  */
 package router
@@ -10,6 +10,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
+	"google.golang.org/grpc"
 )
 
 type RouterInterface interface {
@@ -25,6 +26,7 @@ type Register interface {
 
 type RegisterEngine interface {
 	GetGinEngine() *gin.Engine
+	GetGrpcEngine() *grpc.Server
 }
 
 type Use interface {

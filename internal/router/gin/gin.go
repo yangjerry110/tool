@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-16 17:35:46
+ * @LastEditTime: 2024-08-19 11:04:56
  * @Description: gin router
  */
 package gin
@@ -10,7 +10,9 @@ package gin
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
+	"github.com/yangjerry110/tool/internal/errors"
 	"github.com/yangjerry110/tool/internal/router"
+	"google.golang.org/grpc"
 )
 
 type Gin struct {
@@ -90,4 +92,14 @@ func (g *Gin) Run(runConf conf.Conf) error {
  */
 func (g *Gin) GetGinEngine() *gin.Engine {
 	return g.Engine
+}
+
+/**
+ * @description: GetGrpcEngine
+ * @author: Jerry.Yang
+ * @date: 2024-08-19 11:01:10
+ * @return {*}
+ */
+func (g *Gin) GetGrpcEngine() *grpc.Server {
+	panic(errors.ErrGinRouterNoGrpcEngine)
 }

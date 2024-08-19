@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:17:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-10 15:07:27
+ * @LastEditTime: 2024-08-19 11:04:42
  * @Description: cache errors
  */
 package errors
@@ -70,7 +70,9 @@ var (
 
 	// router
 	// gin router
-	ErrGinRouterIsNoDefault = errors.New("gin router Err : is no default")
+	ErrGinRouterIsNoDefault  = errors.New("gin router Err : is no default")
+	ErrGinRouterNoGrpcEngine = errors.New("gin router Err : no grpcEngine")
+	ErrGrpcRouterNoGinEngine = errors.New("grpc router Err : no ginEngine")
 
 	// logger
 	// logger level
