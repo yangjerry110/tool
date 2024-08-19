@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 16:57:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-16 17:45:44
+ * @LastEditTime: 2024-08-19 11:33:55
  * @Description: router
  */
 package router
@@ -11,6 +11,9 @@ import (
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/router"
 )
+
+var RegisterEngine router.RegisterEngine
+var UseHandler router.UseHandler
 
 // Register
 //

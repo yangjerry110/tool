@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-08-16 17:05:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-19 11:14:42
+ * @LastEditTime: 2024-08-19 11:26:23
  * @Description: grpc
  */
 package grpc
@@ -69,7 +69,13 @@ func (g *Grpc) Use(useHandler router.UseHandler) error {
  * @date: 2024-08-16 17:12:58
  * @return {*}
  */
-func (g *Grpc) Run(conf conf.Conf) error {
+func (g *Grpc) Run(runConf conf.Conf) error {
+
+	// If you need to add other config later, you can add it before running, and if you don't want to load these, you can replace the others and customize a conf
+	// Set RunGin conf
+	if err := conf.CreateConf(runConf).SetConfig(); err != nil {
+		return err
+	}
 
 	/**
 	 * @step
