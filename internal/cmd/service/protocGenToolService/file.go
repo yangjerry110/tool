@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 16:14:41
+ * @LastEditTime: 2024-08-19 16:33:01
  * @Description: file service
  */
 package protocgentoolservice
@@ -32,6 +32,7 @@ func (f *File) Generate() error {
 	}
 
 	// Define
+	protoServices := []*protogen.Service{}
 	protoMethods := []*protogen.Method{}
 
 	// Judge f.File
@@ -43,6 +44,7 @@ func (f *File) Generate() error {
 	// This code simply ignores the code that contains streamClient and streamServer in the proto file
 	// isGenerate := false
 	for _, service := range f.File.Services {
+		// for service.Methods
 		for _, method := range service.Methods {
 			if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
 				continue
@@ -50,23 +52,31 @@ func (f *File) Generate() error {
 
 			// append protoMethods
 			protoMethods = append(protoMethods, method)
-
-			// // set isGenerate = true
-			// isGenerate = true
-
 		}
+
+		// append protoServices
+		protoServices = append(protoServices, service)
 	}
 
-	// // Judge isGenerate
-	// // if == false ; return err
-	// if !isGenerate {
-	// 	return errors.ErrProtocGenToolServiceNoGenerate
-	// }
+	// Judge protoServices
+	// if len == 0; return err
+	if len(protoServices) == 0 {
+		return errors.ErrProtocGenToolServiceNoServices
+	}
 
 	// Judge protoMethods
 	// if len == 0 ; return err
 	if len(protoMethods) == 0 {
 		return errors.ErrProtocGenToolServiceNoMethods
+	}
+
+	// for protoServices
+	// set ProtocSerivce
+	for _, protocService := range protoServices {
+		// set conf
+		if err := conf.CreateConf(&config.ProtocService{ProtoService: protocService}).SetConfig(); err != nil {
+			return err
+		}
 	}
 
 	// The next level of file is the services level
