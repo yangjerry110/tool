@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:35:36
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-21 15:49:00
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2024-10-24 20:51:02
  * @Description: command
  */
 package command
@@ -52,6 +52,12 @@ func (c *Command) New() error {
 	// Set newDao command
 	// Set newDao command to cliApp.Commands
 	if err := c.setNewDaoCommand(); err != nil {
+		return err
+	}
+
+	// Set newProtobuf command
+	// Set newProtobuf command to cliApp.Commands
+	if err := c.setNewProtobufCommand(); err != nil {
 		return err
 	}
 	return nil
@@ -140,5 +146,26 @@ func (c *Command) setNewDaoCommand() error {
 
 	// Set cliApp Commands
 	c.CliApp.Commands = append(c.CliApp.Commands, newDaoCommand)
+	return nil
+}
+
+/**
+ * @description: setNewProtobuf
+ * @author: Jerry.Yang
+ * @date: 2024-10-24 18:32:48
+ * @return {*}
+ */
+func (c *Command) setNewProtobufCommand() error {
+	// newProtobuf command
+	newProtobufCommand := cli.Command{}
+	newProtobufCommand.Name = "newProtobuf"
+	newProtobufCommand.Aliases = []string{"nProtobuf"}
+	newProtobufCommand.Usage = "new an protobuf => new protobuf"
+	newProtobufCommand.Action = func(ctx *cli.Context) error {
+		return CreateCommand(&NewProtobuf{CliContext: ctx}).New()
+	}
+
+	// Set cliApp Commands
+	c.CliApp.Commands = append(c.CliApp.Commands, newProtobufCommand)
 	return nil
 }

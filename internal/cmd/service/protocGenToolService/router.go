@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:46:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-20 18:22:20
+ * @LastEditTime: 2024-12-06 16:42:39
  * @Description: router service
  */
 package protocgentoolservice
@@ -42,6 +42,16 @@ func (r *Router) Generate() error {
 	// set time
 	templateNewProtobuf.Time = template.GetFormatNowTime()
 
+	// set newProtobufServices
+	newProtobufServices := []*router.NewProtobufService{}
+	// set newProtobufServices by ProtocServiceConfs
+	for _, protocServiceConf := range config.ProtocServiceConfs {
+		newProtobufService := &router.NewProtobufService{}
+		newProtobufService.ServiceName = protocServiceConf.ProtocService.GoName
+		newProtobufService.RouterNameUp = templateNewProtobuf.RouterNameUp
+		newProtobufServices = append(newProtobufServices, newProtobufService)
+	}
+
 	// set newProtobufRouters
 	newProtobufRouters := []*router.NewProtobufRouter{}
 	// set newProtobufRouters by httpRules
@@ -63,6 +73,8 @@ func (r *Router) Generate() error {
 		newProtobufRouter.SwaggerNotes = r.formatSwaggerNotes(protocHttpRule)
 	}
 
+	// set NewProtobufServices
+	templateNewProtobuf.Services = newProtobufServices
 	// set newProtobufRouters
 	templateNewProtobuf.Routers = newProtobufRouters
 

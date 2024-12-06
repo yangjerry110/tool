@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-27 16:55:56
+ * @LastEditTime: 2024-12-06 17:22:45
  * @Description: new protobuf
  */
 package router
@@ -34,6 +34,11 @@ type NewProtobufRouter struct {
 	Time            string
 }
 
+type NewProtobufService struct {
+	ServiceName  string
+	RouterNameUp string
+}
+
 type NewProtobuf struct {
 	ProjectPath       string
 	ProjectImportPath string
@@ -41,6 +46,7 @@ type NewProtobuf struct {
 	RouterNameUp      string
 	RouterName        string
 	Time              string
+	Services          []*NewProtobufService
 	Routers           []*NewProtobufRouter
 }
 
@@ -77,16 +83,10 @@ func (n *NewProtobuf) getTemplate() string {
 	   "net/http"
 	   "github.com/gin-gonic/gin"
 	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
+	   "google.golang.org/grpc"
 	   "{{.ProjectImportPath}}/internal/service"
 	   "{{.ProjectImportPath}}/vo/protobuf"
    )
-   
-   type {{.RouterNameUp}}Router interface {
-	   Register() error
-	   {{- range .Routers}}
-	   {{.RouterFuncUp}}(ctx *gin.Context)
-	   {{- end}}
-   }
    
    type {{.RouterNameUp}} struct{}
    
@@ -109,6 +109,20 @@ func (n *NewProtobuf) getTemplate() string {
 	   {{- end}}
 	   return nil
   }
+
+  /**
+	* @description: RegisterGrpc
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
+		{{- range .Services}}
+		// register {{.ServiceName}}
+		protobuf.Register{{.ServiceName}}Server(grpc, &service.{{.RouterNameUp}}{})
+		{{- end}}
+		return nil
+	}
 
   {{- range .Routers}}
   {{.SwaggerNotes}}

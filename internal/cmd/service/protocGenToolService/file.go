@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 16:14:41
+ * @LastEditTime: 2024-12-06 16:33:39
  * @Description: file service
  */
 package protocgentoolservice
@@ -53,7 +53,11 @@ func (f *File) Generate() error {
 
 			// // set isGenerate = true
 			// isGenerate = true
+		}
 
+		// set protocService conf
+		if err := conf.CreateConf(&config.ProtocService{ProtocService: service}).SetConfig(); err != nil {
+			return err
 		}
 	}
 

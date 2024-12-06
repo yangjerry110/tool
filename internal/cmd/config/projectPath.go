@@ -1,13 +1,15 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 17:28:34
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-11 17:30:50
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2024-10-24 20:58:07
  * @Description: project path
  */
 package config
 
-import "os"
+import (
+	"os"
+)
 
 type ProjectPath struct {
 	Path string
