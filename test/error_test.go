@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 15:40:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 11:08:30
+ * @LastEditTime: 2025-02-28 11:24:37
  * @Description: TestErr
  */
 package test
@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"testing"
 
-	toolErrors "github.com/yangjerry110/tool/errors"
+	"github.com/yangjerry110/tool/toolErrors"
 	// pkgErr "github.com/pkg/errors"
 )
 

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-25 10:42:48
+ * @LastEditTime: 2025-02-28 14:27:33
  * @Description: file service
  */
 package protocgentoolservice
@@ -90,23 +90,23 @@ func (f *File) Generate() error {
 		return err
 	}
 
-	// The next level of file is the services level
-	// Generate services
-	for _, protoMethod := range protoMethods {
-		// method generate
-		if err := CreateProtoGenToolService(&Method{Method: protoMethod}).Generate(); err != nil {
-			return err
-		}
-	}
+	// // The next level of file is the services level
+	// // Generate services
+	// for _, protoMethod := range protoMethods {
+	// 	// method generate
+	// 	if err := CreateProtoGenToolService(&Method{Method: protoMethod}).Generate(); err != nil {
+	// 		return err
+	// 	}
+	// }
 
-	// generate router
-	if err := CreateProtoGenToolService(&Router{}).Generate(); err != nil {
-		return err
-	}
+	// // generate router
+	// if err := CreateProtoGenToolService(&Router{}).Generate(); err != nil {
+	// 	return err
+	// }
 
-	// generate service
-	if err := CreateProtoGenToolService(&Service{}).Generate(); err != nil {
-		return err
-	}
+	// // generate service
+	// if err := CreateProtoGenToolService(&Service{}).Generate(); err != nil {
+	// 	return err
+	// }
 	return nil
 }

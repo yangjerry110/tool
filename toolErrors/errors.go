@@ -2,10 +2,10 @@
  * @Author: Jerry.Yang
  * @Date: 2024-05-30 15:22:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-07 11:13:25
+ * @LastEditTime: 2025-02-28 11:25:41
  * @Description: errors
  */
-package errors
+package toolErrors
 
 import "github.com/yangjerry110/tool/internal/toolErrors"
 
