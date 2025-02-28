@@ -2,19 +2,19 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:06:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-24 14:36:16
+ * @LastEditTime: 2025-02-28 16:41:52
  * @Description: method
  */
 package protocgentoolservice
 
 import (
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
+	"github.com/yangjerry110/protoc-gen-go/proto"
+	"github.com/yangjerry110/protoc-gen-go/types/descriptorpb"
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
 	httpProto "github.com/yangjerry110/tool/pkg/protocol/api"
-	"google.golang.org/protobuf/compiler/protogen"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 type Method struct {

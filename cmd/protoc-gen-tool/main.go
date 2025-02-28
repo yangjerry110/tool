@@ -2,44 +2,54 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:16:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-26 15:19:35
+ * @LastEditTime: 2025-02-28 17:06:39
  * @Description: main
  */
 package main
 
 import (
-	protocgentoolservice "github.com/yangjerry110/tool/internal/cmd/service/protocGenToolService"
-	"google.golang.org/protobuf/compiler/protogen"
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 )
+
+const genGoDocURL = "https://developers.google.com/protocol-buffers/docs/reference/go-generated"
+const grpcDocURL = "https://grpc.io/docs/languages/go/quickstart/#regenerate-grpc-code"
 
 func main() {
 
-	// // Get isFirstCreate by flag
-	// isFirstCreate := flag.Bool("isFirstCreate", false, "isFirstCreate")
+	// // Define proto option
+	// protogenOptions := protogen.Options{}
 
-	// // Get isAppend by flag
-	// isAppend := flag.Bool("isAppend", false, "isAppend")
+	// // Add flag.command.Set to paramsFunc
+	// // protogenOptions.ParamFunc = flag.CommandLine.Set
 
-	// // Get isExtend by flag
-	// isExtend := flag.Bool("isExtend", false, "isExtend")
+	// // To run by protogenOptions
+	// protogenOptions.Run(func(plugin *protogen.Plugin) error {
 
-	// // Get extendPath by flag
-	// extendPath := flag.String("extendPath", "", "extendPath")
+	// 	// Plugin Generate
+	// 	// return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: plugin}).Generate()
+	// 	return nil
+	// })
 
-	// // Flag parse
-	// flag.Parse()
+	// if len(os.Args) == 2 && os.Args[1] == "--version" {
+	// 	fmt.Fprintf(os.Stdout, "%v %v\n", filepath.Base(os.Args[0]), version.String())
+	// 	os.Exit(0)
+	// }
+	// if len(os.Args) == 2 && os.Args[1] == "--help" {
+	// 	fmt.Fprintf(os.Stdout, "See "+genGoDocURL+" for usage information.\n")
+	// 	os.Exit(0)
+	// }
 
-	// Define proto option
-	protogenOptions := protogen.Options{}
+	protogen.Options{}.Run(func(gen *protogen.Plugin) error {
 
-	// Add flag.command.Set to paramsFunc
-	// protogenOptions.ParamFunc = flag.CommandLine.Set
+		// for _, f := range gen.Files {
+		// 	if f.Generate {
+		// 		gengo.GenerateFile(gen, f)
+		// 	}
+		// }
 
-	// To run by protogenOptions
-	protogenOptions.Run(func(plugin *protogen.Plugin) error {
-
-		// Plugin Generate
-		return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: plugin}).Generate()
+		// return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: gen}).Generate()
+		// gen.SupportedFeatures = gengo.SupportedFeatures
+		return nil
 	})
 
 }

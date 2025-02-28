@@ -11,9 +11,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/cmd/template"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type Comment struct {

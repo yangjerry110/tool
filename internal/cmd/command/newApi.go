@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:59:49
- * @LastEditors: yangjie04 yangjie04@qutoutiao.net
- * @LastEditTime: 2025-02-27 22:44:30
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-02-28 16:47:16
  * @Description: newApi Command
  */
 package command
@@ -104,9 +104,10 @@ func (n *NewApi) New() error {
 		// "--go_out=plugins=grpc:vo/protobuf",
 		"--go_out=vo/protobuf",
 		fmt.Sprintf("--go-grpc_out=module=%s/vo/protobuf:vo/protobuf", config.ProjectImportPathConf.ImportPath),
-		"--tool_out=.",
+		"--tool_out=vo/protobuf",
 		config.ProtobufConf.ProtobufName,
 	)
+
 	// cmd := exec.Command(
 	// 	"protoc",
 	// 	"--proto_path=protobuf", // 指定 proto 路径

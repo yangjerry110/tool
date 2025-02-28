@@ -12,8 +12,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/cmd/config"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type Message struct {

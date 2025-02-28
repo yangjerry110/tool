@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2024-10-24 18:27:47
- * @LastEditors: yangjie04 yangjie04@qutoutiao.net
- * @LastEditTime: 2025-02-27 22:56:36
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-02-28 15:31:12
  * @Description: new protobuf
  */
 package command
@@ -63,7 +63,6 @@ func (n *NewProtobuf) New() error {
 		// "--go_out=plugins=grpc:vo/protobuf",
 		"--go_out=vo/protobuf",
 		fmt.Sprintf("--go-grpc_out=module=%s/vo/protobuf:vo/protobuf", config.ProjectImportPathConf.ImportPath),
-		"grpc-gateway_out=.",
 		config.ProtobufConf.ProtobufName,
 	)
 	// cmd := exec.Command(

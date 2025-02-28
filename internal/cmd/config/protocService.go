@@ -8,8 +8,8 @@
 package config
 
 import (
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/errors"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type ProtocService struct {

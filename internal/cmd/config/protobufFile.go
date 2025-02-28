@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:48:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-12 15:53:51
+ * @LastEditTime: 2025-02-28 16:34:45
  * @Description: protobufFile
  */
 package config
 
 import (
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/errors"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type ProtobufFile struct {

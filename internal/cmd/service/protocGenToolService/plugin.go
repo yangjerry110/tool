@@ -2,16 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 15:00:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-26 15:21:01
+ * @LastEditTime: 2025-02-28 17:06:03
  * @Description: plugin protoc_gen_tool
  */
 package protocgentoolservice
 
 import (
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type Plugin struct {
@@ -48,9 +48,6 @@ func (p *Plugin) Generate() error {
 
 	// Get Params by flags
 	// Set Params to config
-	if err := conf.CreateConf(&config.ProtocGenTool{IsFirstCreate: config.ProtocGenToolConf.IsFirstCreate, IsAppend: config.ProtocGenToolConf.IsAppend, IsExtend: config.ProtocGenToolConf.IsExtend}).SetConfig(); err != nil {
-		return err
-	}
 
 	// judge plugin
 	// if == nil; return err

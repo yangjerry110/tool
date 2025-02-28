@@ -12,7 +12,7 @@ import (
 	"os"
 	"strings"
 
-	"google.golang.org/protobuf/compiler/protogen"
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 )
 
 type Field struct {

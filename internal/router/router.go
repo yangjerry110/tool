@@ -1,18 +1,24 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2025-02-28 14:13:57
+ * @Date: 2023-12-13 17:30:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 14:50:18
+ * @LastEditTime: 2025-02-28 15:13:30
  * @Description: router
  */
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/yangjerry110/tool/internal/conf"
+)
 
-type Router interface {
-	Register(RegisterRouter RegisterRouter)
+type RouterInterface interface {
+	Init() RouterInterface
+	Register(routerName string, register Register) error
+	Use(ginHandlerFunc gin.HandlerFunc) error
+	Run(conf conf.Conf) error
 }
 
-type RegisterRouter interface {
-	RegisterGinHttpServer(gin *gin.Engine)
+type Register interface {
+	Register(ginEngine *gin.Engine) error
 }

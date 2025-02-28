@@ -2,16 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 14:27:33
+ * @LastEditTime: 2025-02-28 16:44:40
  * @Description: file service
  */
 package protocgentoolservice
 
 import (
+	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/errors"
-	"google.golang.org/protobuf/compiler/protogen"
 )
 
 type File struct {
@@ -90,23 +90,23 @@ func (f *File) Generate() error {
 		return err
 	}
 
-	// // The next level of file is the services level
-	// // Generate services
-	// for _, protoMethod := range protoMethods {
-	// 	// method generate
-	// 	if err := CreateProtoGenToolService(&Method{Method: protoMethod}).Generate(); err != nil {
-	// 		return err
-	// 	}
-	// }
+	// The next level of file is the services level
+	// Generate services
+	for _, protoMethod := range protoMethods {
+		// method generate
+		if err := CreateProtoGenToolService(&Method{Method: protoMethod}).Generate(); err != nil {
+			return err
+		}
+	}
 
-	// // generate router
-	// if err := CreateProtoGenToolService(&Router{}).Generate(); err != nil {
-	// 	return err
-	// }
+	// generate router
+	if err := CreateProtoGenToolService(&Router{}).Generate(); err != nil {
+		return err
+	}
 
-	// // generate service
-	// if err := CreateProtoGenToolService(&Service{}).Generate(); err != nil {
-	// 	return err
-	// }
+	// generate service
+	if err := CreateProtoGenToolService(&Service{}).Generate(); err != nil {
+		return err
+	}
 	return nil
 }
