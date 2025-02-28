@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 17:22:45
+ * @LastEditTime: 2025-02-24 17:26:23
  * @Description: new protobuf
  */
 package router
@@ -40,6 +40,7 @@ type NewProtobufService struct {
 }
 
 type NewProtobuf struct {
+	ExtendImportPath  string
 	ProjectPath       string
 	ProjectImportPath string
 	FirstRouterName   string
@@ -84,8 +85,9 @@ func (n *NewProtobuf) getTemplate() string {
 	   "github.com/gin-gonic/gin"
 	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
 	   "google.golang.org/grpc"
-	   "{{.ProjectImportPath}}/internal/service"
+	   "{{.ExtendImportPath}}/internal/service"
 	   "{{.ProjectImportPath}}/vo/protobuf"
+	   "github.com/yangjerry110/protoc-gen-go/proto"
    )
    
    type {{.RouterNameUp}} struct{}
@@ -119,7 +121,7 @@ func (n *NewProtobuf) getTemplate() string {
 	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
 		{{- range .Services}}
 		// register {{.ServiceName}}
-		protobuf.Register{{.ServiceName}}Server(grpc, &service.{{.RouterNameUp}}{})
+		protobuf.Register{{.ServiceName}}Server(grpc, &protobuf.Unimplemented{{.RouterNameUp}}Server{})
 		{{- end}}
 		return nil
 	}
@@ -150,7 +152,7 @@ func (n *NewProtobuf) getTemplate() string {
 	  outputVo, err := service.Create{{.RouterNameUp}}Service().{{.RouterFunc}}(ctx, inputVo)
 	  if err != nil {
 		  qlog.Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
-		  ctx.JSON(http.StatusBadRequest,&protobuf.{{.OutputRespName}}{RetCode:-1,RetMsg:err.Error()})
+		  ctx.JSON(http.StatusBadRequest,&protobuf.{{.OutputRespName}}{RetCode:proto.Int32(-1),RetMsg: proto.String(err.Error())})
 		  return
 	  }
 

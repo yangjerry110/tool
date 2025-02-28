@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 16:33:39
+ * @LastEditTime: 2025-02-25 10:42:48
  * @Description: file service
  */
 package protocgentoolservice
@@ -33,6 +33,8 @@ func (f *File) Generate() error {
 
 	// Define
 	protoMethods := []*protogen.Method{}
+	// define protoMessages
+	protoMessages := []*protogen.Message{}
 
 	// Judge f.File
 	// If == nil; return err
@@ -40,10 +42,14 @@ func (f *File) Generate() error {
 		return errors.ErrProtocGenToolServiceNoFile
 	}
 
+	// for file.files
+	protoMessages = append(protoMessages, f.File.Messages...)
+
 	// This code simply ignores the code that contains streamClient and streamServer in the proto file
 	// isGenerate := false
 	for _, service := range f.File.Services {
 		for _, method := range service.Methods {
+
 			if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
 				continue
 			}
@@ -71,6 +77,17 @@ func (f *File) Generate() error {
 	// if len == 0 ; return err
 	if len(protoMethods) == 0 {
 		return errors.ErrProtocGenToolServiceNoMethods
+	}
+
+	// judge protoMessages
+	// if len == 0 ; return err
+	if len(protoMessages) == 0 {
+		return errors.ErrProtocGenToolServiceNoMessages
+	}
+
+	// exec message
+	if err := CreateProtoGenToolService(&Message{Messages: protoMessages}).Generate(); err != nil {
+		return err
 	}
 
 	// The next level of file is the services level

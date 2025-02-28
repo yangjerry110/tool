@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-25 14:53:20
+ * @LastEditTime: 2025-02-24 17:03:57
  * @Description:
  */
 package protocgentoolservice
@@ -26,6 +26,10 @@ type Service struct{}
  * @return {*}
  */
 func (s *Service) Generate() error {
+
+	if config.ProtocGenToolConf.IsExtend {
+		config.ProjectPathConf.Path = config.ExtendPathConf.Path
+	}
 
 	// is exist service path
 	if err := s.isExistServicePath(); err != nil {
@@ -120,13 +124,17 @@ func (s *Service) newService() error {
 
 	// Assemble the parameters related to the template service
 	templateNewProtobuf := service.NewProtobuf{}
+
+	// Previously set
+	// if isExtend == false, set projectPath = config.ProjectPathConf.Path
+	// if isExtend == true, set projectPath = config.ProjectImportPathConf.Path
+	templateNewProtobuf.ProjectPath = config.ProjectPathConf.Path
+
 	// The serviceName here is protobufFileName
 	// so first is fist protobufFileName
 	templateNewProtobuf.FirstServiceName = config.ProtobufFileConf.FileName[:1]
 	// Previously set
 	templateNewProtobuf.ProjectImportPath = config.ProjectImportPathConf.ImportPath
-	// Previously set
-	templateNewProtobuf.ProjectPath = config.ProjectPathConf.Path
 	// The serviceName here is protobufFileName
 	templateNewProtobuf.ServiceName = config.ProtobufFileConf.FileName
 	// The serviceName here is protobufFileName

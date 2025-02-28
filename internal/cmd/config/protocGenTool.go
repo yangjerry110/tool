@@ -2,14 +2,24 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:22:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-13 14:42:34
+ * @LastEditTime: 2025-02-24 16:55:50
  * @Description: protocGenTool
  */
 package config
 
+import (
+	"fmt"
+	"os"
+
+	"github.com/yangjerry110/tool/conf"
+	"gopkg.in/yaml.v2"
+)
+
 type ProtocGenTool struct {
 	IsFirstCreate bool
 	IsAppend      bool
+	IsExtend      bool
+	ExtendPath    string
 }
 
 /**
@@ -20,6 +30,9 @@ type ProtocGenTool struct {
  */
 var ProtocGenToolConf = &ProtocGenTool{}
 
+var protoGenToolConfPath = "/data/protobuf/tool/"
+var protoGenToolConfName = "protoGenToolConf.yaml"
+
 /**
  * @description: SetConfig
  * @author: Jerry.Yang
@@ -27,11 +40,34 @@ var ProtocGenToolConf = &ProtocGenTool{}
  * @return {*}
  */
 func (p *ProtocGenTool) SetConfig() error {
+	if err := conf.CreatePathConf(protoGenToolConfPath).SetConfig(); err != nil {
+		return err
+	}
 
-	// set isFirstCreate to conf
-	// set isAppend to conf
-	// ProtocGenToolConf.IsFirstCreate = *isFirstCreate
-	// ProtocGenToolConf.IsAppend = *isAppend
-	ProtocGenToolConf = p
+	return conf.CreateYamlConf(protoGenToolConfName, ProtocGenToolConf).SetConfig()
+}
+
+func (p *ProtocGenTool) SetConf() error {
+
+	// 确保文件夹存在
+	err := os.MkdirAll(protoGenToolConfPath, 0755) // 0755 表示权限设置，表示所有者有读写执行权限，组和其他用户有读执行权限
+	if err != nil {
+		fmt.Println("Error creating directory:", err)
+		return err
+	}
+
+	// 打开文件
+	file, err := os.Create(fmt.Sprintf("%s/%s", protoGenToolConfPath, protoGenToolConfName))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// 创建编码器并保存数据
+	encoder := yaml.NewEncoder(file)
+	err = encoder.Encode(p)
+	if err != nil {
+		return err
+	}
 	return nil
 }

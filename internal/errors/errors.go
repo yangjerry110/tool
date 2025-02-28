@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:17:25
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 16:31:46
+ * @LastEditTime: 2025-02-25 10:37:51
  * @Description: cache errors
  */
 package errors
@@ -60,6 +60,7 @@ var (
 	ErrProtocGenToolServiceNoGenerate     = errors.New("protocGenTool service Err : no generate")
 	ErrProtocGenToolServiceNoService      = errors.New("protocGenTool service Err : no service")
 	ErrProtocGenToolServiceNoMethods      = errors.New("protocGenTool service Err : no methods")
+	ErrProtocGenToolServiceNoMessages     = errors.New("protocGenTool service Err : no messages")
 	ErrProtocGenToolServiceNoMethod       = errors.New("protocGenTool service Err : no method")
 	ErrProtocGenToolServiceNoOptions      = errors.New("protocGenTool service Err : no options")
 	ErrProtocGenToolServiceNoExtensions   = errors.New("protocGenTool service Err : no extensions")

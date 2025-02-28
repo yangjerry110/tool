@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2024-10-24 18:27:47
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 16:44:56
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2025-02-27 22:56:36
  * @Description: new protobuf
  */
 package command
@@ -55,7 +55,23 @@ func (n *NewProtobuf) New() error {
 
 	// Exec Command
 	// Exec protoc
-	cmd := exec.Command("protoc", "-I", "protobuf", fmt.Sprintf("--go_opt=module=%s/vo/protobuf", config.ProjectImportPathConf.ImportPath), "--go_out=plugins=grpc:vo/protobuf", config.ProtobufConf.ProtobufName)
+	cmd := exec.Command(
+		"protoc",
+		"-I",
+		"protobuf",
+		fmt.Sprintf("--go_opt=module=%s/vo/protobuf", config.ProjectImportPathConf.ImportPath),
+		// "--go_out=plugins=grpc:vo/protobuf",
+		"--go_out=vo/protobuf",
+		fmt.Sprintf("--go-grpc_out=module=%s/vo/protobuf:vo/protobuf", config.ProjectImportPathConf.ImportPath),
+		"grpc-gateway_out=.",
+		config.ProtobufConf.ProtobufName,
+	)
+	// cmd := exec.Command(
+	// 	"protoc",
+	// 	"--proto_path=protobuf",
+	// 	"--go_out=.",
+	// 	"--go-grpc_out=.",
+	// 	config.ProtobufConf.ProtobufName)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {

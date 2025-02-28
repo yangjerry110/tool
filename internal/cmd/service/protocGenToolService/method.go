@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:06:37
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-14 10:42:58
+ * @LastEditTime: 2025-02-24 14:36:16
  * @Description: method
  */
 package protocgentoolservice

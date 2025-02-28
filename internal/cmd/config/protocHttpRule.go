@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:11:58
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-13 16:35:56
+ * @LastEditTime: 2025-02-26 15:19:23
  * @Description: protocHttpRules
  */
 package config
@@ -23,6 +23,8 @@ type ProtocHttpRule struct {
 	FuncName        string
 	InputName       string
 	OutputName      string
+	InputMessage    *protogen.Message
+	OutputMessage   *protogen.Message
 }
 
 /**
@@ -62,6 +64,10 @@ func (p *ProtocHttpRule) SetConfig() error {
 	p.InputFields = p.HttpProtoMethod.Input.Fields
 	p.InputName = string(p.HttpProtoMethod.Desc.Input().Name())
 	p.OutputName = string(p.HttpProtoMethod.Desc.Output().Name())
+	// set inputMessage
+	// set outputMessage
+	p.InputMessage = p.HttpProtoMethod.Input
+	p.OutputMessage = p.HttpProtoMethod.Output
 
 	// Next, we can use GetXxx to get the internal file we set in its Message
 	// get what request type is defined, is it get, post, put, delete, path

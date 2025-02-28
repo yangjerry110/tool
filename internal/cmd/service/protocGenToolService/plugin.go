@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 15:00:47
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:21:04
+ * @LastEditTime: 2025-02-26 15:21:01
  * @Description: plugin protoc_gen_tool
  */
 package protocgentoolservice
@@ -15,9 +15,7 @@ import (
 )
 
 type Plugin struct {
-	Plugin        *protogen.Plugin
-	IsFirstCreate bool
-	IsAppend      bool
+	Plugin *protogen.Plugin
 }
 
 /**
@@ -38,9 +36,19 @@ func (p *Plugin) Generate() error {
 		return err
 	}
 
+	// set config
+	if err := conf.CreateConf(&config.ProtocGenTool{}).SetConfig(); err != nil {
+		return err
+	}
+
+	// set extendImportPath
+	if err := conf.CreateConf(&config.ExtendPath{Path: config.ProtocGenToolConf.ExtendPath}).SetConfig(); err != nil {
+		return err
+	}
+
 	// Get Params by flags
 	// Set Params to config
-	if err := conf.CreateConf(&config.ProtocGenTool{IsFirstCreate: p.IsFirstCreate, IsAppend: p.IsAppend}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&config.ProtocGenTool{IsFirstCreate: config.ProtocGenToolConf.IsFirstCreate, IsAppend: config.ProtocGenToolConf.IsAppend, IsExtend: config.ProtocGenToolConf.IsExtend}).SetConfig(); err != nil {
 		return err
 	}
 

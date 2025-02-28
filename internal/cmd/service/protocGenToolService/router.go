@@ -2,14 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:46:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 16:42:39
+ * @LastEditTime: 2025-02-27 11:33:55
  * @Description: router service
  */
 package protocgentoolservice
 
 import (
-	"fmt"
-
 	"github.com/yangjerry110/tool/internal/cmd/config"
 	"github.com/yangjerry110/tool/internal/cmd/template"
 	"github.com/yangjerry110/tool/internal/cmd/template/router"
@@ -24,16 +22,29 @@ type Router struct{}
  * @return {*}
  */
 func (r *Router) Generate() error {
-
 	// Assemble the parameters related to the template router
 	templateNewProtobuf := &router.NewProtobuf{}
 	// The routerName here is protobufFileName
 	// so first is fist protobufFileName
 	templateNewProtobuf.FirstRouterName = config.ProtobufFileConf.FileName[:1]
+	// set ExtendImportPath
+	// is isExtend == false, set config.ProjectImportPathConf.ImportPath
+	// is isExtend == true, set config.ExtendImportPathConf.Path
+	templateNewProtobuf.ExtendImportPath = config.ProjectImportPathConf.ImportPath
+	if config.ProtocGenToolConf.IsExtend {
+		templateNewProtobuf.ExtendImportPath = config.ExtendPathConf.ImportPath
+	}
+
+	// Previously set
+	// if isExtend == false, set projectPath = config.ProjectPathConf.Path
+	// if isExtend == true, set projectPath = config.ProjectImportPathConf.Path
+	templateNewProtobuf.ProjectPath = config.ProjectPathConf.Path
+	if config.ProtocGenToolConf.IsExtend {
+		templateNewProtobuf.ProjectPath = config.ExtendPathConf.Path
+	}
+
 	// Previously set
 	templateNewProtobuf.ProjectImportPath = config.ProjectImportPathConf.ImportPath
-	// Previously set
-	templateNewProtobuf.ProjectPath = config.ProjectPathConf.Path
 	// The routerName here is protobufFileName
 	templateNewProtobuf.RouterName = config.ProtobufFileConf.FileName
 	// The routerName here is protobufFileName
@@ -68,9 +79,14 @@ func (r *Router) Generate() error {
 		newProtobufRouter.RouterNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
 		newProtobufRouter.RouterPath = protocHttpRule.Url
 		newProtobufRouter.Time = template.GetFormatNowTime()
+		// get comment
+		commonProtoGenToolService := &Comment{ProtocHttpRule: protocHttpRule}
+		if err := commonProtoGenToolService.Generate(); err != nil {
+			return err
+		}
 		newProtobufRouters = append(newProtobufRouters, newProtobufRouter)
 		// Format SwaggerNotes
-		newProtobufRouter.SwaggerNotes = r.formatSwaggerNotes(protocHttpRule)
+		newProtobufRouter.SwaggerNotes = commonProtoGenToolService.Comment
 	}
 
 	// set NewProtobufServices
@@ -96,50 +112,4 @@ func (r *Router) Generate() error {
 	// 	}
 	// }
 	return nil
-}
-
-/**
- * @description: formatSwaggerNotes
- * @param {*config.ProtocHttpRule} protocHttpRule
- * @author: Jerry.Yang
- * @date: 2023-12-13 16:37:04
- * @return {*}
- */
-func (r *Router) formatSwaggerNotes(protocHttpRule *config.ProtocHttpRule) string {
-
-	// swaggerNotes
-	swaggerNotes := fmt.Sprintf("// %s %s", template.FirstUpper(protocHttpRule.FuncName), protocHttpRule.Description)
-	swaggerNotes += "\r\n"
-	swaggerNotes += fmt.Sprintf("// @ID %s", template.FirstUpper(protocHttpRule.FuncName))
-	swaggerNotes += "\r\n"
-	swaggerNotes += fmt.Sprintf("// @Summary %s", protocHttpRule.Description)
-	swaggerNotes += "\r\n"
-	swaggerNotes += fmt.Sprintf("// @Tags %s ", template.FirstUpper(config.ProtobufFileConf.FileName))
-	swaggerNotes += "\r\n"
-
-	// Judge Func'Method is Get Or Post
-	// If method == Get, add query string
-	if protocHttpRule.Method == "GET" {
-		// Get Fields
-		if len(protocHttpRule.InputFields) != 0 {
-			for _, inputField := range protocHttpRule.InputFields {
-				swaggerNotes += fmt.Sprintf("// @Param %s query %s false \"-\"", inputField.Desc.Name(), inputField.Desc.Kind())
-				swaggerNotes += "\r\n"
-			}
-		}
-	}
-
-	// If method == Post, add input body
-	if protocHttpRule.Method == "POST" {
-		swaggerNotes += fmt.Sprintf("// @Param input body protobuf.%s false \" - \"", protocHttpRule.InputName)
-		swaggerNotes += "\r\n"
-	}
-
-	// Add Output
-	swaggerNotes += fmt.Sprintf("// @Success 200 {object} protobuf.%s", protocHttpRule.OutputName)
-	swaggerNotes += "\r\n"
-
-	// Add Router
-	swaggerNotes += fmt.Sprintf("// @Router %s [%s]", protocHttpRule.Url, protocHttpRule.Method)
-	return swaggerNotes
 }
