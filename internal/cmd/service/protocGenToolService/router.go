@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:46:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:46:19
+ * @LastEditTime: 2025-03-03 17:40:52
  * @Description: router service
  */
 package protocgentoolservice
@@ -30,18 +30,18 @@ func (r *Router) Generate() error {
 	// set ExtendImportPath
 	// is isExtend == false, set config.ProjectImportPathConf.ImportPath
 	// is isExtend == true, set config.ExtendImportPathConf.Path
-	templateNewProtobuf.ExtendImportPath = config.ProjectImportPathConf.ImportPath
-	if config.ProtocGenToolConf.IsExtend {
-		templateNewProtobuf.ExtendImportPath = config.ExtendPathConf.ImportPath
-	}
+	// templateNewProtobuf.ExtendImportPath = config.ProjectImportPathConf.ImportPath
+	// if config.ProtocGenToolConf.IsExtend {
+	// 	templateNewProtobuf.ExtendImportPath = config.ExtendPathConf.ImportPath
+	// }
 
 	// Previously set
 	// if isExtend == false, set projectPath = config.ProjectPathConf.Path
 	// if isExtend == true, set projectPath = config.ProjectImportPathConf.Path
 	templateNewProtobuf.ProjectPath = config.ProjectPathConf.Path
-	if config.ProtocGenToolConf.IsExtend {
-		templateNewProtobuf.ProjectPath = config.ExtendPathConf.Path
-	}
+	// if config.ProtocGenToolConf.IsExtend {
+	// 	templateNewProtobuf.ProjectPath = config.ExtendPathConf.Path
+	// }
 
 	// Previously set
 	templateNewProtobuf.ProjectImportPath = config.ProjectImportPathConf.ImportPath

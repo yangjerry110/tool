@@ -40,7 +40,6 @@ type NewProtobufService struct {
 }
 
 type NewProtobuf struct {
-	ExtendImportPath  string
 	ProjectPath       string
 	ProjectImportPath string
 	FirstRouterName   string
