@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2023-12-12 15:46:23
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-03-03 16:46:19
+ * @Description: router service
+ */
 package protocgentoolservice
 
 import (
@@ -58,13 +65,6 @@ func (r *Router) Generate() error {
 
 	// set newProtobufRouters
 	newProtobufRouters := []*router.NewProtobufRouter{}
-	// set newProtobufServices by protocServiceConfs
-	for _, protocServiceConf := range config.ProtocServiceConfs {
-		newProtobufService := &router.NewProtobufService{}
-		newProtobufService.ServiceName = protocServiceConf.ServiceName
-		newProtobufService.RouterNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
-		newProtobufServices = append(newProtobufServices, newProtobufService)
-	}
 	// set newProtobufRouters by httpRules
 	for _, protocHttpRule := range config.ProtocHttpRules {
 		newProtobufRouter := &router.NewProtobufRouter{}

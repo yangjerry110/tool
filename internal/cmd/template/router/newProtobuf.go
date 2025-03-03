@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:31:21
+ * @LastEditTime: 2025-03-03 16:46:45
  * @Description: new protobuf
  */
 package router
@@ -12,11 +12,6 @@ import (
 
 	"github.com/yangjerry110/tool/internal/cmd/template"
 )
-
-type NewProtobufService struct {
-	ServiceName  string
-	RouterNameUp string
-}
 
 /**
  * @description: NewRouters
@@ -77,125 +72,109 @@ func (n *NewProtobuf) New() error {
  */
 func (n *NewProtobuf) getTemplate() string {
 	return `/*
-	* @Author: Jerry.Yang
-	* @Date: {{.Time}}
-	* @LastEditors: Jerry.Yang
-	* @LastEditTime: {{.Time}}
-	* @Description: {{.RouterName}}
-	*/
-   package router
-   
-   import (
-	   "net/http"
-	   "github.com/gin-gonic/gin"
-	   "google.golang.org/grpc"
-	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
-	   "google.golang.org/grpc"
-	   "{{.ProjectImportPath}}/vo/protobuf"
-	   "github.com/yangjerry110/protoc-gen-go/proto"
-   )
-   
-   type {{.RouterNameUp}} struct{
-	HttpServer protobuf.{{.RouterNameUp}}HttpServer
-   }
-   
-   /**
-	* @description: Register
-	* @author: Jerry.Yang
-	* @date: {{.Time}}
-	* @return {*}
-	*/
-   	func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register(router *gin.Engine) error {
-   
-		{{- range .Routers}}
-		
-		/** 
-		* @step
-		* @{{.RouterMethod}} {{.RouterPath}}
-		* @{{.Description}}
-		**/
-	   router.{{.RouterMethod}}("{{.RouterPath}}", {{.FirstRouterName}}.{{.RouterFuncUp}})
-	   {{- end}}
-	   return nil
-  	}
-
-  	/**
-	* @description: Register
-	* @author: Jerry.Yang
-	* @date: 2024-08-16 16:39:42
-	* @return {*}
-	*/
-	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
-
-		{{- range .Services}}
-		// register {{.ServiceName}}
-		protobuf.Register{{.ServiceName}}Server(grpc, &service.{{.RouterNameUp}}{})
-		{{- end}}
-		return nil
+	 * @Author: Jerry.Yang
+	 * @Date: {{.Time}}
+	 * @LastEditors: Jerry.Yang
+	 * @LastEditTime: {{.Time}}
+	 * @Description: {{.RouterName}}
+	 */
+	package router
+	
+	import (
+		"net/http"
+		"github.com/gin-gonic/gin"
+		"git.qutoutiao.net/gopher/qms/pkg/qlog"
+		"google.golang.org/grpc"
+		"{{.ProjectImportPath}}/vo/protobuf"
+		"github.com/yangjerry110/protoc-gen-go/proto"
+	)
+	
+	type {{.RouterNameUp}} struct{
+	 HttpServer protobuf.{{.RouterNameUp}}HttpServer
 	}
-
-  /**
-	* @description: RegisterGrpc
-	* @author: Jerry.Yang
-	* @date: {{.Time}}
-	* @return {*}
-	*/
-	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
-		{{- range .Services}}
-		// register {{.ServiceName}}
-		protobuf.Register{{.ServiceName}}Server(grpc, &protobuf.Unimplemented{{.RouterNameUp}}Server{})
-		{{- end}}
-		return nil
-	}
-
+	
 	/**
-	* @description: RegisterService
-	* @param {interface{}} service
-	* @author: Jerry.Yang
-	* @date: {{.Time}}
-	* @return {*}
-	*/
-	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterService(service interface{}) error {
-		r.HttpServer = service.(protobuf.{{.RouterNameUp}}HttpServer)
+	 * @description: Register
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	 */
+	func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register(router *gin.Engine) error {
+	
+		 {{- range .Routers}}
+		 
+		 /** 
+		 * @step
+		 * @{{.RouterMethod}} {{.RouterPath}}
+		 * @{{.Description}}
+		 **/
+		router.{{.RouterMethod}}("{{.RouterPath}}", {{.FirstRouterName}}.{{.RouterFuncUp}})
+		{{- end}}
 		return nil
-	}
-
-  {{- range .Routers}}
-  {{.SwaggerNotes}}
-	func ({{.FirstRouterName}} *{{.RouterNameUp}}) {{.RouterFuncUp}}(ctx *gin.Context)  {
-
-		/**
-		* @step
-		* @inputVo
-		**/
-		inputVo := &protobuf.{{.InputReqName}}{}
-
-	  /**
-	  * @step
-	  * @should bind
-	  **/
-	  if err := ctx.ShouldBind(inputVo); err != nil {
-		  qlog.Errorf("{{.RouterFunc}} shouldBind Err : %+v", err)
-		  return 
-	  } 
-	  
-	  /**
-	  * @step
-	  * @调用service
-	  **/
-	  outputVo, err := {{.FirstRouterName}}.HttpServer.{{.RouterFunc}}(ctx, inputVo)
-	  if err != nil {
-		  qlog.Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
-		  ctx.JSON(http.StatusBadRequest,&protobuf.{{.OutputRespName}}{RetCode:proto.Int32(-1),RetMsg: proto.String(err.Error())})
-		  return
-	  }
-
-		/**
-		* @step
-		* @return
-		**/
-		ctx.JSON(http.StatusOK, outputVo)
-	}
-  {{- end}}
-  `
+   }
+ 
+   /**
+	 * @description: RegisterGrpc
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	 */
+	 func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
+		 {{- range .Services}}
+		 // register {{.ServiceName}}
+		 protobuf.Register{{.ServiceName}}Server(grpc, &protobuf.Unimplemented{{.RouterNameUp}}Server{})
+		 {{- end}}
+		 return nil
+	 }
+ 
+	 /**
+	 * @description: RegisterService
+	 * @param {interface{}} service
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	 */
+	 func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterService(service interface{}) error {
+		 r.HttpServer = service.(protobuf.{{.RouterNameUp}}HttpServer)
+		 return nil
+	 }
+ 
+   {{- range .Routers}}
+   {{.SwaggerNotes}}
+   func ({{.FirstRouterName}} *{{.RouterNameUp}}) {{.RouterFuncUp}}(ctx *gin.Context)  {
+ 
+	   /**
+	   * @step
+	   * @inputVo
+	   **/
+	   inputVo := &protobuf.{{.InputReqName}}{}
+ 
+	   /**
+	   * @step
+	   * @should bind
+	   **/
+	   if err := ctx.ShouldBind(inputVo); err != nil {
+		   qlog.Errorf("{{.RouterFunc}} shouldBind Err : %+v", err)
+		   return 
+	   } 
+	   
+	   /**
+	   * @step
+	   * @调用service
+	   **/
+	   outputVo, err := {{.FirstRouterName}}.HttpServer.{{.RouterFunc}}(ctx, inputVo)
+	   if err != nil {
+		   qlog.Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
+		   ctx.JSON(http.StatusBadRequest,&protobuf.{{.OutputRespName}}{RetCode:proto.Int32(-1),RetMsg: proto.String(err.Error())})
+		   return
+	   }
+ 
+	   /**
+	   * @step
+	   * @return
+	   **/
+	   ctx.JSON(http.StatusOK, outputVo)
+   }
+   {{- end}}
+   `
 }

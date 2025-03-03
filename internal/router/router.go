@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:30:21
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:37:12
+ * @LastEditTime: 2025-03-03 16:40:22
  * @Description: router
  */
 package router
@@ -16,7 +16,7 @@ import (
 type RouterInterface interface {
 	Init() RouterInterface
 	Register(routerName string, register Register) Register
-	Use(ginHandlerFunc Use) error
+	Use(userName string, use Use) error
 	Run(conf conf.Conf) error
 }
 

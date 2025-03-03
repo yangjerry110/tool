@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-08-16 17:05:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-08-19 15:22:08
+ * @LastEditTime: 2025-03-03 16:42:22
  * @Description: grpc
  */
 package grpc
@@ -46,13 +46,11 @@ func (g *Grpc) Init() router.RouterInterface {
  * @date:
  * @return {*}
  */
-func (g *Grpc) Register(routerName string, register router.Register) error {
+func (g *Grpc) Register(routerName string, register router.Register) router.Register {
 
 	// register
-	if err := register.RegisterGrpc(g.grpcServer); err != nil {
-		return err
-	}
-	return nil
+	register.RegisterGrpc(g.grpcServer)
+	return register
 }
 
 /**

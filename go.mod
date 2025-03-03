@@ -13,7 +13,7 @@ require (
 	github.com/swaggo/swag v1.16.4
 	github.com/yangjerry110/protoc-gen-go v0.0.6
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
-	google.golang.org/grpc v1.70.0
+	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
