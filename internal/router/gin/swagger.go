@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 11:17:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 15:14:33
+ * @LastEditTime: 2025-03-03 15:40:59
  * @Description: swagger
  */
 package gin
@@ -27,6 +27,17 @@ func (s *Swagger) Register(ginEngine *gin.Engine) error {
 	// Get Default Router
 	// Define apidoc router
 	ginEngine.GET("/api/apidoc/*any", s.apidoc)
+	return nil
+}
+
+/**
+ * @description: RegisterService
+ * @param {interface{}} service
+ * @author: Jerry.Yang
+ * @date: 2025-03-03 15:41:55
+ * @return {*}
+ */
+func (s *Swagger) RegisterService(service interface{}) error {
 	return nil
 }
 
