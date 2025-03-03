@@ -1,10 +1,3 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2023-12-08 11:17:25
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-25 10:37:51
- * @Description: cache errors
- */
 package errors
 
 import (

@@ -1,55 +1,60 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-12 11:16:47
+ * @Date: 2023-07-17 16:50:14
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 17:06:39
- * @Description: main
+ * @LastEditTime: 2025-02-28 18:03:55
+ * @Description:
  */
 package main
 
 import (
 	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
+	"github.com/yangjerry110/protoc-gen-go/gengo"
+	protocgentoolservice "github.com/yangjerry110/tool/internal/cmd/service/protocGenToolService"
 )
-
-const genGoDocURL = "https://developers.google.com/protocol-buffers/docs/reference/go-generated"
-const grpcDocURL = "https://grpc.io/docs/languages/go/quickstart/#regenerate-grpc-code"
 
 func main() {
 
-	// // Define proto option
-	// protogenOptions := protogen.Options{}
-
-	// // Add flag.command.Set to paramsFunc
-	// // protogenOptions.ParamFunc = flag.CommandLine.Set
-
-	// // To run by protogenOptions
-	// protogenOptions.Run(func(plugin *protogen.Plugin) error {
-
-	// 	// Plugin Generate
-	// 	// return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: plugin}).Generate()
-	// 	return nil
-	// })
-
-	// if len(os.Args) == 2 && os.Args[1] == "--version" {
-	// 	fmt.Fprintf(os.Stdout, "%v %v\n", filepath.Base(os.Args[0]), version.String())
-	// 	os.Exit(0)
+	// var (
+	// 	flags        flag.FlagSet
+	// 	plugins      = flags.String("plugins", "", "list of plugins to enable (supported values: grpc)")
+	// 	importPrefix = flags.String("import_prefix", "", "prefix to prepend to import paths")
+	// )
+	// importRewriteFunc := func(importPath protogen.GoImportPath) protogen.GoImportPath {
+	// 	switch importPath {
+	// 	case "context", "fmt", "math":
+	// 		return importPath
+	// 	}
+	// 	if *importPrefix != "" {
+	// 		return protogen.GoImportPath(*importPrefix) + importPath
+	// 	}
+	// 	return importPath
 	// }
-	// if len(os.Args) == 2 && os.Args[1] == "--help" {
-	// 	fmt.Fprintf(os.Stdout, "See "+genGoDocURL+" for usage information.\n")
-	// 	os.Exit(0)
-	// }
-
-	protogen.Options{}.Run(func(gen *protogen.Plugin) error {
-
-		// for _, f := range gen.Files {
-		// 	if f.Generate {
-		// 		gengo.GenerateFile(gen, f)
+	protogen.Options{
+		// ParamFunc:         flags.Set,
+		// ImportRewriteFunc: importRewriteFunc,
+	}.Run(func(gen *protogen.Plugin) error {
+		// grpc := false
+		// for _, plugin := range strings.Split(*plugins, ",") {
+		// 	switch plugin {
+		// 	case "grpc":
+		// 		grpc = true
+		// 	case "":
+		// 	default:
+		// 		return fmt.Errorf("protoc-gen-go: unknown plugin %q", plugin)
 		// 	}
 		// }
-
-		// return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: gen}).Generate()
-		// gen.SupportedFeatures = gengo.SupportedFeatures
-		return nil
+		// for _, f := range gen.Files {
+		// 	if !f.Generate {
+		// 		continue
+		// 	}
+		// 	g := gengo.GenerateFile(gen, f)
+		// 	if grpc {
+		// 		gengogrpc.GenerateFileContent(gen, f, g)
+		// 	}
+		// }
+		gen.SupportedFeatures = gengo.SupportedFeatures
+		return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: gen}).Generate()
+		// return nil
 	})
-
 }

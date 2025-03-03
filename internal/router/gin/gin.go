@@ -2,18 +2,21 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-13 17:31:09
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 15:14:07
+ * @LastEditTime: 2025-03-03 15:49:03
  * @Description: gin router
  */
 package gin
 
 import (
+	"sync"
+
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/router"
 )
 
 type Gin struct {
+	syncOnce sync.Once
 	*gin.Engine
 }
 
@@ -24,8 +27,11 @@ type Gin struct {
 // Author Jerry.Yang
 func (g *Gin) Init() router.RouterInterface {
 
-	// create g.Engine
-	g.Engine = gin.Default()
+	// sync once
+	g.syncOnce.Do(func() {
+		// create g.Engine
+		g.Engine = gin.Default()
+	})
 	return g
 }
 
@@ -35,13 +41,11 @@ func (g *Gin) Init() router.RouterInterface {
  * @date: 2023-12-13 17:36:43
  * @return {*}
  */
-func (g *Gin) Register(routerName string, registerRouter router.Register) error {
+func (g *Gin) Register(routerName string, registerRouter router.Register) router.Register {
 
 	// register router
-	if err := registerRouter.Register(g.Engine); err != nil {
-		return err
-	}
-	return nil
+	registerRouter.Register(g.Engine)
+	return registerRouter
 }
 
 /**
@@ -51,10 +55,10 @@ func (g *Gin) Register(routerName string, registerRouter router.Register) error 
  * @date: 2024-08-07 15:47:17
  * @return {*}
  */
-func (g *Gin) Use(ginHandlerFunc gin.HandlerFunc) error {
+func (g *Gin) Use(useName string, use router.Use) error {
 
 	// use gin.HandlerFunc
-	g.Engine.Use(ginHandlerFunc)
+	g.Engine.Use(use.Use())
 	return nil
 }
 

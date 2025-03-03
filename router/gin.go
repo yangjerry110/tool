@@ -1,9 +1,9 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-19 16:37:28
+ * @Date: 2025-03-03 16:28:45
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 15:12:41
- * @Description: gin router
+ * @LastEditTime: 2025-03-03 16:36:09
+ * @Description: gin
  */
 package router
 
@@ -31,4 +31,15 @@ func CreateGinConf() conf.Conf {
  */
 func CreateGinConfigConf() conf.Conf {
 	return conf.CreateConf(&router.Config{})
+}
+
+/**
+ * @description: InitGinRouter
+ * @author: Jerry.Yang
+ * @date: 2024-08-19 15:25:19
+ * @return {*}
+ */
+func InitGinRouter() error {
+	SetRouterEnginee(&toolgin.Gin{})
+	return nil
 }

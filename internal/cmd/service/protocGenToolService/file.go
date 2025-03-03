@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 16:44:40
+ * @LastEditTime: 2025-03-03 16:46:07
  * @Description: file service
  */
 package protocgentoolservice
@@ -97,6 +97,11 @@ func (f *File) Generate() error {
 		if err := CreateProtoGenToolService(&Method{Method: protoMethod}).Generate(); err != nil {
 			return err
 		}
+	}
+
+	// exec httpServer
+	if err := CreateProtoGenToolService(&HttpServer{}).Generate(); err != nil {
+		return err
 	}
 
 	// generate router
