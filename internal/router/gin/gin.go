@@ -8,12 +8,15 @@
 package gin
 
 import (
+	"sync"
+
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
 	"github.com/yangjerry110/tool/internal/router"
 )
 
 type Gin struct {
+	syncOnce sync.Once
 	*gin.Engine
 }
 
@@ -24,8 +27,11 @@ type Gin struct {
 // Author Jerry.Yang
 func (g *Gin) Init() router.RouterInterface {
 
-	// create g.Engine
-	g.Engine = gin.Default()
+	// sync once
+	g.syncOnce.Do(func() {
+		// create g.Engine
+		g.Engine = gin.Default()
+	})
 	return g
 }
 
@@ -49,10 +55,10 @@ func (g *Gin) Register(routerName string, registerRouter router.Register) router
  * @date: 2024-08-07 15:47:17
  * @return {*}
  */
-func (g *Gin) Use(ginHandlerFunc gin.HandlerFunc) error {
+func (g *Gin) Use(useName string, use router.Use) error {
 
 	// use gin.HandlerFunc
-	g.Engine.Use(ginHandlerFunc)
+	g.Engine.Use(use.Use())
 	return nil
 }
 

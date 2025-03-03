@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 15:47:04
+ * @LastEditTime: 2025-03-03 16:31:21
  * @Description: new protobuf
  */
 package router
@@ -12,6 +12,11 @@ import (
 
 	"github.com/yangjerry110/tool/internal/cmd/template"
 )
+
+type NewProtobufService struct {
+	ServiceName  string
+	RouterNameUp string
+}
 
 /**
  * @description: NewRouters
@@ -83,6 +88,7 @@ func (n *NewProtobuf) getTemplate() string {
    import (
 	   "net/http"
 	   "github.com/gin-gonic/gin"
+	   "google.golang.org/grpc"
 	   "git.qutoutiao.net/gopher/qms/pkg/qlog"
 	   "google.golang.org/grpc"
 	   "{{.ProjectImportPath}}/vo/protobuf"
@@ -99,7 +105,7 @@ func (n *NewProtobuf) getTemplate() string {
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register(router *gin.Engine) error {
+   	func ({{.FirstRouterName}} *{{.RouterNameUp}}) Register(router *gin.Engine) error {
    
 		{{- range .Routers}}
 		
@@ -111,7 +117,22 @@ func (n *NewProtobuf) getTemplate() string {
 	   router.{{.RouterMethod}}("{{.RouterPath}}", {{.FirstRouterName}}.{{.RouterFuncUp}})
 	   {{- end}}
 	   return nil
-  }
+  	}
+
+  	/**
+	* @description: Register
+	* @author: Jerry.Yang
+	* @date: 2024-08-16 16:39:42
+	* @return {*}
+	*/
+	func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
+
+		{{- range .Services}}
+		// register {{.ServiceName}}
+		protobuf.Register{{.ServiceName}}Server(grpc, &service.{{.RouterNameUp}}{})
+		{{- end}}
+		return nil
+	}
 
   /**
 	* @description: RegisterGrpc
@@ -141,13 +162,13 @@ func (n *NewProtobuf) getTemplate() string {
 
   {{- range .Routers}}
   {{.SwaggerNotes}}
-  func ({{.FirstRouterName}} *{{.RouterNameUp}}) {{.RouterFuncUp}}(ctx *gin.Context)  {
+	func ({{.FirstRouterName}} *{{.RouterNameUp}}) {{.RouterFuncUp}}(ctx *gin.Context)  {
 
-	  /**
-	  * @step
-	  * @inputVo
-	  **/
-	  inputVo := &protobuf.{{.InputReqName}}{}
+		/**
+		* @step
+		* @inputVo
+		**/
+		inputVo := &protobuf.{{.InputReqName}}{}
 
 	  /**
 	  * @step
@@ -169,12 +190,12 @@ func (n *NewProtobuf) getTemplate() string {
 		  return
 	  }
 
-	  /**
-	  * @step
-	  * @return
-	  **/
-	  ctx.JSON(http.StatusOK, outputVo)
-  }
+		/**
+		* @step
+		* @return
+		**/
+		ctx.JSON(http.StatusOK, outputVo)
+	}
   {{- end}}
   `
 }

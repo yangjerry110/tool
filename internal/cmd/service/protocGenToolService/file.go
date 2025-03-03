@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 11:41:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 14:30:37
+ * @LastEditTime: 2025-03-03 16:30:37
  * @Description: file service
  */
 package protocgentoolservice
@@ -32,6 +32,7 @@ func (f *File) Generate() error {
 	}
 
 	// Define
+	protoServices := []*protogen.Service{}
 	protoMethods := []*protogen.Method{}
 	// define protoMessages
 	protoMessages := []*protogen.Message{}
@@ -48,6 +49,7 @@ func (f *File) Generate() error {
 	// This code simply ignores the code that contains streamClient and streamServer in the proto file
 	// isGenerate := false
 	for _, service := range f.File.Services {
+		// for service.Methods
 		for _, method := range service.Methods {
 
 			if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
@@ -65,13 +67,16 @@ func (f *File) Generate() error {
 		if err := conf.CreateConf(&config.ProtocService{ProtocService: service}).SetConfig(); err != nil {
 			return err
 		}
+
+		// append protoServices
+		protoServices = append(protoServices, service)
 	}
 
-	// // Judge isGenerate
-	// // if == false ; return err
-	// if !isGenerate {
-	// 	return errors.ErrProtocGenToolServiceNoGenerate
-	// }
+	// Judge protoServices
+	// if len == 0; return err
+	if len(protoServices) == 0 {
+		return errors.ErrProtocGenToolServiceNoServices
+	}
 
 	// Judge protoMethods
 	// if len == 0 ; return err

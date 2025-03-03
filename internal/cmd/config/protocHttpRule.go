@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 15:11:58
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-26 15:19:23
+ * @LastEditTime: 2025-03-03 16:35:16
  * @Description: protocHttpRules
  */
 package config

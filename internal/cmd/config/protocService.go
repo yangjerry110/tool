@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-12-06 16:29:28
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-12-06 16:32:39
+ * @LastEditTime: 2025-03-03 16:30:14
  * @Description: protoc service
  */
 package config
