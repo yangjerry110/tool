@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-24 17:03:57
+ * @LastEditTime: 2025-03-03 16:16:37
  * @Description:
  */
 package protocgentoolservice
@@ -43,9 +43,9 @@ func (s *Service) Generate() error {
 
 	// if isAppend or if isNew
 	// new interface service
-	if err := s.newInterfaceService(); err != nil {
-		return err
-	}
+	// if err := s.newInterfaceService(); err != nil {
+	// 	return err
+	// }
 
 	// Judge isFirstCreate isAppend
 	// If IsFirstCreate and is not isAppend
@@ -236,23 +236,23 @@ func (s *Service) appendService() error {
 func (s *Service) isExistServicePath() error {
 
 	// interfaceService path
-	interfaceServicePath := fmt.Sprintf("%s/internal/service/interfaceService", config.ProjectPathConf.Path)
+	// interfaceServicePath := fmt.Sprintf("%s/internal/service/interfaceService", config.ProjectPathConf.Path)
 	// service path
 	servicePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
 
-	// If exist interfaceService path
-	_, err := os.Stat(interfaceServicePath)
-	if err != nil {
-		// if not exist
-		// mkdir all interfaceServicePath 077
-		err = os.MkdirAll(interfaceServicePath, os.ModePerm)
-		if err != nil {
-			return err
-		}
-	}
+	// // If exist interfaceService path
+	// _, err := os.Stat(interfaceServicePath)
+	// if err != nil {
+	// 	// if not exist
+	// 	// mkdir all interfaceServicePath 077
+	// 	err = os.MkdirAll(interfaceServicePath, os.ModePerm)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	// if exist service path
-	_, err = os.Stat(servicePath)
+	_, err := os.Stat(servicePath)
 	if err != nil {
 		// if not exist
 		// mkdir all servicePath 077
@@ -275,28 +275,28 @@ func (s *Service) isExistServiceFile() error {
 	servicePath := fmt.Sprintf("%s/internal/service", config.ProjectPathConf.Path)
 
 	// baseService file
-	baseServiceFileName := "baseService.go"
-	baseServiceFilePath := fmt.Sprintf("%s/%s", servicePath, baseServiceFileName)
+	// baseServiceFileName := "baseService.go"
+	// baseServiceFilePath := fmt.Sprintf("%s/%s", servicePath, baseServiceFileName)
 
 	// fileName
 	fileName := fmt.Sprintf("%sService.go", config.ProtobufFileConf.FileName)
 	filePath := fmt.Sprintf("%s/%s", servicePath, fileName)
 
 	// if exist baseServiceFilePath
-	_, err := os.Stat(baseServiceFilePath)
-	if err != nil {
-		// set newBaseService
-		templateNewBaseService := &service.NewBaseService{}
-		templateNewBaseService.ProjectImportPath = config.ProjectImportPathConf.ImportPath
-		templateNewBaseService.Time = template.GetFormatNowTime()
-		// newBaseService
-		if err := template.CreateTemplate(templateNewBaseService).New(); err != nil {
-			return err
-		}
-	}
+	// _, err := os.Stat(baseServiceFilePath)
+	// if err != nil {
+	// 	// set newBaseService
+	// 	templateNewBaseService := &service.NewBaseService{}
+	// 	templateNewBaseService.ProjectImportPath = config.ProjectImportPathConf.ImportPath
+	// 	templateNewBaseService.Time = template.GetFormatNowTime()
+	// 	// newBaseService
+	// 	if err := template.CreateTemplate(templateNewBaseService).New(); err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	// if exist filePath
-	_, err = os.Stat(filePath)
+	_, err := os.Stat(filePath)
 	if err != nil {
 		// set newService
 		templateNewService := &service.NewService{}
