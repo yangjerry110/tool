@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:46:45
+ * @LastEditTime: 2025-03-07 16:40:58
  * @Description: new protobuf
  */
 package router
@@ -121,7 +121,7 @@ func (n *NewProtobuf) getTemplate() string {
 	 func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterGrpc(grpc *grpc.Server) error {
 		 {{- range .Services}}
 		 // register {{.ServiceName}}
-		 protobuf.Register{{.ServiceName}}Server(grpc, &protobuf.Unimplemented{{.RouterNameUp}}Server{})
+		 protobuf.Register{{.ServiceName}}Server(grpc, &protobuf.Unimplemented{{.ServiceName}}Server{})
 		 {{- end}}
 		 return nil
 	 }
@@ -134,7 +134,7 @@ func (n *NewProtobuf) getTemplate() string {
 	 * @return {*}
 	 */
 	 func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterService(service interface{}) error {
-		 r.HttpServer = service.(protobuf.{{.RouterNameUp}}HttpServer)
+		 {{.FirstRouterName}}.HttpServer = service.(protobuf.{{.RouterNameUp}}HttpServer)
 		 return nil
 	 }
  

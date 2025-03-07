@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 15:59:49
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 16:47:16
+ * @LastEditTime: 2025-03-03 19:04:17
  * @Description: newApi Command
  */
 package command
@@ -126,17 +126,10 @@ func (n *NewApi) New() error {
 		return err
 	}
 
-	// 如果没有错误，打印输出结果
-	fmt.Println("protoc 命令成功执行，输出:\n", string(output))
-
-	// judge isExtend
-	if isExtend {
-		return nil
-	}
-
 	// Exec Command
 	// Exec swag init
-	swagInitCmd := exec.Command("swag", "init", "--parseDependency")
+	// swagInitCmd := exec.Command("swag", "init", "--parseDependency")
+	swagInitCmd := exec.Command("swag", "init")
 	swagInitCmd.Stdout = os.Stdout
 	swagInitCmd.Stderr = os.Stderr
 	if err := swagInitCmd.Run(); err != nil {
