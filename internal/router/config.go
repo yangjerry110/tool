@@ -1,78 +1,39 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2024-04-12 17:34:30
+ * @Date: 2025-03-10 14:42:50
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:44:37
- * @Description: router Config
+ * @LastEditTime: 2025-03-10 14:46:37
+ * @Description: router config
  */
 package router
 
 import "github.com/yangjerry110/tool/internal/conf"
 
-/**
- * @description: config
- * @author: Jerry.Yang
- * @date: 2023-12-14 10:49:13
- * @return {*}
- */
-type Config struct {
+type GinRouter struct {
 	Addr string `yaml:"addr"`
 }
 
-/**
- * @description: GinConf
- * @author: Jerry.Yang
- * @date: 2023-12-13 18:40:07
- * @return {*}
- */
-var RouteConf = &Config{}
-
-/**
- * @description: GrpcConfig
- * @author: Jerry.Yang
- * @date: 2024-08-19 10:46:43
- * @return {*}
- */
-type GrpcConfig struct {
+type GrcpRouter struct {
 	Protocol string `yaml:"protocol"`
 	Port     string `yaml:"port"`
 	Addr     string `yaml:"addr"`
 }
 
-/**
- * @description: GrpcRouterConf
- * @author: Jerry.Yang
- * @date: 2024-08-19 10:46:53
- * @return {*}
- */
-var GrpcRouterConf = &GrpcConfig{}
+var GinRouterConf = &GinRouter{}
+var GrpcRouterConf = &GrcpRouter{}
 
-/**
- * @description: SetConfig
- * @author: Jerry.Yang
- * @date: 2023-12-13 18:41:43
- * @return {*}
- */
-func (c *Config) SetConfig() error {
-
+func (g *GinRouter) SetConfig() error {
 	/**
 	 * @step
 	 * @返回结果
 	 **/
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "router.yaml", FileType: "yaml", ConfData: &RouteConf}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "router.yaml", FileType: "yaml", ConfData: &GinRouterConf}).SetConfig(); err != nil {
 		return err
 	}
 	return nil
 }
 
-/**
- * @description: SetConfig
- * @author: Jerry.Yang
- * @date: 2024-08-19 10:48:01
- * @return {*}
- */
-func (g *GrpcConfig) SetConfig() error {
-
+func (g *GrcpRouter) SetConfig() error {
 	/**
 	 * @step
 	 * @返回结果

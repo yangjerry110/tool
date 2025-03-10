@@ -1,9 +1,9 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-20 17:05:11
+ * @Date: 2025-03-10 15:31:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:32:45
- * @Description: Health check
+ * @LastEditTime: 2025-03-10 15:36:11
+ * @Description:
  */
 package gin
 
@@ -11,41 +11,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
+	"github.com/yangjerry110/tool/internal/router"
 )
 
 type Ping struct{}
 
-/**
- * @description: Register
- * @author: Jerry.Yang
- * @date: 2023-12-20 17:07:11
- * @return {*}
- */
-func (p *Ping) Register(ginEngine *gin.Engine) error {
+func (p *Ping) Register(ginEngine *gin.Engine) router.RouterRegisterGin {
 	ginEngine.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "success")
 	})
-	return nil
+	return p
 }
 
-/**
- * @description: RegisterService
- * @param {interface{}} service
- * @author: Jerry.Yang
- * @date: 2025-03-03 15:41:33
- * @return {*}
- */
-func (p *Ping) RegisterService(service interface{}) error {
-	return nil
+func (p *Ping) RegisterGin() router.RouterRegisterGin {
+	return p
 }
 
-/* @description: RegisterGrpc
- * @param {*grpc.Server} grpcEngine
- * @author: Jerry.Yang
- * @date: 2024-08-19 14:57:02
- * @return {*}
- */
-func (p *Ping) RegisterGrpc(grpcEngine *grpc.Server) error {
-	return nil
+func (p *Ping) RegisterService(routerService router.RouterRegisterGinHttpServer) router.RouterRegisterGin {
+	return p
 }

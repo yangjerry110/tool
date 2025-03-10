@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-13 17:30:21
+ * @Date: 2025-03-10 14:42:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:40:22
+ * @LastEditTime: 2025-03-10 15:32:48
  * @Description: router
  */
 package router
@@ -10,22 +10,32 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/internal/conf"
-	"google.golang.org/grpc"
 )
 
-type RouterInterface interface {
-	Init() RouterInterface
-	Register(routerName string, register Register) Register
-	Use(userName string, use Use) error
+type Router interface {
+	Init() Router
+	Register(registerName string, routerRegister RouterRegister) error
+	Use(useName string, use RouterUse) error
 	Run(conf conf.Conf) error
 }
 
-type Register interface {
-	Register(ginEngine *gin.Engine) error
-	RegisterService(service interface{}) error
-	RegisterGrpc(grpc *grpc.Server) error
+type RouterRegister interface {
+	RegisterGin() RouterRegisterGin
 }
 
-type Use interface {
+type RouterRegisterGin interface {
+	Register(ginEnginee *gin.Engine) RouterRegisterGin
+	RegisterService(routerService RouterRegisterGinHttpServer) RouterRegisterGin
+}
+
+type RouterUse interface {
+	UseGin() RouterUseGin
+}
+
+type RouterUseGin interface {
 	Use() gin.HandlerFunc
+}
+
+type RouterRegisterGinHttpServer interface {
+	mustRegisterServiceHttpServer()
 }

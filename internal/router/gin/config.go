@@ -1,10 +1,10 @@
 /*
-* @Author: Jerry.Yang
-* @Date: 2023-12-13 18:39:32
+ * @Author: Jerry.Yang
+ * @Date: 2025-03-10 14:47:08
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 15:13:53
-* @Description: gin conf
-*/
+ * @LastEditTime: 2025-03-10 14:48:36
+ * @Description: gin conf
+ */
 package gin
 
 import (
@@ -14,14 +14,7 @@ import (
 	"github.com/yangjerry110/tool/internal/router"
 )
 
-/**
- * @description: SetConfig
- * @author: Jerry.Yang
- * @date: 2023-12-14 10:47:37
- * @return {*}
- */
 func (g *Gin) SetConfig() error {
-
 	// Set config path
 	if err := conf.CreateConf(&conf.ConfigPath{}).SetConfig(); err != nil {
 		return err
@@ -38,7 +31,7 @@ func (g *Gin) SetConfig() error {
 	}
 
 	// Set gin config
-	if err := conf.CreateConf(&router.Config{}).SetConfig(); err != nil {
+	if err := conf.CreateConf(&router.GinRouter{}).SetConfig(); err != nil {
 		return err
 	}
 	return nil

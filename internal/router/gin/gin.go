@@ -1,9 +1,9 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-13 17:31:09
+ * @Date: 2025-03-10 14:47:57
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 15:49:03
- * @Description: gin router
+ * @LastEditTime: 2025-03-10 15:38:10
+ * @Description:
  */
 package gin
 
@@ -20,13 +20,7 @@ type Gin struct {
 	*gin.Engine
 }
 
-// Gin Init
-//
-// Init
-// Date 2024-04-12 17:21:38
-// Author Jerry.Yang
-func (g *Gin) Init() router.RouterInterface {
-
+func (g *Gin) Init() router.Router {
 	// sync once
 	g.syncOnce.Do(func() {
 		// create g.Engine
@@ -41,11 +35,11 @@ func (g *Gin) Init() router.RouterInterface {
  * @date: 2023-12-13 17:36:43
  * @return {*}
  */
-func (g *Gin) Register(routerName string, registerRouter router.Register) router.Register {
+func (g *Gin) Register(routerName string, routerRegister router.RouterRegister) error {
 
 	// register router
-	registerRouter.Register(g.Engine)
-	return registerRouter
+	routerRegister.RegisterGin().Register(g.Engine)
+	return nil
 }
 
 /**
@@ -55,10 +49,10 @@ func (g *Gin) Register(routerName string, registerRouter router.Register) router
  * @date: 2024-08-07 15:47:17
  * @return {*}
  */
-func (g *Gin) Use(useName string, use router.Use) error {
+func (g *Gin) Use(useName string, routerUse router.RouterUse) error {
 
 	// use gin.HandlerFunc
-	g.Engine.Use(use.Use())
+	g.Engine.Use(routerUse.UseGin().Use())
 	return nil
 }
 
@@ -76,12 +70,12 @@ func (g *Gin) Run(runConf conf.Conf) error {
 		return err
 	}
 
-	// Register Swagger
-	g.Register("swagger", &Swagger{})
-
-	// Register ping
+	// register ping
 	g.Register("ping", &Ping{})
 
+	// register swagger
+	g.Register("swagger", &Swagger{})
+
 	// Run
-	return g.Engine.Run(router.RouteConf.Addr)
+	return g.Engine.Run(router.GinRouterConf.Addr)
 }

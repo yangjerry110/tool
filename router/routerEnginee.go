@@ -1,33 +1,21 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2024-04-12 17:43:11
+ * @Date: 2025-03-10 15:15:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:36:30
+ * @LastEditTime: 2025-03-10 15:15:45
  * @Description: router enginee
  */
 package router
 
-import (
-	"github.com/yangjerry110/tool/internal/router"
-)
+import "github.com/yangjerry110/tool/internal/router"
 
-var defaultRouterEnginee router.RouterInterface
+var defaultRouterEnginee router.Router
 
-// SetRouterEnginee
-//
-// SetRouterEnginee
-// Date 2024-04-12 17:39:13
-// Author Jerry.Yang
-func SetRouterEnginee(routerInterface router.RouterInterface) router.RouterInterface {
-	defaultRouterEnginee = routerInterface.Init()
+func SetRouterEnginee(routerEnginee router.Router) router.Router {
+	defaultRouterEnginee = routerEnginee
 	return defaultRouterEnginee
 }
 
-// routerEnginee
-//
-// routerEnginee
-// Date 2024-04-12 17:42:03
-// Author Jerry.Yang
-func routerEnginee() router.RouterInterface {
+func routerEnginee() router.Router {
 	return defaultRouterEnginee
 }

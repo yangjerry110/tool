@@ -1,40 +1,14 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-18 16:57:27
+ * @Date: 2025-03-10 15:14:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:36:25
+ * @LastEditTime: 2025-03-10 15:38:55
  * @Description: router
  */
 package router
 
-import (
-	"github.com/yangjerry110/tool/internal/conf"
-	"github.com/yangjerry110/tool/internal/router"
-)
+import "github.com/yangjerry110/tool/internal/router"
 
-// Register
-//
-// Register
-// Date 2024-04-12 17:44:09
-// Author Jerry.Yang
-func Register(routerName string, routerRegister router.Register) router.Register {
-	return routerEnginee().Register(routerName, routerRegister)
-}
-
-// Use
-//
-// Use
-// Data 2024-08-07 15:49:38
-// Author Jerry.Yang
-func Use(useName string, use router.Use) error {
-	return routerEnginee().Use(useName, use)
-}
-
-// Run
-//
-// Run
-// Date 2024-05-31 11:31:45
-// Author Jerry.Yang
-func Run(conf conf.Conf) error {
-	return routerEnginee().Run(conf)
+type RouterRegisterGin interface {
+	router.RouterRegisterGin
 }
