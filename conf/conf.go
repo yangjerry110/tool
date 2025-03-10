@@ -1,64 +1,75 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-08 17:39:35
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-07 17:47:10
- * @Description: conf
+ * @Date: 2025-03-10 21:48:52
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2025-03-10 22:26:31
+ * @FilePath: /tool/conf/conf.go
+ * @Description: 配置文件管理模块，提供统一的配置加载和管理接口。
+ * 支持多种配置类型（如路径配置、YAML配置等），通过工厂模式创建配置对象。
  */
 package conf
 
-import "github.com/yangjerry110/tool/internal/conf"
+// Conf 定义配置接口，所有配置类型必须实现该接口
+type Conf interface {
+	// SetConfig 加载并设置配置
+	SetConfig() error
+}
 
 /**
- * @description: CreateConf
- * @param {conf.Conf} conf
+ * @description: CreateConf 工厂函数，用于创建配置对象
+ * @param {Conf} conf 实现了 Conf 接口的配置对象
+ * @return {Conf} 返回传入的配置对象
  * @author: Jerry.Yang
  * @date: 2023-12-22 16:29:03
- * @return {*}
  */
-func CreateConf(conf conf.Conf) conf.Conf {
+func CreateConf(conf Conf) Conf {
 	return conf
 }
 
 /**
- * @description: CreatePathConf
- * @param {string} configPath
+ * @description: CreatePathConf 创建路径配置对象
+ * @param {string} configPath 配置文件的路径
+ * @return {Conf} 返回路径配置对象
  * @author: Jerry.Yang
  * @date: 2023-12-22 15:51:21
- * @return {*}
  */
-func CreatePathConf(configPath string) conf.Conf {
-	return conf.CreateConf(&conf.Path{ConfigPath: configPath})
+func CreatePathConf(configPath string) Conf {
+	return CreateConf(&path{configPath: configPath})
 }
 
 /**
- * @description: CreateConfigPathConf
+ * @description: CreateConfigPathConf 创建默认路径配置对象
+ * @return {Conf} 返回默认路径配置对象
  * @author: Jerry.Yang
  * @date: 2023-12-22 15:51:30
- * @return {*}
  */
-func CreateConfigPathConf() conf.Conf {
-	return conf.CreateConf(&conf.ConfigPath{})
+func CreateConfigPathConf() Conf {
+	return CreateConf(&configPath{})
 }
 
 /**
- * @description: GetPathConf
+ * @description: GetPathConf 获取全局路径配置对象
+ * @return {*path} 返回路径配置对象的指针
  * @author: Jerry.Yang
  * @date: 2023-12-26 14:24:47
- * @return {*}
  */
-func GetPathConf() *conf.Path {
-	return conf.PathConfig
+func GetPathConf() *path {
+	return pathConfig
 }
 
 /**
- * @description: CreateYamlConf
- * @param {string} fileName
- * @param {interface{}} confData
+ * @description: CreateYamlConf 创建 YAML 配置对象
+ * @param {string} fileName YAML 配置文件的名称
+ * @param {interface{}} confData 配置数据的结构体指针
+ * @return {Conf} 返回 YAML 配置对象
  * @author: Jerry.Yang
  * @date: 2023-12-22 10:54:45
- * @return {*}
  */
-func CreateYamlConf(fileName string, confData interface{}) conf.Conf {
-	return conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: fileName, FileType: "yaml", ConfData: confData})
+func CreateYamlConf(fileName string, confData interface{}) Conf {
+	return CreateConf(&yamlConf{
+		filePath: pathConfig.configPath,
+		fileName: fileName,
+		fileType: "yaml",
+		confData: confData,
+	})
 }
