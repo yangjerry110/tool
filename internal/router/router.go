@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-10 14:42:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-10 15:32:48
+ * @LastEditTime: 2025-03-10 18:49:14
  * @Description: router
  */
 package router
@@ -28,14 +28,14 @@ type RouterRegisterGin interface {
 	RegisterService(routerService RouterRegisterGinHttpServer) RouterRegisterGin
 }
 
+type RouterRegisterGinHttpServer interface {
+	mustRegisterServiceHttpServer()
+}
+
 type RouterUse interface {
 	UseGin() RouterUseGin
 }
 
 type RouterUseGin interface {
 	Use() gin.HandlerFunc
-}
-
-type RouterRegisterGinHttpServer interface {
-	mustRegisterServiceHttpServer()
 }

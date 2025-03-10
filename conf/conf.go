@@ -1,22 +1,24 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 17:39:35
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-07 17:47:10
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2025-03-10 20:37:37
  * @Description: conf
  */
 package conf
 
-import "github.com/yangjerry110/tool/internal/conf"
+type Conf interface {
+	SetConfig() error
+}
 
 /**
  * @description: CreateConf
- * @param {conf.Conf} conf
+ * @param {Conf} conf
  * @author: Jerry.Yang
  * @date: 2023-12-22 16:29:03
  * @return {*}
  */
-func CreateConf(conf conf.Conf) conf.Conf {
+func CreateConf(conf Conf) Conf {
 	return conf
 }
 
@@ -27,8 +29,8 @@ func CreateConf(conf conf.Conf) conf.Conf {
  * @date: 2023-12-22 15:51:21
  * @return {*}
  */
-func CreatePathConf(configPath string) conf.Conf {
-	return conf.CreateConf(&conf.Path{ConfigPath: configPath})
+func CreatePathConf(configPath string) Conf {
+	return CreateConf(&Path{ConfigPath: configPath})
 }
 
 /**
@@ -37,8 +39,8 @@ func CreatePathConf(configPath string) conf.Conf {
  * @date: 2023-12-22 15:51:30
  * @return {*}
  */
-func CreateConfigPathConf() conf.Conf {
-	return conf.CreateConf(&conf.ConfigPath{})
+func CreateConfigPathConf() Conf {
+	return CreateConf(&ConfigPath{})
 }
 
 /**
@@ -47,8 +49,8 @@ func CreateConfigPathConf() conf.Conf {
  * @date: 2023-12-26 14:24:47
  * @return {*}
  */
-func GetPathConf() *conf.Path {
-	return conf.PathConfig
+func GetPathConf() *Path {
+	return PathConfig
 }
 
 /**
@@ -59,6 +61,6 @@ func GetPathConf() *conf.Path {
  * @date: 2023-12-22 10:54:45
  * @return {*}
  */
-func CreateYamlConf(fileName string, confData interface{}) conf.Conf {
-	return conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: fileName, FileType: "yaml", ConfData: confData})
+func CreateYamlConf(fileName string, confData interface{}) Conf {
+	return CreateConf(&Yaml{FilePath: PathConfig.ConfigPath, FileName: fileName, FileType: "yaml", ConfData: confData})
 }

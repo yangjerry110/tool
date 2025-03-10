@@ -1,14 +1,10 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2025-03-10 15:14:12
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-10 15:38:55
- * @Description: router
- */
 package router
 
-import "github.com/yangjerry110/tool/internal/router"
+func InitHttpRouterEnginee() router {
+	return SetRouterEnginee(&http{})
+}
 
-type RouterRegisterGin interface {
-	router.RouterRegisterGin
+func RegisterHttp(registerName string, routerRegister routerRegister) RouterRegisterHttp {
+	routerEnginee().register(registerName, routerRegister)
+	return routerRegister.routerRegisterHttp()
 }

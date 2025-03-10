@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-10 14:47:57
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-10 15:38:10
+ * @LastEditTime: 2025-03-10 18:45:05
  * @Description:
  */
 package gin
@@ -38,7 +38,16 @@ func (g *Gin) Init() router.Router {
 func (g *Gin) Register(routerName string, routerRegister router.RouterRegister) error {
 
 	// register router
-	routerRegister.RegisterGin().Register(g.Engine)
+	return g.RegisterGin()
+}
+
+/**
+ * @description: RegisterGin
+ * @author: Jerry.Yang
+ * @date: 2025-03-10 18:45:20
+ * @return {*}
+ */
+func (g *Gin) RegisterGin() error {
 	return nil
 }
 
