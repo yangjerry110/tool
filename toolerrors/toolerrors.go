@@ -1,17 +1,10 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2024-05-31 11:17:30
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 14:25:22
- * @Description:
- */
-package toolErrors
+package toolerrors
 
 import (
 	"github.com/pkg/errors"
 )
 
-type ToolError struct {
+type toolError struct {
 	isStack bool
 	err     error
 	fields  map[string]interface{}
@@ -24,7 +17,7 @@ type ToolError struct {
  * @date: 2024-06-06 15:49:57
  * @return {*}
  */
-func (e *ToolError) New(message string) error {
+func (e *toolError) New(message string) error {
 	e.err = errors.New(message)
 	return e.WithStack().GetError()
 }
@@ -36,7 +29,7 @@ func (e *ToolError) New(message string) error {
  * @date: 2024-06-06 16:46:42
  * @return {*}
  */
-func (e *ToolError) NewError(err error) error {
+func (e *toolError) NewError(err error) error {
 	e.err = err
 	return e.WithStack().GetError()
 }
@@ -48,7 +41,7 @@ func (e *ToolError) NewError(err error) error {
  * @date: 2024-06-06 15:50:14
  * @return {*}
  */
-func (e *ToolError) WithStack() ErrorInterface {
+func (e *toolError) WithStack() errorInterface {
 	e.isStack = true
 	return e
 }
@@ -61,7 +54,7 @@ func (e *ToolError) WithStack() ErrorInterface {
  * @date: 2024-06-06 16:10:59
  * @return {*}
  */
-func (e *ToolError) WithFields(name string, value interface{}) ErrorInterface {
+func (e *toolError) WithFields(name string, value interface{}) errorInterface {
 
 	/**
 	 * @step
@@ -87,7 +80,7 @@ func (e *ToolError) WithFields(name string, value interface{}) ErrorInterface {
  * @date: 2024-06-06 15:56:45
  * @return {*}
  */
-func (e *ToolError) Error() string {
+func (e *toolError) Error() string {
 	return e.GetError().Error()
 }
 
@@ -97,7 +90,7 @@ func (e *ToolError) Error() string {
  * @date: 2024-06-06 16:15:13
  * @return {*}
  */
-func (e *ToolError) String() string {
+func (e *toolError) String() string {
 	return e.GetError().Error()
 }
 
@@ -107,7 +100,7 @@ func (e *ToolError) String() string {
  * @date: 2024-06-06 16:08:47
  * @return {*}
  */
-func (e *ToolError) GetError() error {
+func (e *toolError) GetError() error {
 
 	/**
 	 * @step

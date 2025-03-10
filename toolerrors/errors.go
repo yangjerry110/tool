@@ -1,27 +1,10 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2024-05-30 14:32:55
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-07-26 10:22:00
- * @Description: errors
- */
-package toolErrors
-
-type ErrorInterface interface {
-	New(message string) error
-	NewError(err error) error
-	WithStack() ErrorInterface
-	WithFields(name string, value interface{}) ErrorInterface
-	GetError() error
-	Error() string
-	String() string
-}
+package toolerrors
 
 /**
  * @description: New
  * @param {string} message
  * @author: Jerry.Yang
- * @date: 2024-06-07 11:09:52
+ * @date: 2024-06-07 11:11:31
  * @return {*}
  */
 func New(message string) error {
@@ -32,7 +15,7 @@ func New(message string) error {
  * @description: NewError
  * @param {error} err
  * @author: Jerry.Yang
- * @date: 2024-06-07 11:10:06
+ * @date: 2024-06-07 11:11:42
  * @return {*}
  */
 func NewError(err error) error {
@@ -42,10 +25,10 @@ func NewError(err error) error {
 /**
  * @description: WithStack
  * @author: Jerry.Yang
- * @date: 2024-06-07 11:10:20
+ * @date: 2024-06-07 11:12:05
  * @return {*}
  */
-func WithStack() ErrorInterface {
+func WithStack() errorInterface {
 	return toolErrorsEnginee().WithStack()
 }
 
@@ -54,17 +37,17 @@ func WithStack() ErrorInterface {
  * @param {string} name
  * @param {interface{}} value
  * @author: Jerry.Yang
- * @date:
+ * @date: 2024-06-07 11:12:25
  * @return {*}
  */
-func WithFields(name string, value interface{}) ErrorInterface {
+func WithFields(name string, value interface{}) errorInterface {
 	return toolErrorsEnginee().WithFields(name, value)
 }
 
 /**
  * @description: Error
  * @author: Jerry.Yang
- * @date: 2024-06-07 11:10:47
+ * @date: 2024-06-07 11:12:43
  * @return {*}
  */
 func Error() string {
@@ -74,7 +57,7 @@ func Error() string {
 /**
  * @description: String
  * @author: Jerry.Yang
- * @date: 2024-06-07 11:11:04
+ * @date: 2024-06-07 11:13:00
  * @return {*}
  */
 func String() string {

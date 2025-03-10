@@ -1,11 +1,14 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2024-05-31 14:21:50
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-06-05 16:20:48
- * @Description: internal error
- */
-package toolErrors
+package toolerrors
+
+type errorInterface interface {
+	New(message string) error
+	NewError(err error) error
+	WithStack() errorInterface
+	WithFields(name string, value interface{}) errorInterface
+	GetError() error
+	Error() string
+	String() string
+}
 
 /**
  * @description: default Error enginee
@@ -13,7 +16,7 @@ package toolErrors
  * @date: 2024-05-31 14:21:59
  * @return {*}
  */
-var defaultErrorsEngine ErrorInterface
+var defaultErrorsEngine errorInterface
 
 /**
  * @description: SetErrorsEnginee
@@ -22,7 +25,7 @@ var defaultErrorsEngine ErrorInterface
  * @date: 2024-05-31 14:24:05
  * @return {*}
  */
-func SetToolErrorsEnginee(ErrorInterface ErrorInterface) ErrorInterface {
+func SetToolErrorsEnginee(ErrorInterface errorInterface) errorInterface {
 	defaultErrorsEngine = ErrorInterface
 	return defaultErrorsEngine
 }
@@ -33,6 +36,6 @@ func SetToolErrorsEnginee(ErrorInterface ErrorInterface) ErrorInterface {
  * @date: 2024-05-31 14:25:58
  * @return {*}
  */
-func toolErrorsEnginee() ErrorInterface {
-	return &ToolError{}
+func toolErrorsEnginee() errorInterface {
+	return &toolError{}
 }
