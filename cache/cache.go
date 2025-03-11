@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-11-30 16:16:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 10:48:30
+ * @LastEditTime: 2025-03-11 11:33:48
  * @Description: cache
  */
 package cache
@@ -10,6 +10,7 @@ package cache
 import (
 	"github.com/yangjerry110/tool/cache/internal/cache"
 	cacheredis "github.com/yangjerry110/tool/cache/internal/cache/redis"
+	"github.com/yangjerry110/tool/conf"
 )
 
 /**

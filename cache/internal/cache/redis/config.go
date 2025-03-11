@@ -2,14 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 11:07:10
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 10:52:39
+ * @LastEditTime: 2025-03-11 11:35:00
  * @Description: redis cache
  */
 package cacheredis
 
 import (
 	"github.com/yangjerry110/tool/conf"
-	"github.com/yangjerry110/tool/toolerrors"
 )
 
 type RedisConf struct{}
@@ -59,8 +58,9 @@ func (r *RedisConf) SetConfig() error {
 	 * @step
 	 * @返回结果
 	 **/
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "redis.yaml", FileType: "yaml", ConfData: RedisClientConfs}).SetConfig(); err != nil {
-		return toolerrors.NewError(err)
+	err := conf.CreateYamlConf("redis.yaml", RedisClientConfs).SetConfig()
+	if err != nil {
+		return err
 	}
 	return nil
 }
