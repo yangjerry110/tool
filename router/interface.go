@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:15:44
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 18:52:09
+ * @LastEditTime: 2025-03-11 18:57:32
  * @Description: The router package provides core functionalities for routing, including route registration, middleware usage, and route execution.
  * By defining interfaces, it enables flexible extension and decoupling of the routing module.
  */
@@ -64,12 +64,12 @@ type RouterUse interface {
 	//
 	// Returns:
 	//   - gin.HandlerFunc: The middleware handler function.
-	useHTTP() gin.HandlerFunc
+	UseHTTP() gin.HandlerFunc
 }
 
 // RouterRegisterHttpService interface defines functionalities for HTTP service registration.
 type RouterRegisterHttpService interface {
 	// mustRouterRegisterHttpService enforces the implementation of HTTP service registration logic.
 	// This method is typically used to ensure that implementing classes must include HTTP service registration logic.
-	mustRouterRegisterHttpService()
+	MustRouterRegisterHttpService()
 }
