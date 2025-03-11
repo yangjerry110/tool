@@ -2,33 +2,32 @@
  * @Author: Jerry.Yang
  * @Date: 2023-02-09 14:48:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-01-30 11:19:46
- * @Description: db
+ * @LastEditTime: 2025-03-11 17:29:38
+ * @Description: The db package provides utility functions for managing database configurations and clients.
+ * It includes functions for setting GORM configurations and creating GORM database clients.
  */
 package db
 
 import (
-	"github.com/yangjerry110/tool/internal/conf"
-	"github.com/yangjerry110/tool/internal/db"
-	gormdb "github.com/yangjerry110/tool/internal/db/gormDb"
+	"github.com/yangjerry110/tool/conf"
+	"github.com/yangjerry110/tool/db/internal/db"
+	gormdb "github.com/yangjerry110/tool/db/internal/db/gormDb"
 )
 
-/**
- * @description: CreateGormDbConf
- * @author: Jerry.Yang
- * @date: 2023-12-19 11:44:51
- * @return {*}
- */
-func CreateGormDbConf() conf.Conf {
+// SetGormConf creates and returns a configuration object for GORM database settings.
+// It initializes a configuration instance using the GormDbConfig struct.
+//
+// Returns:
+//   - conf.Conf: A configuration object for GORM database settings.
+func SetGormConf() conf.Conf {
 	return conf.CreateConf(&gormdb.GormDbConfig{})
 }
 
-/**
- * @description: CreateGormDb
- * @author: Jerry.Yang
- * @date: 2023-12-19 14:00:11
- * @return {*}
- */
+// CreateGormDb creates and returns an instance of a GORM database client.
+// It uses the factory function `CreateDb` to initialize a GORM database client.
+//
+// Returns:
+//   - db.DbInterface: An instance of the GORM database client implementing the DbInterface.
 func CreateGormDb() db.DbInterface {
 	return db.CreateDb(&gormdb.GormDbClient{})
 }
