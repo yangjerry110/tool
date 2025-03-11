@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:19:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:11:35
+ * @LastEditTime: 2025-03-11 19:24:14
  * @Description: The router package provides functionality for managing the default router engine.
  * It includes functions to set, retrieve, and initialize the default router engine.
  */
@@ -39,7 +39,9 @@ func routerEnginee() router {
 //
 // Returns:
 //   - router: The default router engine instance (initialized as `http`).
-func HttpRouterEnginee() router {
-	SetRouterEnginee(&http{})
+func httpRouterEnginee() router {
+	if defaultRouterEnginee == nil {
+		SetRouterEnginee(&http{})
+	}
 	return routerEnginee()
 }

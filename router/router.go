@@ -2,15 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:19:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 19:10:12
+ * @LastEditTime: 2025-03-11 19:24:50
  * @Description: The router package provides utility functions for registering HTTP routes, applying middleware, and running the HTTP server.
  * These functions simplify the interaction with the underlying HTTP router engine.
  */
 package router
 
 import (
-	"fmt"
-
 	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/router/internal/config"
 )
@@ -32,10 +30,8 @@ func SetHttpRouterConfing() error {
 //
 // Returns:
 //   - RouterRegister: The registered RouterRegister implementation.
-func RegisterRouter(routerRegister RouterRegister) RouterRegister {
-	fmt.Printf("routerRegister : %+v", routerRegister)
-	fmt.Print("\r\n")
-	routerEnginee().register(routerRegister)
+func RegisterHTTPRouter(routerRegister RouterRegister) RouterRegister {
+	httpRouterEnginee().register(routerRegister)
 	return routerRegister
 }
 
@@ -47,8 +43,8 @@ func RegisterRouter(routerRegister RouterRegister) RouterRegister {
 //
 // Returns:
 //   - RouterUse: The applied RouterUse implementation.
-func UseRouter(routerUse RouterUse) RouterUse {
-	routerEnginee().use(routerUse)
+func UseHttpRouter(routerUse RouterUse) RouterUse {
+	httpRouterEnginee().use(routerUse)
 	return routerUse
 }
 
@@ -60,6 +56,6 @@ func UseRouter(routerUse RouterUse) RouterUse {
 //
 // Returns:
 //   - error: An error if any issue occurs during server startup.
-func Run(conf conf.Conf) error {
-	return routerEnginee().run(conf)
+func RunHTTP(conf conf.Conf) error {
+	return httpRouterEnginee().run(conf)
 }
