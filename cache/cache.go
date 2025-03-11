@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-11-30 16:16:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 11:33:48
+ * @LastEditTime: 2025-03-11 17:16:59
  * @Description: cache
  */
 package cache
@@ -19,7 +19,7 @@ import (
  * @date: 2023-12-19 11:41:29
  * @return {*}
  */
-func CreateRedisConf() conf.Conf {
+func SetRedisConf() conf.Conf {
 	return conf.CreateConf(&cacheredis.RedisConf{})
 }
 
