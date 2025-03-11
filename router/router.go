@@ -1,40 +1,49 @@
 /*
  * @Author: Jerry.Yang
- * @Date: 2023-12-18 16:57:27
+ * @Date: 2025-03-11 14:19:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-03 16:36:25
- * @Description: router
+ * @LastEditTime: 2025-03-11 17:11:02
+ * @Description: The router package provides utility functions for registering HTTP routes, applying middleware, and running the HTTP server.
+ * These functions simplify the interaction with the underlying HTTP router engine.
  */
 package router
 
-import (
-	"github.com/yangjerry110/tool/internal/conf"
-	"github.com/yangjerry110/tool/internal/router"
-)
+import "github.com/yangjerry110/tool/conf"
 
-// Register
+// RegisterRouter registers a route by accepting a RouterRegister implementation.
+// It delegates the registration to the underlying HTTP router engine.
 //
-// Register
-// Date 2024-04-12 17:44:09
-// Author Jerry.Yang
-func Register(routerName string, routerRegister router.Register) router.Register {
-	return routerEnginee().Register(routerName, routerRegister)
+// Parameters:
+//   - routerRegister: The RouterRegister implementation to be registered.
+//
+// Returns:
+//   - RouterRegister: The registered RouterRegister implementation.
+func RegisterRouter(routerRegister RouterRegister) RouterRegister {
+	routerEnginee().register(routerRegister)
+	return routerRegister
 }
 
-// Use
+// UseRouter applies middleware by accepting a RouterUse implementation.
+// It delegates the middleware application to the underlying HTTP router engine.
 //
-// Use
-// Data 2024-08-07 15:49:38
-// Author Jerry.Yang
-func Use(useName string, use router.Use) error {
-	return routerEnginee().Use(useName, use)
+// Parameters:
+//   - routerUse: The RouterUse implementation to be applied.
+//
+// Returns:
+//   - RouterUse: The applied RouterUse implementation.
+func UseRouter(routerUse RouterUse) RouterUse {
+	routerEnginee().use(routerUse)
+	return routerUse
 }
 
-// Run
+// Run starts the HTTP server using the provided configuration.
+// It delegates the server startup to the underlying HTTP router engine.
 //
-// Run
-// Date 2024-05-31 11:31:45
-// Author Jerry.Yang
+// Parameters:
+//   - conf: The configuration object used to set up the HTTP server.
+//
+// Returns:
+//   - error: An error if any issue occurs during server startup.
 func Run(conf conf.Conf) error {
-	return routerEnginee().Run(conf)
+	return routerEnginee().run(conf)
 }
