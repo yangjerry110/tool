@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 19:28:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-11 11:43:42
+ * @LastEditTime: 2025-03-11 10:37:10
  * @Description: decrty 解密
  */
 package rsaperm
@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yangjerry110/tool/internal/errors"
+	"github.com/yangjerry110/tool/toolerrors"
 )
 
 /**
@@ -35,11 +35,11 @@ func (r *RsaPerm) Decrty(permPath string, inputStr string) (string, error) {
 	 * @判断参数
 	 **/
 	if permPath == "" {
-		return "", errors.ErrRsaPermNoPermPath
+		return "", toolerrors.New("perm Err : rsa perm no permPath")
 	}
 
 	if inputStr == "" {
-		return "", errors.ErrRsaPermNoInputFile
+		return "", toolerrors.New("perm Err : rsa perm no inputFile")
 	}
 
 	/**
@@ -50,7 +50,7 @@ func (r *RsaPerm) Decrty(permPath string, inputStr string) (string, error) {
 	_, err := os.Stat(privatePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return "", errors.ErrRsaPermNoPrivatePath(privatePath)
+			return "", toolerrors.WithFields("privatePath", privatePath).New("perm Err : rsa perm no privatePath")
 		}
 		return "", err
 	}
@@ -81,7 +81,7 @@ func (r *RsaPerm) Decrty(permPath string, inputStr string) (string, error) {
 	 **/
 	outputStr := <-doRasDecrtyChan
 	if outputStr == "" {
-		return "", errors.ErrRsaPermDecrtyFail
+		return "", toolerrors.New("perm Err : rsa perm decrtyFail")
 	}
 	return outputStr, nil
 }

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2022-09-20 11:30:16
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-11 11:46:32
+ * @LastEditTime: 2025-03-11 10:37:45
  * @Description: encrty 加密
  */
 package rsaperm
@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yangjerry110/tool/internal/errors"
+	"github.com/yangjerry110/tool/toolerrors"
 )
 
 /**
@@ -35,11 +35,11 @@ func (r *RsaPerm) Encrty(permPath string, inputStr string) (string, error) {
 	 * @判断参数
 	 **/
 	if permPath == "" {
-		return "", errors.ErrRsaPermNoPermPath
+		return "", toolerrors.New("perm Err : rsa perm no permPath")
 	}
 
 	if inputStr == "" {
-		return "", errors.ErrRsaPermNoInputFile
+		return "", toolerrors.New("perm Err : rsa perm no inputFile")
 	}
 
 	/**
@@ -50,7 +50,7 @@ func (r *RsaPerm) Encrty(permPath string, inputStr string) (string, error) {
 	_, err := os.Stat(publicPermPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return "", errors.ErrRsaPermNoPublicPath(publicPermPath)
+			return "", toolerrors.New("perm Err : rsa perm no publicPath")
 		}
 		return "", err
 	}
@@ -81,7 +81,7 @@ func (r *RsaPerm) Encrty(permPath string, inputStr string) (string, error) {
 	 **/
 	outputStr := <-doRascrtyChan
 	if outputStr == "" {
-		return "", errors.ErrRsaPermEncrtyFail
+		return "", toolerrors.New("perm Err : rsa perm encrtyFail")
 	}
 	return outputStr, nil
 }

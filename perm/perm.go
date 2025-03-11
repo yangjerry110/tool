@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-11 14:29:42
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:24:53
+ * @LastEditTime: 2025-03-11 10:33:49
  * @Description: perm
  */
 package perm
 
 import (
-	"github.com/yangjerry110/tool/internal/perm"
-	rsaperm "github.com/yangjerry110/tool/internal/perm/rsaPerm"
+	"github.com/yangjerry110/tool/perm/internal/perm"
+	rsaperm "github.com/yangjerry110/tool/perm/internal/perm/rsaPerm"
 )
 
 /**
