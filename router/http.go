@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:21:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 18:57:47
+ * @LastEditTime: 2025-03-11 19:05:25
  * @Description: http router package provides the concrete implementation of HTTP routing, including route registration, middleware usage, and route execution.
  * The `http` struct implements the `router` interface, supporting flexible route configuration and extension.
  */
@@ -28,6 +28,9 @@ type http struct {
 // Returns:
 //   - error: An error if any issue occurs during registration.
 func (h *http) register(routerRegister RouterRegister) error {
+	if len(h.routerRegisters) == 0 {
+		h.routerRegisters = make([]RouterRegister, 0)
+	}
 	h.routerRegisters = append(h.routerRegisters, routerRegister)
 	return nil
 }
@@ -40,6 +43,9 @@ func (h *http) register(routerRegister RouterRegister) error {
 // Returns:
 //   - error: An error if any issue occurs during middleware registration.
 func (h *http) use(routerUse RouterUse) error {
+	if len(h.routerUses) == 0 {
+		h.routerUses = make([]RouterUse, 0)
+	}
 	h.routerUses = append(h.routerUses, routerUse)
 	return nil
 }
