@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-08 10:48:51
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-05-31 15:16:56
+ * @LastEditTime: 2025-03-11 10:51:35
  * @Description: cache redis
  */
 package cacheredis
@@ -11,8 +11,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/yangjerry110/tool/internal/errors"
-	"github.com/yangjerry110/tool/internal/toolErrors"
+	"github.com/yangjerry110/tool/toolerrors"
 )
 
 type RedisClient struct{}
@@ -42,7 +41,7 @@ func (r *RedisClient) CreateAllClient() error {
 	// For RedisClientConfs
 	for redisClientName := range RedisClientConfs {
 		if err := r.CreateClient(redisClientName); err != nil {
-			return toolErrors.NewError(err)
+			return toolerrors.NewError(err)
 		}
 	}
 	return nil
@@ -63,7 +62,7 @@ func (r *RedisClient) CreateClient(clientName string) error {
 	// redis conf is exist
 	// if not exist => err
 	if !isExistredisConf {
-		return toolErrors.WithFields("clientName", clientName).WithFields("testFieldName", "testFieldVal").NewError(errors.ErrRedisClientConfIsNotExistByClientName)
+		return toolerrors.WithFields("clientName", clientName).WithFields("testFieldName", "testFieldVal").New("cache Err : redis client conf is not exist clientName")
 	}
 
 	// create client by client name
@@ -99,7 +98,7 @@ func (r *RedisClient) GetClient(clientName string) (*redis.Client, error) {
 	// judge clientName is exist
 	existClient, isExistClient := RedisClients[clientName]
 	if !isExistClient {
-		return nil, toolErrors.NewError(errors.ErrRedisClientIsNotExistByClientName)
+		return nil, toolerrors.WithFields("clientName", clientName).New("cache Err : redis client is not exist by clientName")
 	}
 	return existClient, nil
 }

@@ -2,15 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2023-11-30 16:16:38
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-22 16:32:47
+ * @LastEditTime: 2025-03-11 10:48:30
  * @Description: cache
  */
 package cache
 
 import (
-	"github.com/yangjerry110/tool/internal/cache"
-	cacheredis "github.com/yangjerry110/tool/internal/cache/redis"
-	"github.com/yangjerry110/tool/internal/conf"
+	"github.com/yangjerry110/tool/cache/internal/cache"
+	cacheredis "github.com/yangjerry110/tool/cache/internal/cache/redis"
 )
 
 /**
