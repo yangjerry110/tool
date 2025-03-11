@@ -2,13 +2,15 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:19:46
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:39:30
+ * @LastEditTime: 2025-03-11 19:10:12
  * @Description: The router package provides utility functions for registering HTTP routes, applying middleware, and running the HTTP server.
  * These functions simplify the interaction with the underlying HTTP router engine.
  */
 package router
 
 import (
+	"fmt"
+
 	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/router/internal/config"
 )
@@ -31,6 +33,8 @@ func SetHttpRouterConfing() error {
 // Returns:
 //   - RouterRegister: The registered RouterRegister implementation.
 func RegisterRouter(routerRegister RouterRegister) RouterRegister {
+	fmt.Printf("routerRegister : %+v", routerRegister)
+	fmt.Print("\r\n")
 	routerEnginee().register(routerRegister)
 	return routerRegister
 }
