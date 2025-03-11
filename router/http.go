@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 14:21:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:07:54
+ * @LastEditTime: 2025-03-11 18:52:36
  * @Description: http router package provides the concrete implementation of HTTP routing, including route registration, middleware usage, and route execution.
  * The `http` struct implements the `router` interface, supporting flexible route configuration and extension.
  */
@@ -72,7 +72,7 @@ func (h *http) run(httpConf conf.Conf) error {
 
 	// Register all routes
 	for _, routerRegister := range h.routerRegisters {
-		routerRegister.registerHTTP(ginEngine)
+		routerRegister.RegisterHTTP(ginEngine)
 	}
 
 	// Apply all middleware

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 16:51:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:02:37
+ * @LastEditTime: 2025-03-11 18:52:24
  * @Description: The ping package provides functionality for registering a simple health check endpoint (`/ping`) in the HTTP router.
  * This endpoint is used to verify that the server is running and responding to requests.
  */
@@ -23,7 +23,7 @@ type ping struct{}
 //
 // Parameters:
 //   - ginRouter: The gin.IRouter instance where the `/ping` endpoint will be registered.
-func (p *ping) registerHTTP(ginRouter gin.IRouter) {
+func (p *ping) RegisterHTTP(ginRouter gin.IRouter) {
 	ginRouter.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(netHttp.StatusOK, "success")
 	})
@@ -34,6 +34,6 @@ func (p *ping) registerHTTP(ginRouter gin.IRouter) {
 //
 // Parameters:
 //   - service: The RouterRegisterHttpService implementation (not used in this context).
-func (p *ping) registerService(service RouterRegisterHttpService) {
+func (p *ping) RegisterService(service RouterRegisterHttpService) {
 	// No implementation required for the `ping` struct.
 }

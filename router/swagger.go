@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-11 16:54:39
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:13:35
+ * @LastEditTime: 2025-03-11 18:52:44
  * @Description: The swagger package provides functionality for serving Swagger API documentation.
  * It registers an endpoint to serve the Swagger UI and the OpenAPI specification file.
  */
@@ -24,7 +24,7 @@ type swagger struct{}
 //
 // Parameters:
 //   - ginRouter: The gin.IRouter instance where the Swagger endpoint will be registered.
-func (s *swagger) registerHTTP(ginRouter gin.IRouter) {
+func (s *swagger) RegisterHTTP(ginRouter gin.IRouter) {
 	ginRouter.GET("/api/apidoc/*any", s.apidoc)
 }
 
@@ -33,7 +33,7 @@ func (s *swagger) registerHTTP(ginRouter gin.IRouter) {
 //
 // Parameters:
 //   - service: The RouterRegisterHttpService implementation (not used in this context).
-func (s *swagger) registerService(service RouterRegisterHttpService) {
+func (s *swagger) RegisterService(service RouterRegisterHttpService) {
 	// No implementation required for the `swagger` struct.
 }
 
