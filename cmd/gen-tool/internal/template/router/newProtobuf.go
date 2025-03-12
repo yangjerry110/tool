@@ -10,7 +10,7 @@ package router
 import (
 	"fmt"
 
-	"github.com/yangjerry110/tool/internal/cmd/template"
+	"github.com/yangjerry110/tool/cmd/gen-tool/internal/template"
 )
 
 /**
