@@ -1,94 +1,134 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2025-03-11 14:21:23
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 19:05:25
- * @Description: http router package provides the concrete implementation of HTTP routing, including route registration, middleware usage, and route execution.
- * The `http` struct implements the `router` interface, supporting flexible route configuration and extension.
- */
 package router
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/router/internal/config"
 )
 
-// http struct implements the `router` interface and is used to manage the registration and execution of HTTP routes.
+// http struct is responsible for managing HTTP routes, services, and middleware.
+// It contains maps to store route registrations, HTTP services, and middleware.
 type http struct {
-	routerRegisters []RouterRegister // Stores all registered routes
-	routerUses      []RouterUse      // Stores all used middleware
+	// routerRegisterMap stores the HTTP route registrations.
+	// The key is the route name, and the value is the RouterRegisterHTTP interface.
+	routerRegisterMap map[string]RouterRegisterHTTP
+
+	// routerHTTPServiceMap stores the HTTP services associated with specific routes.
+	// The key is the route name, and the value is the RouterHTTPService interface.
+	routerHTTPServiceMap map[string]RouterHTTPService
+
+	// RouterUseHTTPMap stores the middleware functions to be used by the HTTP router.
+	// The key is the middleware name, and the value is the RouterUseHTTP interface.
+	RouterUseHTTPMap map[string]RouterUseHTTP
 }
 
-// register registers a route by appending the provided `RouterRegister` implementation to the `routerRegisters` list.
-//
-// Parameters:
-//   - routerRegister: The `RouterRegister` implementation to be registered.
-//
-// Returns:
-//   - error: An error if any issue occurs during registration.
-func (h *http) register(routerRegister RouterRegister) error {
-	if len(h.routerRegisters) == 0 {
-		h.routerRegisters = make([]RouterRegister, 0)
+/**
+ * @description: Registers an HTTP route with the given route name and RouterRegisterHTTP interface.
+ * @param {string} routerName - The name of the route to register.
+ * @param {RouterRegisterHTTP} routerRegister - The RouterRegisterHTTP interface to register.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
+ */
+func (h *http) RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP {
+	// Initialize the routerRegisterMap if it is nil.
+	if h.routerHTTPServiceMap == nil {
+		h.routerRegisterMap = make(map[string]RouterRegisterHTTP)
 	}
-	h.routerRegisters = append(h.routerRegisters, routerRegister)
-	return nil
+
+	// Store the RouterRegisterHTTP interface in the routerRegisterMap with the route name as the key.
+	h.routerRegisterMap[routerName] = routerRegister
+
+	// Print the current state of the http struct for debugging purposes.
+	fmt.Printf("http : %+v\r\n", h)
+
+	// Return the RouterHTTP interface to allow method chaining.
+	return h
 }
 
-// use registers a middleware by appending the provided `RouterUse` implementation to the `routerUses` list.
-//
-// Parameters:
-//   - routerUse: The `RouterUse` implementation to be registered.
-//
-// Returns:
-//   - error: An error if any issue occurs during middleware registration.
-func (h *http) use(routerUse RouterUse) error {
-	if len(h.routerUses) == 0 {
-		h.routerUses = make([]RouterUse, 0)
+/**
+ * @description: Registers an HTTP service with the given route name and RouterHTTPService interface.
+ * @param {string} routerName - The name of the route to associate the service with.
+ * @param {RouterHTTPService} routerHTTPService - The RouterHTTPService interface to register.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
+ */
+func (h *http) RegisterHTTPService(routerName string, routerHTTPService RouterHTTPService) RouterHTTP {
+	// Initialize the routerHTTPServiceMap if it is nil.
+	if h.routerHTTPServiceMap == nil {
+		h.routerHTTPServiceMap = make(map[string]RouterHTTPService)
 	}
-	h.routerUses = append(h.routerUses, routerUse)
-	return nil
+
+	// Store the RouterHTTPService interface in the routerHTTPServiceMap with the route name as the key.
+	h.routerHTTPServiceMap[routerName] = routerHTTPService
+
+	// Return the RouterHTTP interface to allow method chaining.
+	return h
 }
 
-// run starts the HTTP routing engine using the provided configuration `httpConf`.
-//
-// Parameters:
-//   - httpConf: The configuration object used to set up the HTTP server.
-//
-// Returns:
-//   - error: An error if any issue occurs during route execution.
-func (h *http) run(httpConf conf.Conf) error {
-	// Set up the configuration
+/**
+ * @description: Registers middleware with the given middleware name and RouterUseHTTP interface.
+ * @param {string} useName - The name of the middleware to register.
+ * @param {RouterUseHTTP} routerUse - The RouterUseHTTP interface to register.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
+ */
+func (h *http) UseHTTP(useName string, routerUse RouterUseHTTP) RouterHTTP {
+	// Initialize the RouterUseHTTPMap if it is nil.
+	if h.RouterUseHTTPMap == nil {
+		h.RouterUseHTTPMap = make(map[string]RouterUseHTTP)
+	}
+
+	// Store the RouterUseHTTP interface in the RouterUseHTTPMap with the middleware name as the key.
+	h.RouterUseHTTPMap[useName] = routerUse
+
+	// Return the RouterHTTP interface to allow method chaining.
+	return h
+}
+
+/**
+ * @description: Starts the HTTP server using the provided configuration.
+ * It sets up the Gin engine, registers middleware, routes, and services, and then starts the server.
+ * @param {conf.Conf} httpConf - The configuration to use for starting the server.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {error} - Returns an error if the server fails to start, otherwise nil.
+ */
+func (h *http) RunHTTP(httpConf conf.Conf) error {
+	// If there are no registered routes, return nil to indicate that there is nothing to run.
+	if len(h.routerRegisterMap) == 0 {
+		return nil
+	}
+
+	// Create a new Gin engine with default middleware (logger and recovery).
+	ginEngine := gin.Default()
+
+	// If there are registered middleware, apply them to the Gin engine.
+	if len(h.RouterUseHTTPMap) != 0 {
+		for _, useHttp := range h.RouterUseHTTPMap {
+			ginEngine.Use(useHttp.UseHTTP())
+		}
+	}
+
+	// Register all routes and their associated services with the Gin engine.
+	for routerName, routerRegister := range h.routerRegisterMap {
+		routerRegister.RegisterHTTP(ginEngine)
+		httpService, isOk := h.routerHTTPServiceMap[routerName]
+		if isOk {
+			routerRegister.RegisterHTTPService(httpService)
+		}
+	}
+
+	// Create and set the configuration using the provided conf.Conf interface.
 	err := conf.CreateConf(httpConf).SetConfig()
 	if err != nil {
 		return err
 	}
 
-	// Register default routes (e.g., ping and swagger)
-	h.register(&ping{})
-	h.register(&swagger{})
-
-	// If no routes are registered, return immediately
-	if len(h.routerRegisters) == 0 {
-		return nil
-	}
-
-	// Create a new Gin engine instance
-	ginEngine := gin.Default()
-
-	// Register all routes
-	for _, routerRegister := range h.routerRegisters {
-		routerRegister.RegisterHTTP(ginEngine)
-	}
-
-	// Apply all middleware
-	if len(h.routerUses) != 0 {
-		for _, routerUse := range h.routerUses {
-			ginEngine.Use(routerUse.UseHTTP())
-		}
-	}
-
-	// Start the HTTP server using the address from the configuration
-	ginEngine.Run(config.HttpConf.Addr)
-	return nil
+	// Start the Gin engine and listen on the address specified in the configuration.
+	return ginEngine.Run(config.HttpConf.Addr)
 }
