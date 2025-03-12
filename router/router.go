@@ -30,7 +30,7 @@ func SetHTTPRouterConfig() conf.Conf {
  */
 func RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP {
 	// Initialize a new HTTP router engine.
-	routerEnginee := &http{}
+	routerEnginee := &httpRouter{}
 
 	// Register the route using the provided RouterRegisterHTTP interface.
 	return routerEnginee.RegisterHTTP(routerName, routerRegister)

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-12 15:57:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-12 16:26:51
+ * @LastEditTime: 2025-03-12 16:50:18
  * @Description: test
  */
 package test
@@ -51,7 +51,7 @@ type testRouter struct {
 }
 
 func (t *testRouter) RegisterHTTP(ginEngine gin.IRouter) {
-	ginEngine.GET("/ping", func(ctx *gin.Context) {
+	ginEngine.GET("/testPing", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "success")
 	})
 	ginEngine.GET("testFunc", t.testRouterFunc)
