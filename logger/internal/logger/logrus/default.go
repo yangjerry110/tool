@@ -2,12 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-12 14:58:27
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 15:16:14
+ * @LastEditTime: 2025-03-12 10:28:05
  * @Description: default
  */
 package logrus
 
-import internalLogger "github.com/yangjerry110/tool/internal/logger"
+import internalLogger "github.com/yangjerry110/tool/logger/internal/logger"
 
 /**
  * @description: defaultLogger

@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-11 15:09:18
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 16:13:54
+ * @LastEditTime: 2025-03-12 10:24:33
  * @Description: logger enginee
  */
 package logger
 
 import (
-	internalLogger "github.com/yangjerry110/tool/internal/logger"
-	"github.com/yangjerry110/tool/internal/logger/logrus"
+	internalLogger "github.com/yangjerry110/tool/logger/internal/logger"
+	"github.com/yangjerry110/tool/logger/internal/logger/logrus"
 )
 
 var loggerEnginee internalLogger.LoggerInterface

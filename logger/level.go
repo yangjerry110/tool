@@ -2,12 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-12 14:42:28
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 14:43:33
+ * @LastEditTime: 2025-03-12 10:24:11
  * @Description: level
  */
 package logger
 
-import "github.com/yangjerry110/tool/internal/logger"
+import "github.com/yangjerry110/tool/logger/internal/logger"
 
 /**
  * @description: level conf

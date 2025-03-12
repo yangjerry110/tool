@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-10 14:27:41
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-11 16:39:48
+ * @LastEditTime: 2025-03-12 10:27:14
  * @Description: logrus config
  */
 package logrus
 
 import (
-	"github.com/yangjerry110/tool/internal/conf"
-	"github.com/yangjerry110/tool/internal/logger"
+	"github.com/yangjerry110/tool/conf"
+	"github.com/yangjerry110/tool/logger/internal/logger"
 )
 
 /**
@@ -39,8 +39,5 @@ var LogrusOptionConf = &LogrusOption{}
 // Date 2024-04-10 14:31:03
 // Author Jerry.Yang
 func (l *LogrusOption) SetConfig() error {
-	if err := conf.CreateConf(&conf.Yaml{FilePath: conf.PathConfig.ConfigPath, FileName: "logger.yaml", FileType: "yaml", ConfData: LogrusOptionConf}).SetConfig(); err != nil {
-		return err
-	}
-	return nil
+	return conf.CreateYamlConf("logger.yaml", &LogrusOptionConf).SetConfig()
 }

@@ -2,14 +2,14 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-11 15:28:12
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 15:13:09
+ * @LastEditTime: 2025-03-12 10:23:08
  * @Description: config
  */
 package logger
 
 import (
 	"github.com/yangjerry110/tool/conf"
-	"github.com/yangjerry110/tool/internal/logger/logrus"
+	"github.com/yangjerry110/tool/logger/internal/logger/logrus"
 )
 
 // Create logrus option conf

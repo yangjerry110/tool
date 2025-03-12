@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-10 14:28:43
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 15:12:40
+ * @LastEditTime: 2025-03-12 10:28:26
  * @Description: logrus
  */
 package logrus
@@ -13,7 +13,7 @@ import (
 	"runtime"
 
 	"github.com/sirupsen/logrus"
-	"github.com/yangjerry110/tool/internal/logger"
+	"github.com/yangjerry110/tool/logger/internal/logger"
 )
 
 type Logrus struct {

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-11 10:37:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-12 15:12:30
+ * @LastEditTime: 2025-03-12 10:24:20
  * @Description: logger
  */
 package logger
@@ -10,7 +10,7 @@ package logger
 import (
 	"io"
 
-	"github.com/yangjerry110/tool/internal/logger"
+	"github.com/yangjerry110/tool/logger/internal/logger"
 )
 
 // 记录 TraceLevel 级别的日志

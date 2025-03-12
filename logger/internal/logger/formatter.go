@@ -2,12 +2,12 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-10 15:02:11
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-10 17:51:14
+ * @LastEditTime: 2025-03-12 10:26:08
  * @Description: formatter
  */
 package logger
 
-import "github.com/yangjerry110/tool/internal/errors"
+import "github.com/yangjerry110/tool/logger/internal/errors"
 
 /**
  * @description: formatter

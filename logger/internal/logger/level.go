@@ -2,13 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2024-04-10 14:36:54
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-10 17:10:29
+ * @LastEditTime: 2025-03-12 10:26:46
  * @Description: level
  */
 package logger
 
 import (
-	"github.com/yangjerry110/tool/internal/errors"
+	"github.com/yangjerry110/tool/logger/internal/errors"
 )
 
 /**
