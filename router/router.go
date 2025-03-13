@@ -1,11 +1,3 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2025-03-11 14:19:46
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:39:30
- * @Description: The router package provides utility functions for registering HTTP routes, applying middleware, and running the HTTP server.
- * These functions simplify the interaction with the underlying HTTP router engine.
- */
 package router
 
 import (
@@ -13,49 +5,33 @@ import (
 	"github.com/yangjerry110/tool/router/internal/config"
 )
 
-// SetHttpRouterConfing initializes the HTTP router configuration.
-// It creates and sets the configuration for the HTTP router using the HttpRouterConfig struct.
-//
-// Returns:
-//   - error: An error if any issue occurs during the configuration loading process.
-func SetHttpRouterConfing() error {
-	return conf.CreateConf(&config.HttpRouterConfig{}).SetConfig()
+/**
+ * @description: Sets the HTTP router configuration by creating a new configuration instance
+ * for the HTTP router. This function is used to initialize and return the configuration
+ * required for the HTTP router.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {conf.Conf} - Returns the HTTP router configuration.
+ */
+func SetHTTPRouterConfig() conf.Conf {
+	// Create and return a new configuration instance for the HTTP router.
+	return conf.CreateConf(&config.HttpRouterConfig{})
 }
 
-// RegisterRouter registers a route by accepting a RouterRegister implementation.
-// It delegates the registration to the underlying HTTP router engine.
-//
-// Parameters:
-//   - routerRegister: The RouterRegister implementation to be registered.
-//
-// Returns:
-//   - RouterRegister: The registered RouterRegister implementation.
-func RegisterRouter(routerRegister RouterRegister) RouterRegister {
-	routerEnginee().register(routerRegister)
-	return routerRegister
-}
+/**
+ * @description: Registers an HTTP route with the given route name and RouterRegisterHTTP interface.
+ * This function initializes a new HTTP router engine and registers the route using the provided
+ * RouterRegisterHTTP interface. It returns the RouterHTTP interface to allow method chaining.
+ * @param {string} routerName - The name of the route to register.
+ * @param {RouterRegisterHTTP} routerRegister - The RouterRegisterHTTP interface to register.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
+ */
+func RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP {
+	// Initialize a new HTTP router engine.
+	routerEnginee := &httpRouter{}
 
-// UseRouter applies middleware by accepting a RouterUse implementation.
-// It delegates the middleware application to the underlying HTTP router engine.
-//
-// Parameters:
-//   - routerUse: The RouterUse implementation to be applied.
-//
-// Returns:
-//   - RouterUse: The applied RouterUse implementation.
-func UseRouter(routerUse RouterUse) RouterUse {
-	routerEnginee().use(routerUse)
-	return routerUse
-}
-
-// Run starts the HTTP server using the provided configuration.
-// It delegates the server startup to the underlying HTTP router engine.
-//
-// Parameters:
-//   - conf: The configuration object used to set up the HTTP server.
-//
-// Returns:
-//   - error: An error if any issue occurs during server startup.
-func Run(conf conf.Conf) error {
-	return routerEnginee().run(conf)
+	// Register the route using the provided RouterRegisterHTTP interface.
+	return routerEnginee.RegisterHTTP(routerName, routerRegister)
 }

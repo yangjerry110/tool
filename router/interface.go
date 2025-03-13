@@ -1,11 +1,3 @@
-/*
- * @Author: Jerry.Yang
- * @Date: 2025-03-11 14:15:44
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-11 17:07:49
- * @Description: The router package provides core functionalities for routing, including route registration, middleware usage, and route execution.
- * By defining interfaces, it enables flexible extension and decoupling of the routing module.
- */
 package router
 
 import (
@@ -13,63 +5,50 @@ import (
 	"github.com/yangjerry110/tool/conf"
 )
 
-// router interface defines the core functionalities for routing, including route registration, middleware usage, and route execution.
-type router interface {
-	// register registers a route by accepting an implementation of the RouterRegister interface.
-	//
-	// Parameters:
-	//   - routerRegister: The RouterRegister implementation to be registered.
-	//
-	// Returns:
-	//   - error: An error if any issue occurs during registration.
-	register(routerRegister RouterRegister) error
+// RouterHTTP is the main interface for managing HTTP routes, services, and middleware.
+// It provides methods to register routes, associate services, apply middleware, and start the HTTP server.
+type RouterHTTP interface {
+	// RegisterHTTP registers an HTTP route with the given route name and RouterRegisterHTTP interface.
+	// It returns the RouterHTTP interface to allow method chaining.
+	RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP
 
-	// use applies middleware by accepting an implementation of the RouterUse interface.
-	//
-	// Parameters:
-	//   - routerUse: The RouterUse implementation to be applied.
-	//
-	// Returns:
-	//   - error: An error if any issue occurs during middleware application.
-	use(routerUse RouterUse) error
+	// RegisterHTTPService registers an HTTP service with the given route name and RouterHTTPService interface.
+	// It returns the RouterHTTP interface to allow method chaining.
+	RegisterHTTPService(routerName string, routerHTTPService RouterHTTPService) RouterHTTP
 
-	// run starts the routing engine by accepting a configuration object of type conf.Conf.
-	//
-	// Parameters:
-	//   - conf: The configuration object used to set up the routing engine.
-	//
-	// Returns:
-	//   - error: An error if any issue occurs during route execution.
-	run(conf conf.Conf) error
+	// UseHTTP registers middleware with the given middleware name and RouterUseHTTP interface.
+	// It returns the RouterHTTP interface to allow method chaining.
+	UseHTTP(useName string, routerUse RouterUseHTTP) RouterHTTP
+
+	// RunHTTP starts the HTTP server using the provided configuration.
+	// It sets up the Gin engine, registers middleware, routes, and services, and then starts the server.
+	RunHTTP(conf conf.Conf) error
 }
 
-// RouterRegister interface defines functionalities for route registration, including HTTP route registration and service registration.
-type RouterRegister interface {
-	// registerHTTP registers HTTP routes by accepting an implementation of the gin.IRouter interface.
-	//
-	// Parameters:
-	//   - gin: The gin.IRouter implementation used to register HTTP routes.
-	registerHTTP(gin gin.IRouter)
+// RouterRegisterHTTP is an interface for registering HTTP routes and associating services with them.
+// It provides methods to register routes with a Gin router and associate services with those routes.
+type RouterRegisterHTTP interface {
+	// RegisterHTTP registers an HTTP route with the given Gin router.
+	// This method is responsible for defining the route's path, HTTP method, and handler function.
+	RegisterHTTP(ginRouter gin.IRouter)
 
-	// registerService registers services by accepting an implementation of the RouterRegisterHttpService interface.
-	//
-	// Parameters:
-	//   - service: The RouterRegisterHttpService implementation to be registered.
-	registerService(service RouterRegisterHttpService)
+	// RegisterHTTPService associates an HTTP service with the registered route.
+	// This method is used to link a service (e.g., business logic) to a specific route.
+	RegisterHTTPService(RouterHTTPService RouterHTTPService)
 }
 
-// RouterUse interface defines functionalities for middleware usage.
-type RouterUse interface {
-	// useHTTP returns a gin.HandlerFunc, which is a middleware handler function for HTTP routes.
-	//
-	// Returns:
-	//   - gin.HandlerFunc: The middleware handler function.
-	useHTTP() gin.HandlerFunc
+// RouterUseHTTP is an interface for defining middleware functions to be used by the HTTP router.
+// It provides a method to return a Gin middleware handler function.
+type RouterUseHTTP interface {
+	// UseHTTP returns a Gin middleware handler function.
+	// This function is applied to the Gin engine to process requests before they reach the route handlers.
+	UseHTTP() gin.HandlerFunc
 }
 
-// RouterRegisterHttpService interface defines functionalities for HTTP service registration.
-type RouterRegisterHttpService interface {
-	// mustRouterRegisterHttpService enforces the implementation of HTTP service registration logic.
-	// This method is typically used to ensure that implementing classes must include HTTP service registration logic.
-	mustRouterRegisterHttpService()
+// RouterHTTPService is an interface for defining HTTP services associated with specific routes.
+// It provides a method to enforce the implementation of essential service functionality.
+type RouterHTTPService interface {
+	// MustRouterHTTPService is a placeholder method to enforce the implementation of essential service functionality.
+	// This method ensures that all services implement the required behavior.
+	MustRouterHTTPService()
 }
