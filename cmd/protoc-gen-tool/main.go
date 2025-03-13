@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-07-17 16:50:14
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-02-28 18:03:55
+ * @LastEditTime: 2025-03-13 10:50:47
  * @Description:
  */
 package main
@@ -10,7 +10,7 @@ package main
 import (
 	"github.com/yangjerry110/protoc-gen-go/compiler/protogen"
 	"github.com/yangjerry110/protoc-gen-go/gengo"
-	protocgentoolservice "github.com/yangjerry110/tool/internal/cmd/service/protocGenToolService"
+	"github.com/yangjerry110/tool/cmd/protoc-gen-tool/internal/service"
 )
 
 func main() {
@@ -54,7 +54,7 @@ func main() {
 		// 	}
 		// }
 		gen.SupportedFeatures = gengo.SupportedFeatures
-		return protocgentoolservice.CreateProtoGenToolService(&protocgentoolservice.Plugin{Plugin: gen}).Generate()
+		return service.CreateProtoGenToolService(&service.Plugin{Plugin: gen}).Generate()
 		// return nil
 	})
 }
