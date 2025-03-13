@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-12 19:05:22
+ * @LastEditTime: 2025-03-13 14:45:01
  * @Description: new protobuf
  */
 package router
@@ -92,6 +92,16 @@ func (n *NewProtobuf) getTemplate() string {
 	type {{.RouterNameUp}} struct{
 	 HttpServer protobuf.{{.RouterNameUp}}HttpServer
 	}
+
+	/**
+	 * @description: RouterName
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	*/	
+	func (*{{.RouterNameUp}}) RouterName() string {
+		return "{{.RouterName}}"
+	}
 	
 	/**
 	 * @description: Register
@@ -112,7 +122,7 @@ func (n *NewProtobuf) getTemplate() string {
 		{{- end}}
    }
  
-   /**
+   	/**
 	 * @description: RegisterGrpc
 	 * @author: Jerry.Yang
 	 * @date: {{.Time}}
@@ -127,11 +137,11 @@ func (n *NewProtobuf) getTemplate() string {
 	 }
  
 	 /**
-	 * @description: RegisterService
-	 * @param {router.RouterHTTPService} service
-	 * @author: Jerry.Yang
-	 * @date: {{.Time}}
-	 * @return {*}
+	  * @description: RegisterService
+	  * @param {router.RouterHTTPService} service
+	  * @author: Jerry.Yang
+	  * @date: {{.Time}}
+	  * @return {*}
 	 */
 	 func ({{.FirstRouterName}} *{{.RouterNameUp}}) RegisterHTTPService(service toolRouter.RouterHTTPService) {
 		 {{.FirstRouterName}}.HttpServer = service.(protobuf.{{.RouterNameUp}}HttpServer)
@@ -142,14 +152,14 @@ func (n *NewProtobuf) getTemplate() string {
    func ({{.FirstRouterName}} *{{.RouterNameUp}}) {{.RouterFuncUp}}(ctx *gin.Context)  {
  
 	   /**
-	   * @step
-	   * @inputVo
+	    * @step
+	    * @inputVo
 	   **/
 	   inputVo := &protobuf.{{.InputReqName}}{}
  
 	   /**
-	   * @step
-	   * @should bind
+	    * @step
+	    * @should bind
 	   **/
 	   if err := ctx.ShouldBind(inputVo); err != nil {
 		   qlog.Errorf("{{.RouterFunc}} shouldBind Err : %+v", err)
@@ -157,8 +167,8 @@ func (n *NewProtobuf) getTemplate() string {
 	   } 
 	   
 	   /**
-	   * @step
-	   * @调用service
+	    * @step
+	    * @调用service
 	   **/
 	   outputVo, err := {{.FirstRouterName}}.HttpServer.{{.RouterFunc}}(ctx, inputVo)
 	   if err != nil {
@@ -168,8 +178,8 @@ func (n *NewProtobuf) getTemplate() string {
 	   }
  
 	   /**
-	   * @step
-	   * @return
+	    * @step
+	    * @return
 	   **/
 	   ctx.JSON(http.StatusOK, outputVo)
    }

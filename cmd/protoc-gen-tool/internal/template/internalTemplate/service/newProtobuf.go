@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:18:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 11:24:05
+ * @LastEditTime: 2025-03-13 14:47:38
  * @Description: new protobuf
  */
 package service
@@ -70,21 +70,31 @@ func (n *NewProtobuf) getTemplate() string {
 	type {{.ServiceNameUp}} struct{}
 
 	/**
-	* @description: MustRouterRegisterHttpService
-	* @author: Jerry.Yang
-	* @date: {{.Time}}
-	* @return {*}
+	 * @description: RouterName
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
+	*/
+	func (*{{.ServiceNameUp}}) RouterName() string {
+		return "{{.ServiceName}}"
+	}
+
+	/**
+	 * @description: MustRouterRegisterHttpService
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
 	*/
 	func (*{{.ServiceNameUp}}) MustRouterRegisterHttpService() {}
 
 	{{- range .Services}}
 	/**
-	* @description: {{.ServiceFuncUp}}
-	* @param {context.Context} ctx
-	* @param {*protobuf.{{.InputReqName}}} inputVo
-	* @author: Jerry.Yang
-	* @date: {{.Time}}
-	* @return {*}
+	 * @description: {{.ServiceFuncUp}}
+	 * @param {context.Context} ctx
+	 * @param {*protobuf.{{.InputReqName}}} inputVo
+	 * @author: Jerry.Yang
+	 * @date: {{.Time}}
+	 * @return {*}
 	*/
    func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceFuncUp}}(ctx context.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error) {
    
