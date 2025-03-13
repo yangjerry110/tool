@@ -1,4 +1,0 @@
-level: "debug"
-formatter: "json"
-enable_html_escape: true
-report_caller: true
