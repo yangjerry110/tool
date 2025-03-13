@@ -7,7 +7,7 @@ require (
 	github.com/yangjerry110/tool/conf v0.2.0
 	github.com/yangjerry110/tool/pkg v0.2.1
 	github.com/yangjerry110/tool/toolerrors v0.2.0
-	golang.org/x/tools v0.31.0
+	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
 	gopkg.in/yaml.v2 v2.4.0
 )
 

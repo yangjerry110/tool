@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:18:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 10:49:17
+ * @LastEditTime: 2025-03-13 11:24:05
  * @Description: new protobuf
  */
 package service
@@ -68,6 +68,14 @@ func (n *NewProtobuf) getTemplate() string {
    )
 
 	type {{.ServiceNameUp}} struct{}
+
+	/**
+	* @description: MustRouterRegisterHttpService
+	* @author: Jerry.Yang
+	* @date: {{.Time}}
+	* @return {*}
+	*/
+	func (*{{.ServiceNameUp}}) MustRouterRegisterHttpService() {}
 
 	{{- range .Services}}
 	/**
