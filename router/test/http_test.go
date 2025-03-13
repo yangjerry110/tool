@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-12 15:57:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-12 16:50:18
+ * @LastEditTime: 2025-03-13 14:39:19
  * @Description: test
  */
 package test
@@ -33,8 +33,8 @@ func TestHttp(T *testing.T) {
 		return
 	}
 
-	router.RegisterHTTP("testRouter", &testRouter{}).
-		RegisterHTTPService("testRouter", &testService{}).
+	router.RegisterHTTP(&testRouter{}).
+		RegisterHTTPService(&testService{}).
 		RunHTTP(router.SetHTTPRouterConfig())
 
 	time.Sleep(10 * time.Minute)
@@ -48,6 +48,10 @@ type testRouterHttpServer interface {
 
 type testRouter struct {
 	HttpServer testRouterHttpServer
+}
+
+func (t *testRouter) RouterName() string {
+	return "testRouter"
 }
 
 func (t *testRouter) RegisterHTTP(ginEngine gin.IRouter) {
@@ -70,6 +74,10 @@ type testService struct{}
 
 func (*testService) TestRouterFunc(ctx context.Context) string {
 	return "testService"
+}
+
+func (*testService) RouterName() string {
+	return "testRouter"
 }
 
 func (*testService) MustRouterHTTPService() {}

@@ -1,8 +1,6 @@
 package router
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/yangjerry110/tool/conf"
 	"github.com/yangjerry110/tool/router/internal/config"
@@ -32,17 +30,14 @@ type httpRouter struct {
  * @date: 2025-03-12 16:36:26
  * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
  */
-func (h *httpRouter) RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP {
+func (h *httpRouter) RegisterHTTP(routerRegister RouterRegisterHTTP) RouterHTTP {
 	// Initialize the routerRegisterMap if it is nil.
 	if h.routerHTTPServiceMap == nil {
 		h.routerRegisterMap = make(map[string]RouterRegisterHTTP)
 	}
 
 	// Store the RouterRegisterHTTP interface in the routerRegisterMap with the route name as the key.
-	h.routerRegisterMap[routerName] = routerRegister
-
-	// Print the current state of the httpRouter struct for debugging purposes.
-	fmt.Printf("httpRouter : %+v\r\n", h)
+	h.routerRegisterMap[routerRegister.RouterName()] = routerRegister
 
 	// Return the RouterHTTP interface to allow method chaining.
 	return h
@@ -56,14 +51,14 @@ func (h *httpRouter) RegisterHTTP(routerName string, routerRegister RouterRegist
  * @date: 2025-03-12 16:36:26
  * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
  */
-func (h *httpRouter) RegisterHTTPService(routerName string, routerHTTPService RouterHTTPService) RouterHTTP {
+func (h *httpRouter) RegisterHTTPService(routerHTTPService RouterHTTPService) RouterHTTP {
 	// Initialize the routerHTTPServiceMap if it is nil.
 	if h.routerHTTPServiceMap == nil {
 		h.routerHTTPServiceMap = make(map[string]RouterHTTPService)
 	}
 
 	// Store the RouterHTTPService interface in the routerHTTPServiceMap with the route name as the key.
-	h.routerHTTPServiceMap[routerName] = routerHTTPService
+	h.routerHTTPServiceMap[routerHTTPService.RouterName()] = routerHTTPService
 
 	// Return the RouterHTTP interface to allow method chaining.
 	return h
@@ -77,14 +72,14 @@ func (h *httpRouter) RegisterHTTPService(routerName string, routerHTTPService Ro
  * @date: 2025-03-12 16:36:26
  * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
  */
-func (h *httpRouter) UseHTTP(useName string, routerUse RouterUseHTTP) RouterHTTP {
+func (h *httpRouter) UseHTTP(routerUse RouterUseHTTP) RouterHTTP {
 	// Initialize the RouterUseHTTPMap if it is nil.
 	if h.RouterUseHTTPMap == nil {
 		h.RouterUseHTTPMap = make(map[string]RouterUseHTTP)
 	}
 
 	// Store the RouterUseHTTP interface in the RouterUseHTTPMap with the middleware name as the key.
-	h.RouterUseHTTPMap[useName] = routerUse
+	h.RouterUseHTTPMap[routerUse.UseName()] = routerUse
 
 	// Return the RouterHTTP interface to allow method chaining.
 	return h
@@ -105,8 +100,8 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// Register default routes for "ping" and "swagger".
-	h.RegisterHTTP("ping", &ping{})
-	h.RegisterHTTP("swagger", &swagger{})
+	h.RegisterHTTP(&ping{})
+	h.RegisterHTTP(&swagger{})
 
 	// Create a new Gin engine with default middleware (logger and recovery).
 	ginEngine := gin.Default()

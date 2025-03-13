@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2025-03-13 10:55:04
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-03-13 14:37:48
+ * @Description:
+ */
 package router
 
 import (
@@ -28,10 +35,10 @@ func SetHTTPRouterConfig() conf.Conf {
  * @date: 2025-03-12 16:36:26
  * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
  */
-func RegisterHTTP(routerName string, routerRegister RouterRegisterHTTP) RouterHTTP {
+func RegisterHTTP(routerRegister RouterRegisterHTTP) RouterHTTP {
 	// Initialize a new HTTP router engine.
 	routerEnginee := &httpRouter{}
 
 	// Register the route using the provided RouterRegisterHTTP interface.
-	return routerEnginee.RegisterHTTP(routerName, routerRegister)
+	return routerEnginee.RegisterHTTP(routerRegister)
 }

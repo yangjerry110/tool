@@ -1,3 +1,10 @@
+/*
+ * @Author: Jerry.Yang
+ * @Date: 2025-03-13 10:55:04
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-03-13 14:35:42
+ * @Description: swagger
+ */
 package router
 
 import (
@@ -34,6 +41,10 @@ func (s *swagger) RegisterHTTP(ginEngine gin.IRouter) {
  */
 func (s *swagger) RegisterHTTPService(service RouterHTTPService) {
 	// This method is intentionally left empty as it is not currently used.
+}
+
+func (s *swagger) RouterName() string {
+	return "swagger"
 }
 
 /**
