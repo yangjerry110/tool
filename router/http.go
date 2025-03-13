@@ -32,7 +32,7 @@ type httpRouter struct {
  */
 func (h *httpRouter) RegisterHTTP(routerRegister RouterRegisterHTTP) RouterHTTP {
 	// Initialize the routerRegisterMap if it is nil.
-	if h.routerHTTPServiceMap == nil {
+	if h.routerRegisterMap == nil {
 		h.routerRegisterMap = make(map[string]RouterRegisterHTTP)
 	}
 
@@ -100,8 +100,7 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// Register default routes for "ping" and "swagger".
-	h.RegisterHTTP(&ping{})
-	h.RegisterHTTP(&swagger{})
+	h.RegisterHTTP(&ping{}).RegisterHTTP(&swagger{})
 
 	// Create a new Gin engine with default middleware (logger and recovery).
 	ginEngine := gin.Default()

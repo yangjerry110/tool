@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-12 15:57:32
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 14:39:19
+ * @LastEditTime: 2025-03-13 15:35:43
  * @Description: test
  */
 package test
@@ -34,6 +34,7 @@ func TestHttp(T *testing.T) {
 	}
 
 	router.RegisterHTTP(&testRouter{}).
+		RegisterHTTP(&testRouter1{}).
 		RegisterHTTPService(&testService{}).
 		RunHTTP(router.SetHTTPRouterConfig())
 
@@ -46,12 +47,35 @@ type testRouterHttpServer interface {
 	TestRouterFunc(ctx context.Context) string
 }
 
+type testRouterHttpServer1 interface {
+	router.RouterHTTPService
+	TestRouterFunc(ctx context.Context) string
+}
+
 type testRouter struct {
 	HttpServer testRouterHttpServer
 }
 
+type testRouter1 struct {
+	HttpServer testRouterHttpServer1
+}
+
+func (t *testRouter1) RouterName() string {
+	return "testRouter1"
+}
+
 func (t *testRouter) RouterName() string {
 	return "testRouter"
+}
+
+func (t *testRouter1) RegisterHTTP(ginEngine gin.IRouter) {
+	ginEngine.GET("/testping1", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "testping1 success")
+	})
+}
+
+func (t *testRouter1) RegisterHTTPService(RouterHTTPService router.RouterHTTPService) {
+	t.HttpServer = RouterHTTPService.(testRouterHttpServer1)
 }
 
 func (t *testRouter) RegisterHTTP(ginEngine gin.IRouter) {
