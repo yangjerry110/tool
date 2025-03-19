@@ -115,6 +115,8 @@ github.com/ugorji/go/codec v1.2.12 h1:9LC83zGrHhuUA9l16C9AHXAqEV/2wBQ4nkvumAE65E
 github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/yangjerry110/tool/cache v0.2.2 h1:iZM2wtgeRkqcFe2+8znfL+rbO41Yq/EFKR7gW3i4tR8=
 github.com/yangjerry110/tool/cache v0.2.2/go.mod h1:x3fbtC6sP4FH62+/rOl2fVfEwFGYoJ+j0TPZjHHKHtQ=
+github.com/yangjerry110/tool/cache v0.2.3 h1:dY5KjOcKgsvu74f9Vo+CgalR183GBmnU3JNJsbk2qa0=
+github.com/yangjerry110/tool/cache v0.2.3/go.mod h1:x3fbtC6sP4FH62+/rOl2fVfEwFGYoJ+j0TPZjHHKHtQ=
 github.com/yangjerry110/tool/conf v0.2.0 h1:3iBuiyE+TxMkaNtNRbbsMpaeGknVkx9kQ3jmly5udD8=
 github.com/yangjerry110/tool/conf v0.2.0/go.mod h1:/D/qt7cfiJpQKesqQdnOsKLWHYi0/c0dM2nSTosWMyI=
 github.com/yangjerry110/tool/db v0.2.0 h1:iGEogKMd8WqJv0fortr7l+/wbj4oVleT/vpj2Ac1S1I=

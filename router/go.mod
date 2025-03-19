@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/swaggo/swag v1.16.4
-	github.com/yangjerry110/tool/cache v0.2.2
+	github.com/yangjerry110/tool/cache v0.2.3
 	github.com/yangjerry110/tool/conf v0.2.0
 	github.com/yangjerry110/tool/db v0.2.0
 )
