@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 16:05:30
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 10:49:30
+ * @LastEditTime: 2025-03-19 15:07:08
  * @Description:
  */
 package service
@@ -164,14 +164,14 @@ func (s *Service) newService() error {
 		return err
 	}
 
-	// Append base
-	templateAppendBaseService := &service.AppendBaseService{}
-	templateAppendBaseService.ServiceName = config.ProtobufFileConf.FileName
-	templateAppendBaseService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
-	templateAppendBaseService.Time = template.GetFormatNowTime()
-	if err := template.CreateTemplate(templateAppendBaseService).New(); err != nil {
-		return err
-	}
+	// // Append base
+	// templateAppendBaseService := &service.AppendBaseService{}
+	// templateAppendBaseService.ServiceName = config.ProtobufFileConf.FileName
+	// templateAppendBaseService.ServiceNameUp = template.FirstUpper(config.ProtobufFileConf.FileName)
+	// templateAppendBaseService.Time = template.GetFormatNowTime()
+	// if err := template.CreateTemplate(templateAppendBaseService).New(); err != nil {
+	// 	return err
+	// }
 	return nil
 }
 

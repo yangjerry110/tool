@@ -108,7 +108,7 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	// If there are registered middleware, apply them to the Gin engine.
 	if len(h.RouterUseHTTPMap) != 0 {
 		for _, useHttp := range h.RouterUseHTTPMap {
-			ginEngine.Use(useHttp.UseHTTP())
+			ginEngine.Use(useHttp.UseHTTP)
 		}
 	}
 

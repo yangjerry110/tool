@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 15:12:50
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2025-03-20 21:05:25
  * @Description: routerName
  */
 package router
@@ -51,7 +51,7 @@ type RouterUseHTTP interface {
 	UseName() string
 	// UseHTTP returns a Gin middleware handler function.
 	// This function is applied to the Gin engine to process requests before they reach the route handlers.
-	UseHTTP() gin.HandlerFunc
+	UseHTTP(ginContext *gin.Context)
 }
 
 // RouterHTTPService is an interface for defining HTTP services associated with specific routes.
