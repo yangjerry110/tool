@@ -11,11 +11,13 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"sync"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/grpclog"
 )
 
 // client struct is used to manage the gRPC client connection pool.
@@ -119,6 +121,8 @@ func (c *client) createConnection(ctx context.Context, cfg *Config, endpoint str
 			 "serviceName": "%s"
 		 }
 	 }`, cfg.LBPolicy, cfg.ServiceName)
+
+	grpclog.SetLoggerV2(grpclog.NewLoggerV2(os.Stdout, os.Stderr, os.Stderr))
 
 	// Create a new gRPC client connection with the specified options.
 	conn, err := grpc.NewClient(
