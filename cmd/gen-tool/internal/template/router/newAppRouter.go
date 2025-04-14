@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:51:23
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-26 15:56:36
+ * @LastEditTime: 2025-03-28 16:22:11
  * @Description: newApp base router
  */
 package router
@@ -58,6 +58,7 @@ func (n *NewAppRouter) getTemplate() string {
    import (
 	   "{{.ImportPath}}/internal/config"
 	   "github.com/yangjerry110/tool/router"
+		"{{.ImportPath}}/internal/service"
    )
    
    /**
@@ -67,16 +68,9 @@ func (n *NewAppRouter) getTemplate() string {
 	* @return {*}
 	*/
    func RunRouter() {
-   
-		// Register Demo
-		if err := router.CreateGinRouter().Register("Demo", &Demo{}); err != nil {
-			panic(err)
-		}
-
-		// Run router
-		if err := router.CreateGinRouter().Run(&config.Config{}); err != nil {
-			panic(err)
-		}
+		router.RegisterHTTP(&Demo{}).
+		RegisterHTTPService(&service.Demo{}).
+		RunHTTP(&config.Config{})
    }
    `
 }

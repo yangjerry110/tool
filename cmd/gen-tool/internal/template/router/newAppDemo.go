@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:53:51
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2023-12-19 21:46:31
+ * @LastEditTime: 2025-03-28 16:29:52
  * @Description: newApp demo router
  */
 package router
@@ -57,7 +57,6 @@ func (n *NewAppDemoRouter) getTemplate() string {
 package router
 
 import (
-	"{{.ImportPath}}/internal/service"
 	"git.qutoutiao.net/gopher/qms/pkg/qlog"
 	"{{.ImportPath}}/vo/protobuf"
 	"github.com/gin-gonic/gin"
@@ -65,15 +64,19 @@ import (
 	"net/http"
 )
 
-type DemoRouter interface {
-	CreateRouter()
-	AddDemo(ctx *gin.Context)
-	DeleteDemo(ctx *gin.Context)
-	UpdateDemo(ctx *gin.Context)
-	GetDemo(ctx *gin.Context)
+type Demo struct{
+	HttpServer protobuf.DemoApiServer
 }
 
-type Demo struct{}
+/**
+ * @description: RouterName
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
+ */
+func (*Demo) RouterName() string {
+	return "demo"
+}
 
 /**
  * @description: CreateRouter
@@ -81,13 +84,7 @@ type Demo struct{}
  * @date: {{.Time}}
  * @return {*}
  */
-func (d *Demo) Register() error {
-
-	/**
-	* @step
-	* @获取router
-	**/
-	router := toolRouter.GetGinDefaultRouter()
+func (d *Demo) RegisterHTTP(router gin.IRouter) {
 
 	/**
 	* @step
@@ -116,7 +113,17 @@ func (d *Demo) Register() error {
 	* @查找Demo的详细描述
 	**/
 	router.GET("/api/demo", d.GetDemo)
-	return nil
+}
+
+/**
+ * @description: RegisterService
+ * @param {router.RouterHTTPService} service
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
+ */
+func (d *Demo) RegisterHTTPService(service toolRouter.RouterHTTPService) {
+	d.HttpServer = service.(protobuf.DemoApiServer)
 }
 
 // AddDemo 增加Demo的详细描述
@@ -147,7 +154,7 @@ func (d *Demo) AddDemo(ctx *gin.Context) {
 	 * @step
 	 * @调用service
 	 **/
-	outputVo, err := service.CreateDemoService().AddDemo(ctx, inputVo)
+	outputVo, err := d.HttpServer.AddDemo(ctx, inputVo)
 	if err != nil {
 		qlog.Errorf("DemoService AddDemo Err : %+v", err)
 		ctx.JSON(http.StatusOK, &protobuf.Empty{})
@@ -188,7 +195,7 @@ func (d *Demo) DeleteDemo(ctx *gin.Context) {
 	 * @step
 	 * @调用service
 	 **/
-	outputVo, err := service.CreateDemoService().DeleteDemo(ctx, inputVo)
+	outputVo, err := d.HttpServer.DeleteDemo(ctx, inputVo)
 	if err != nil {
 		qlog.Errorf("DemoService DeleteDemo Err : %+v", err)
 		ctx.JSON(http.StatusOK, &protobuf.Empty{})
@@ -229,7 +236,7 @@ func (d *Demo) UpdateDemo(ctx *gin.Context) {
 	 * @step
 	 * @调用service
 	 **/
-	outputVo, err := service.CreateDemoService().UpdateDemo(ctx, inputVo)
+	outputVo, err := d.HttpServer.UpdateDemo(ctx, inputVo)
 	if err != nil {
 		qlog.Errorf("DemoService UpdateDemo Err : %+v", err)
 		ctx.JSON(http.StatusOK, &protobuf.Empty{})
@@ -271,7 +278,7 @@ func (d *Demo) GetDemo(ctx *gin.Context) {
 	 * @step
 	 * @调用service
 	 **/
-	outputVo, err := service.CreateDemoService().GetDemo(ctx, inputVo)
+	outputVo, err := d.HttpServer.GetDemo(ctx, inputVo)
 	if err != nil {
 		qlog.Errorf("DemoService GetDemo Err : %+v", err)
 		ctx.JSON(http.StatusOK, &protobuf.GetDemoResp{})

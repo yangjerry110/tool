@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:57:19
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-26 15:54:28
+ * @LastEditTime: 2025-03-28 16:09:51
  * @Description:
  */
 package service
@@ -62,6 +62,24 @@ import (
 )
 
 type Demo struct{}
+
+/**
+ * @description: RouterName
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
+ */
+func (d *Demo) RouterName() string {
+	return "demo"
+}
+
+/**
+ * @description: MustRouterHTTPService
+ * @author: Jerry.Yang
+ * @date: {{.Time}}
+ * @return {*}
+ */
+func (d *Demo) MustRouterHTTPService() {}
 
 /**
 * @description: AddDemo

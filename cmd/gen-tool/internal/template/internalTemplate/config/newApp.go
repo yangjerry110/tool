@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:42:56
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2024-04-26 16:13:23
+ * @LastEditTime: 2025-03-28 15:29:25
  * @Description: newApp
  */
 package config
@@ -197,7 +197,7 @@ func (d *DataBase) SetConfig() error {
 	* @step
 	* @setDatabaseConfig
 	**/
-	return db.CreateGormDbConf().SetConfig()
+	return db.SetGormConf().SetConfig()
 }
 
 `
@@ -226,7 +226,7 @@ func (n *NewAppRouter) getTemplate() string {
  * @Date: {{.Time}}
  * @LastEditors: Jerry.Yang
  * @LastEditTime: {{.Time}}
- * @Description: database config
+ * @Description: router config
  */
 package config
 
@@ -244,9 +244,9 @@ func (r *Router) SetConfig() error {
 
 	/**
 	* @step
-	* @setDatabaseConfig
+	* @setRouterConfig
 	**/
-	return router.CreateGinConfigConf().SetConfig()
+	return router.SetHTTPRouterConfig().SetConfig()
 }
 `
 }
@@ -264,7 +264,7 @@ func (n *NewAppRedis) getTemplate() string {
  * @Date: {{.Time}}
  * @LastEditors: Jerry.Yang
  * @LastEditTime: {{.Time}}
- * @Description: database config
+ * @Description: Redis config
  */
 	package config
 
@@ -279,7 +279,7 @@ func (n *NewAppRedis) getTemplate() string {
 	 * @return {*}
 	 */
 	func (r *Redis) SetConfig() error {
-		return cache.CreateRedisConf().SetConfig()
+		return cache.SetRedisConf().SetConfig()
 	}
 	`
 }
@@ -317,9 +317,9 @@ func (n *NewAppConfig) getTemplate() string {
    func (c *Config) SetConfig() error {
    
 	   // set gin conf
-	   if err := router.CreateGinConf().SetConfig(); err != nil {
-		   return err
-	   }
+	   if err := router.SetHTTPRouterConfig().SetConfig(); err != nil {
+			return err
+		}
    
 	   // Get All Db Clients
 	   if err := db.CreateGormDb().CreateAllClient(); err != nil {

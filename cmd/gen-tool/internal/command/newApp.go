@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-18 17:01:24
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-12 17:21:53
+ * @LastEditTime: 2025-03-28 16:24:15
  * @Description: newApp
  */
 package command
@@ -22,7 +22,6 @@ import (
 	internalFolderModel "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/internalFolder/model"
 	internalFolderQuery "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/internalFolder/query"
 	internalFolderService "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/internalFolder/service"
-	internalFolderInterfaceService "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/internalFolder/service/interfaceService"
 	folderProto "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/proto"
 	floderRouter "github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/router"
 	"github.com/yangjerry110/tool/cmd/gen-tool/internal/folder/vo"
@@ -153,10 +152,10 @@ func (n *NewApp) newFloder() error {
 		return err
 	}
 
-	// NewAppInterfaceService
-	if err := folder.CreateFlod(&internalFolderInterfaceService.NewApp{}).New(); err != nil {
-		return err
-	}
+	// // NewAppInterfaceService
+	// if err := folder.CreateFlod(&internalFolderInterfaceService.NewApp{}).New(); err != nil {
+	// 	return err
+	// }
 
 	// NewAppService
 	if err := folder.CreateFlod(&internalFolderService.NewApp{}).New(); err != nil {
@@ -248,15 +247,15 @@ func (n *NewApp) newTemplate() error {
 		return err
 	}
 
-	// NewAppBaseService
-	if err := template.CreateTemplate(&service.NewAppBaseService{}).New(); err != nil {
-		return err
-	}
+	// // NewAppBaseService
+	// if err := template.CreateTemplate(&service.NewAppBaseService{}).New(); err != nil {
+	// 	return err
+	// }
 
-	// NewAppDemoInterfaceService
-	if err := template.CreateTemplate(&service.NewAppDemoInterfaceService{}).New(); err != nil {
-		return err
-	}
+	// // NewAppDemoInterfaceService
+	// if err := template.CreateTemplate(&service.NewAppDemoInterfaceService{}).New(); err != nil {
+	// 	return err
+	// }
 
 	// NewAppDemoService
 	if err := template.CreateTemplate(&service.NewAppDemoService{}).New(); err != nil {

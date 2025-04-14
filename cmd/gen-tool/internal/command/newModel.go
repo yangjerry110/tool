@@ -151,7 +151,7 @@ func (n *NewModel) actionGen(databaseConfName string) error {
 
 	// Generate one table
 	modelNameUp := template.FirstUpper(config.ModelConf.ModelName)
-	genGenerate.ApplyBasic(genGenerate.GenerateModelAs(config.ModelConf.ModelName, modelNameUp))
+	genGenerate.ApplyBasic(genGenerate.GenerateModelAs(config.ModelConf.TableName, modelNameUp))
 	// genObj.ApplyBasic(genObj.GenerateAllTable()...)
 
 	/**
@@ -164,7 +164,7 @@ func (n *NewModel) actionGen(databaseConfName string) error {
 	 * @step
 	 * @判断文件是否存在
 	 **/
-	oldModelFileName := fmt.Sprintf("%s/%s.gen.go", modelPath, config.ModelConf.ModelName)
+	oldModelFileName := fmt.Sprintf("%s/%s.gen.go", modelPath, config.ModelConf.TableName)
 	_, err = os.Stat(oldModelFileName)
 	if err != nil {
 		return err

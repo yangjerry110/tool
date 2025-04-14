@@ -56,7 +56,8 @@ func (n *NewDao) getTemplate() string {
    type {{.DaoNameUp}}Dao interface {
 		Get{{.DaoNameUp}}List(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) ([]*model.{{.ModelName}}, error)
 	   Get{{.DaoNameUp}}Info(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (*model.{{.ModelName}}, error)
-	   Save{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (int64, error)
+	   Create{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (int64,error)
+	   Save{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) error
 	   Delete{{.DaoNameUp}}(ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (bool, error)
    }
    
@@ -115,6 +116,27 @@ func (n *NewDao) getTemplate() string {
 	  }
 	  return result, nil
   } 
+
+  /**
+  * @description: Save{{.DaoNameUp}}
+  * @param {context.Context} ctx
+  * @param {*model.{{.ModelName}}} {{.DaoName}}Model
+  * @author: Jerry.Yang
+  * @date: {{.Time}}
+  * @return {*}
+  */
+ func ({{.FirstDaoName}} *{{.DaoNameUp}}) Create{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (int64, error) {
+ 
+	 /**
+	  * @step
+	  * @执行结果
+	  **/
+	 if err := CreateClient(ctx,{{.DbName}}).Create({{.DaoName}}Model).Error; err != nil {
+		 qlog.Errorf("{{.DaoName}}Dao Create{{.DaoNameUp}} Err : %+v", err)
+		 return 0, err
+	 }
+	 return {{.DaoName}}Model.ID, nil
+ }
   
   /**
   * @description: Save{{.DaoNameUp}}
@@ -124,7 +146,7 @@ func (n *NewDao) getTemplate() string {
   * @date: {{.Time}}
   * @return {*}
   */
- func ({{.FirstDaoName}} *{{.DaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) (int64, error) {
+ func ({{.FirstDaoName}} *{{.DaoNameUp}}) Save{{.DaoNameUp}} (ctx context.Context, {{.DaoName}}Model *model.{{.ModelName}}) error {
  
 	 /**
 	  * @step
@@ -132,9 +154,9 @@ func (n *NewDao) getTemplate() string {
 	  **/
 	 if err := CreateClient(ctx,{{.DbName}}).Save({{.DaoName}}Model).Error; err != nil {
 		 qlog.Errorf("{{.DaoName}}Dao Save{{.DaoNameUp}} Err : %+v", err)
-		 return 0, err
+		 return err
 	 }
-	 return {{.DaoName}}Model.ID, nil
+	 return nil
  }
 
  /**
