@@ -1,4 +1,4 @@
-module github.com/yangjerry/tool/router/grpc
+module github.com/yangjerry110/tool/router/grpc
 
 go 1.20
 
