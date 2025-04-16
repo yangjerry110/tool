@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-16 14:41:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 15:31:58
+ * @LastEditTime: 2025-04-16 15:43:14
  * @Description: 
 -->
 # gRPC Connection Pool (Go)
@@ -39,7 +39,7 @@ if err != nil {
 defer clientPool.Close()
 
 // 2. 获取连接并创建客户端
-conn, err := clientPool.GetConn()
+conn, err := clientPool.GetConn("grpc.server")
 if err != nil {
 	log.Fatalf("No healthy connection: %v", err)
 	return

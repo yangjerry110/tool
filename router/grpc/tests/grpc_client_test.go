@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-14 21:46:02
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 15:30:24
+ * @LastEditTime: 2025-04-16 15:41:35
  * @Description:
  */
 package tests
@@ -27,7 +27,7 @@ func TestGrpcClient(t *testing.T) {
 		grpc.WithDialTimeout(10*time.Second),
 	)
 
-	clientPool, err := grpc.GetClientPool()
+	clientPool, err := grpc.GetClientPool("grpc.server")
 	if err != nil {
 		log.Fatalf("Failed to get client pool: %v", err)
 		return
