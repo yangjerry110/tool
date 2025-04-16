@@ -2,19 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-14 21:46:02
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 14:34:00
+ * @LastEditTime: 2025-04-16 14:47:31
  * @Description:
  */
 package tests
 
 import (
-	"context"
-	"fmt"
 	"log"
 	"testing"
 	"time"
 
-	"git.qutoutiao.net/devops/newcmdb-protobuf/vo/protobuf"
 	toolRouterGrpc "github.com/yangjerry110/tool/router/grpc"
 )
 
@@ -73,16 +70,6 @@ func TestGrpcClient(t *testing.T) {
 		log.Fatalf("No healthy connection: %v", err)
 		return
 	}
-	client := protobuf.NewServerClient(conn)
 	defer conn.Close()
 
-	instanceId := "i-ydklf755vkqc6il1p2r4-10"
-	getEcsReq := &protobuf.GetEcsServerReq{}
-	getEcsReq.InstanceId = &instanceId
-	getEcsResp, err := client.GetEcsServer(context.Background(), getEcsReq)
-
-	fmt.Printf("err : %+v \r\n", err)
-	fmt.Printf("getEcsResp : %+v \r\n", getEcsResp)
-
-	time.Sleep(1 * time.Hour)
 }
