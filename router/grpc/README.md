@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-16 14:41:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 14:54:12
+ * @LastEditTime: 2025-04-16 15:31:58
  * @Description: 
 -->
 # gRPC Connection Pool (Go)
@@ -22,26 +22,28 @@
 import "github.com/yangjerry110/tool/router/grpc"
 
 // 1. 初始化连接池
-pool, err := grpc.New(
+grpc.Init(
 	"grpc.server",
 	[]string{"127.0.0.1:12001"},
-	toolRouterGrpc.WithPoolSize(6),
-	toolRouterGrpc.WithHealthCheckInterval(10*time.Second),
-	toolRouterGrpc.WithBalancerPolicy("round_robin"),
-	toolRouterGrpc.WithDialTimeout(10*time.Second),
+	grpc.WithPoolSize(6),
+	grpc.WithHealthCheckInterval(10*time.Second),
+	grpc.WithBalancerPolicy("round_robin"),
+	grpc.WithDialTimeout(10*time.Second),
 )
+
+clientPool, err := grpc.GetClientPool()
 if err != nil {
-    log.Fatal(err)
+	log.Fatalf("Failed to get client pool: %v", err)
+	return
 }
-defer pool.Close()
+defer clientPool.Close()
 
 // 2. 获取连接并创建客户端
-conn, err := pool.GetConn()
+conn, err := clientPool.GetConn()
 if err != nil {
 	log.Fatalf("No healthy connection: %v", err)
 	return
 }
-client := protobuf.NewGrpcClient(conn)
 defer conn.Close()
 ```
 

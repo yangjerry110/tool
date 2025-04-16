@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-14 21:46:02
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 14:55:44
+ * @LastEditTime: 2025-04-16 15:30:24
  * @Description:
  */
 package tests
@@ -18,7 +18,7 @@ import (
 func TestGrpcClient(t *testing.T) {
 
 	// 1. 初始化连接池
-	pool, err := grpc.New(
+	grpc.Init(
 		"grpc.server",
 		[]string{"127.0.0.1:12001"},
 		grpc.WithPoolSize(6),
@@ -26,13 +26,16 @@ func TestGrpcClient(t *testing.T) {
 		grpc.WithBalancerPolicy("round_robin"),
 		grpc.WithDialTimeout(10*time.Second),
 	)
+
+	clientPool, err := grpc.GetClientPool()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to get client pool: %v", err)
+		return
 	}
-	defer pool.Close()
+	defer clientPool.Close()
 
 	// 2. 获取连接并创建客户端
-	conn, err := pool.GetConn()
+	conn, err := clientPool.GetConn()
 	if err != nil {
 		log.Fatalf("No healthy connection: %v", err)
 		return

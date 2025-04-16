@@ -2,14 +2,18 @@
  * @Author: Jerry.Yang
  * @Date: 2025-04-16 14:12:48
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-04-16 14:54:21
+ * @LastEditTime: 2025-04-16 15:31:40
  * @Description:
  */
 package grpc
 
 import (
+	"log"
+	"sync"
 	"time"
 
+	// Import custom error handling package
+	// This package likely contains custom error types and handling logic for the gRPC client pool.
 	"github.com/yangjerry110/tool/router/grpc/internal/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
@@ -28,20 +32,50 @@ const (
 	defaultHealthCheckTimeout = 2 * time.Second
 )
 
-// New is a public function that creates a new instance of the ClientPool.
-// It takes the service name, a slice of endpoints, and optional configuration options.
-// If any error occurs during the creation process, it returns an error.
-// Otherwise, it returns a pointer to the newly created clientPool.
+// Global variables for the client pool instance.
+// instance holds the single instance of the clientPool struct.
+// once is a sync.Once struct used to ensure that the client pool initialization occurs only once.
+// initErr stores any error that occurs during the initialization of the client pool.
+var (
+	instance *clientPool
+	once     sync.Once
+	initErr  error
+)
+
+// Init initializes the client pool.
+// It uses the sync.Once mechanism to ensure that the client pool is initialized only once.
+// It calls the newClientPool function with the provided service name, endpoints, and options.
+// If an error occurs during initialization, it logs the error message.
 //
 // # Arguments
 // - `serviceName`: A string representing the name of the gRPC service.
 // - `endpoints`: A slice of strings representing the endpoints of the gRPC service.
 // - `opts`: Variadic parameter of type Option, which are used to configure the client pool.
+func Init(serviceName string, endpoints []string, opts ...Option) {
+	once.Do(func() {
+		instance, initErr = newClientPool(serviceName, endpoints, opts...)
+		if initErr != nil {
+			log.Printf("grpcpool init failed: %v", initErr)
+		}
+	})
+}
+
+// GetClientPool retrieves the client pool instance.
+// If the instance is not initialized (nil), it checks if there was an initialization error.
+// If there was an initialization error, it returns that error. Otherwise, it returns a custom error.
+// If the instance exists, it returns the client pool instance and nil error.
 //
 // # Returns
-// - A pointer to the newly created clientPool if successful, or nil and an error if there was an issue.
-func New(serviceName string, endpoints []string, opts ...Option) (*clientPool, error) {
-	return newClientPool(serviceName, endpoints, opts...)
+//   - A pointer to the clientPool if it exists and was initialized successfully,
+//     or nil and an error if there was an issue with initialization or retrieval.
+func GetClientPool() (*clientPool, error) {
+	if instance == nil {
+		if initErr != nil {
+			return nil, initErr
+		}
+		return nil, errors.ErrGetClientPoolFailed
+	}
+	return instance, nil
 }
 
 // newClientPool is an internal function that actually creates the client pool.
