@@ -2,11 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-19 14:59:49
  * @LastEditors: Jerry.Yang
-<<<<<<< HEAD
- * @LastEditTime: 2023-12-19 16:09:48
-=======
- * @LastEditTime: 2025-03-28 16:30:51
->>>>>>> master
+ * @LastEditTime: 2025-05-16 13:27:16
  * @Description: newApp go mod
  */
 package template
@@ -47,9 +43,6 @@ func (n *NewAppGoMod) New() error {
 func (n *NewAppGoMod) getTemplate() string {
 	return `module {{.ImportPath}}
 
-<<<<<<< HEAD
-go 1.20`
-=======
 go 1.20
 
 
@@ -120,5 +113,4 @@ require (
 	gorm.io/driver/mysql v1.5.7 // indirect
 )
 `
->>>>>>> master
 }
