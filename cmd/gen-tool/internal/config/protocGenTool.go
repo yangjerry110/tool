@@ -1,5 +1,4 @@
-/**
- * @Author: Jerry.Yang
+/* @Author: Jerry.Yang
  * @Date: 2023-12-12 11:22:12
  * @LastEditors: Jerry.Yang
  * @LastEditTime: 2025-02-24 16:55:50
@@ -34,7 +33,7 @@ type ProtocGenTool struct {
 var ProtocGenToolConf = &ProtocGenTool{}
 
 // Path and file name for the protoc generation tool configuration.
-var protoGenToolConfPath = "/data/protobuf/tool/"
+var protoGenToolConfPath = "/opt/protobuf/tool/"
 var protoGenToolConfName = "protoGenToolConf.yaml"
 
 /**
