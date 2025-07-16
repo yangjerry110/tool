@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2024-06-06 15:49:57
- * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-07-16 10:51:46
+ * @LastEditors: yangjie04 yangjie04@qutoutiao.net
+ * @LastEditTime: 2025-03-10 22:34:31
  * @FilePath: /toolerrors/toolerror.go
  * @Description: 错误处理实现模块，提供具体的错误创建、包装、堆栈信息添加、附加字段等功能。
  * 通过 `toolError` 结构体实现 `errorInterface` 接口，支持错误堆栈信息和附加字段的添加。
@@ -106,7 +106,7 @@ func (e *toolError) GetError() error {
 	// 如果附加字段不为空，为错误添加附加字段信息
 	if len(e.fields) != 0 {
 		for fieldName, fieldVal := range e.fields {
-			err = errors.WithMessagef(err, "%s=%v", fieldName, fieldVal)
+			e.err = errors.WithMessagef(e.err, "%s=%v", fieldName, fieldVal)
 		}
 	}
 
