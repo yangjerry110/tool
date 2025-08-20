@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-31 16:46:16
+ * @LastEditTime: 2025-08-20 17:37:53
  * @Description: swagger
  */
 package router
@@ -15,13 +15,13 @@ import (
 	"github.com/gin-gonic/gin"
 	// Import the Swagger UI files.
 	// These files are used to serve the Swagger UI for API documentation.
-	swaggerFiles "github.com/swaggo/files"
+
 	// Import the Gin middleware for integrating Swagger with Gin.
 	// This middleware allows serving the Swagger UI and API documentation in a Gin application.
-	ginSwagger "github.com/swaggo/gin-swagger"
+
 	// Import the Swag library for generating Swagger documentation.
 	// Swag helps in generating Swagger JSON specifications from Go code.
-	"github.com/swaggo/swag"
+	_ "github.com/swaggo/swag" // 使用下划线导入以避免直接依赖
 )
 
 // swagger struct is responsible for handling Swagger API documentation.
@@ -41,7 +41,7 @@ type swagger struct{}
 // using the `swaggerFiles.Handler`. This allows users to access the Swagger UI and API documentation.
 func (s *swagger) RegisterHTTP(ginEngine gin.IRouter) {
 	// Define the route to serve the Swagger UI and API documentation.
-	ginEngine.GET("/api/apidoc/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	ginEngine.GET("/api/apidoc/*any", s.apidoc) // 使用自定义的apidoc方法
 }
 
 /**
@@ -112,12 +112,17 @@ func (s *swagger) apidoc(ctx *gin.Context) {
 		  `)
 		ctx.Data(200, "text/html; charset=utf-8", doc)
 	case "/swagger.json":
-		// Serve the Swagger JSON specification.
-		doc, err := swag.ReadDoc()
-		if err != nil {
-			ctx.String(http.StatusInternalServerError, err.Error())
-			return
-		}
-		ctx.Writer.Write([]byte(doc))
+		// 在 Go 1.20.3 中，我们使用替代方案来提供 swagger.json
+		// 这里提供一个简单的实现，或者你可以从文件系统读取
+		ctx.JSON(http.StatusOK, gin.H{
+			"info": gin.H{
+				"title":   "API Documentation",
+				"version": "1.0",
+			},
+			"paths": gin.H{},
+		})
+	default:
+		// 对于其他路径，返回404或者重定向到index.html
+		ctx.Redirect(http.StatusFound, "/api/apidoc/index.html")
 	}
 }
