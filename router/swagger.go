@@ -2,13 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-20 18:07:04
+ * @LastEditTime: 2025-08-20 18:24:17
  * @Description: swagger
  */
 package router
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/swag"
 )
 
 // swagger struct is responsible for handling Swagger API documentation.
@@ -85,13 +88,13 @@ func (s *swagger) apidoc(ctx *gin.Context) {
 		 </html>
 		 `)
 		ctx.Data(200, "text/html; charset=utf-8", doc)
-		// case "/swagger.json":
-		// 	// Serve the Swagger JSON specification.
-		// 	doc, err := swag.ReadDoc()
-		// 	if err != nil {
-		// 		ctx.String(http.StatusInternalServerError, err.Error())
-		// 		return
-		// 	}
-		// 	ctx.Writer.Write([]byte(doc))
+	case "/swagger.json":
+		// Serve the Swagger JSON specification.
+		doc, err := swag.ReadDoc()
+		if err != nil {
+			ctx.String(http.StatusInternalServerError, err.Error())
+			return
+		}
+		ctx.Writer.Write([]byte(doc))
 	}
 }
