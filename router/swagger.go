@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-20 17:37:53
+ * @LastEditTime: 2025-08-20 17:39:38
  * @Description: swagger
  */
 package router
@@ -15,13 +15,10 @@ import (
 	"github.com/gin-gonic/gin"
 	// Import the Swagger UI files.
 	// These files are used to serve the Swagger UI for API documentation.
-
 	// Import the Gin middleware for integrating Swagger with Gin.
 	// This middleware allows serving the Swagger UI and API documentation in a Gin application.
-
 	// Import the Swag library for generating Swagger documentation.
 	// Swag helps in generating Swagger JSON specifications from Go code.
-	_ "github.com/swaggo/swag" // 使用下划线导入以避免直接依赖
 )
 
 // swagger struct is responsible for handling Swagger API documentation.
