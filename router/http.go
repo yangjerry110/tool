@@ -100,21 +100,32 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// Register default routes for "ping" and "swagger".
-	h.RegisterHTTP(&ping{}).RegisterHTTP(&swagger{})
+	// h.RegisterHTTP(&ping{}).RegisterHTTP(&swagger{})
 
 	// Create a new Gin engine with default middleware (logger and recovery).
 	ginEngine := gin.Default()
 
+	// Register the "ping" route with the Gin engine.
+	pingRouter := &ping{}
+	pingRouter.RegisterHTTP(ginEngine)
+
+	// Register the "swagger" route with the Gin engine.
+	swaggerRouter := &swagger{}
+	swaggerRouter.RegisterHTTP(ginEngine)
+
+	// Create a new Gin engine group with the base path from the configuration.
+	ginEngineRegister := ginEngine.Group("")
+
 	// If there are registered middleware, apply them to the Gin engine.
 	if len(h.RouterUseHTTPMap) != 0 {
 		for _, useHttp := range h.RouterUseHTTPMap {
-			ginEngine.Use(useHttp.UseHTTP)
+			ginEngineRegister.Use(useHttp.UseHTTP)
 		}
 	}
 
 	// Register all routes and their associated services with the Gin engine.
 	for routerName, routerRegister := range h.routerRegisterMap {
-		routerRegister.RegisterHTTP(ginEngine)
+		routerRegister.RegisterHTTP(ginEngineRegister)
 		httpService, isOk := h.routerHTTPServiceMap[routerName]
 		if isOk {
 			routerRegister.RegisterHTTPService(httpService)
