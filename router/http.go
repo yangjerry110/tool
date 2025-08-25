@@ -138,7 +138,7 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// Create a new Gin engine group with the base path from the configuration.
-	ginEngineGroup := ginEngine.Group("")
+	// ginEngineGroup := ginEngine.Group("")
 
 	// Register the "ping" route with the Gin engine.
 	pingRouter := &ping{}
@@ -157,15 +157,15 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// If there are registered middleware, apply them to the Gin engine.
-	if len(h.RouterUseGroupHTTPMap) != 0 {
-		for _, useHttp := range h.RouterUseGroupHTTPMap {
-			ginEngineGroup.Use(useHttp.UseHTTP)
-		}
-	}
+	// if len(h.RouterUseGroupHTTPMap) != 0 {
+	// 	for _, useHttp := range h.RouterUseGroupHTTPMap {
+	// 		ginEngineGroup.Use(useHttp.UseHTTP)
+	// 	}
+	// }
 
 	// Register all routes and their associated services with the Gin engine.
 	for routerName, routerRegister := range h.routerRegisterMap {
-		routerRegister.RegisterHTTP(ginEngineGroup)
+		routerRegister.RegisterHTTP(ginEngine)
 		httpService, isOk := h.routerHTTPServiceMap[routerName]
 		if isOk {
 			routerRegister.RegisterHTTPService(httpService)
