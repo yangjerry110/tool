@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-25 15:26:19
+ * @LastEditTime: 2025-08-25 17:39:49
  * @Description: routerName
  */
 package router
@@ -22,6 +22,10 @@ type RouterHTTP interface {
 	// RegisterHTTPService registers an HTTP service with the given route name and RouterHTTPService interface.
 	// It returns the RouterHTTP interface to allow method chaining.
 	RegisterHTTPService(routerHTTPService RouterHTTPService) RouterHTTP
+
+	// UseGroupHTTP registers middleware with the given middleware name and RouterUseHTTP interface.
+	// It returns the RouterHTTP interface to allow method chaining.
+	UseGroupHTTP(routerUse RouterUseHTTP) RouterHTTP
 
 	// UseHTTP registers middleware with the given middleware name and RouterUseHTTP interface.
 	// It returns the RouterHTTP interface to allow method chaining.
