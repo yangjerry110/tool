@@ -94,9 +94,11 @@ func (h *httpRouter) UseHTTP(routerUse RouterUseHTTP) RouterHTTP {
  * @return {error} - Returns an error if the server fails to start, otherwise nil.
  */
 func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
-	// If there are no registered routes, return nil to indicate that there is nothing to run.
-	if len(h.routerRegisterMap) == 0 {
-		return nil
+
+	// Create and set the configuration using the provided conf.Conf interface.
+	err := conf.CreateConf(httpConf).SetConfig()
+	if err != nil {
+		return err
 	}
 
 	// Register default routes for "ping" and "swagger".
@@ -104,6 +106,11 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 
 	// Create a new Gin engine with default middleware (logger and recovery).
 	ginEngine := gin.Default()
+
+	// If there are no registered routes, return nil to indicate that there is nothing to run.
+	if len(h.routerRegisterMap) == 0 {
+		return ginEngine.Run(config.HttpConf.Addr)
+	}
 
 	// // Register the "ping" route with the Gin engine.
 	// pingRouter := &ping{}
@@ -130,12 +137,6 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 		if isOk {
 			routerRegister.RegisterHTTPService(httpService)
 		}
-	}
-
-	// Create and set the configuration using the provided conf.Conf interface.
-	err := conf.CreateConf(httpConf).SetConfig()
-	if err != nil {
-		return err
 	}
 
 	// Start the Gin engine and listen on the address specified in the configuration.
