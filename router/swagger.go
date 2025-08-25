@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-20 18:24:17
+ * @LastEditTime: 2025-08-25 15:32:21
  * @Description: swagger
  */
 package router
@@ -28,7 +28,7 @@ type swagger struct{}
  */
 func (s *swagger) RegisterHTTP(ginEngine gin.IRouter) {
 	// Define the route to serve the Swagger UI and API documentation.
-	ginEngine.GET("/api/apidoc/*any", s.apidoc)
+	ginEngine.GET("/swagger/*any", s.apidoc)
 }
 
 /**
