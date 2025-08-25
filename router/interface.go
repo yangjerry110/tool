@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
- * @LastEditors: yangjie04 yangjie04@qutoutiao.net
- * @LastEditTime: 2025-03-20 21:05:25
+ * @LastEditors: Jerry.Yang
+ * @LastEditTime: 2025-08-25 14:56:31
  * @Description: routerName
  */
 package router
@@ -26,6 +26,10 @@ type RouterHTTP interface {
 	// UseHTTP registers middleware with the given middleware name and RouterUseHTTP interface.
 	// It returns the RouterHTTP interface to allow method chaining.
 	UseHTTP(routerUse RouterUseHTTP) RouterHTTP
+
+	// UseGroupHttp registers middleware with the given middleware name and RouterUseHTTP interface.
+	// It returns the RouterHTTP interface to allow method chaining.
+	UseGroupHttp(routerUse RouterUseHTTP) RouterHTTP
 
 	// RunHTTP starts the HTTP server using the provided configuration.
 	// It sets up the Gin engine, registers middleware, routes, and services, and then starts the server.

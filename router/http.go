@@ -20,6 +20,10 @@ type httpRouter struct {
 	// RouterUseHTTPMap stores the middleware functions to be used by the HTTP router.
 	// The key is the middleware name, and the value is the RouterUseHTTP interface.
 	RouterUseHTTPMap map[string]RouterUseHTTP
+
+	// RouterUseGroupHTTpMap stores the middleware functions to be used by the HTTP router.
+	// The key is the middleware name, and the value is the RouterUseHTTP interface.
+	RouterUseGroupHTTpMap map[string]RouterUseHTTP
 }
 
 /**
@@ -86,6 +90,27 @@ func (h *httpRouter) UseHTTP(routerUse RouterUseHTTP) RouterHTTP {
 }
 
 /**
+ * @description: Registers middleware with the given middleware name and RouterUseGroupHTTpMap interface.
+ * @param {string} useName - The name of the middleware to register.
+ * @param {RouterUseHTTP} routerUse - The RouterUseHTTP interface to register.
+ * @author: Jerry.Yang
+ * @date: 2025-03-12 16:36:26
+ * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
+ */
+func (h *httpRouter) UseGroupHttp(routerUse RouterUseHTTP) RouterHTTP {
+	// Initialize the RouterUseGroupHTTpMap if it is nil.
+	if h.RouterUseGroupHTTpMap == nil {
+		h.RouterUseGroupHTTpMap = make(map[string]RouterUseHTTP)
+	}
+
+	// Store the RouterUseHTTP interface in the RouterUseHTTPMap with the middleware name as the key.
+	h.RouterUseGroupHTTpMap[routerUse.UseName()] = routerUse
+
+	// Return the RouterHTTP interface to allow method chaining.
+	return h
+}
+
+/**
  * @description: Starts the HTTP server using the provided configuration.
  * It sets up the Gin engine, registers middleware, routes, and services, and then starts the server.
  * @param {conf.Conf} httpConf - The configuration to use for starting the server.
@@ -100,21 +125,21 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	}
 
 	// Register default routes for "ping" and "swagger".
-	h.RegisterHTTP(&ping{}).RegisterHTTP(&swagger{})
+	// h.RegisterHTTP(&ping{}).RegisterHTTP(&swagger{})
 
 	// Create a new Gin engine with default middleware (logger and recovery).
 	ginEngine := gin.Default()
 
 	// Register the "ping" route with the Gin engine.
-	// pingRouter := &ping{}
-	// pingRouter.RegisterHTTP(ginEngine)
+	pingRouter := &ping{}
+	pingRouter.RegisterHTTP(ginEngine)
 
 	// Register the "swagger" route with the Gin engine.
-	// swaggerRouter := &swagger{}
-	// swaggerRouter.RegisterHTTP(ginEngine)
+	swaggerRouter := &swagger{}
+	swaggerRouter.RegisterHTTP(ginEngine)
 
 	// Create a new Gin engine group with the base path from the configuration.
-	// ginEngineRegister := ginEngine.Group("")
+	ginEngineRegister := ginEngine.Group("")
 
 	// If there are registered middleware, apply them to the Gin engine.
 	if len(h.RouterUseHTTPMap) != 0 {
@@ -123,9 +148,16 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 		}
 	}
 
+	// If there are registered middleware, apply them to the Gin engine.
+	if len(h.RouterUseGroupHTTpMap) != 0 {
+		for _, useGroupHttp := range h.RouterUseGroupHTTpMap {
+			ginEngineRegister.Use(useGroupHttp.UseHTTP)
+		}
+	}
+
 	// Register all routes and their associated services with the Gin engine.
 	for routerName, routerRegister := range h.routerRegisterMap {
-		routerRegister.RegisterHTTP(ginEngine)
+		routerRegister.RegisterHTTP(ginEngineRegister)
 		httpService, isOk := h.routerHTTPServiceMap[routerName]
 		if isOk {
 			routerRegister.RegisterHTTPService(httpService)
