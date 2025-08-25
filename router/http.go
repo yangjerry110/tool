@@ -20,10 +20,6 @@ type httpRouter struct {
 	// RouterUseHTTPMap stores the middleware functions to be used by the HTTP router.
 	// The key is the middleware name, and the value is the RouterUseHTTP interface.
 	RouterUseHTTPMap map[string]RouterUseHTTP
-
-	// RouterUseGroupHTTpMap stores the middleware functions to be used by the HTTP router.
-	// The key is the middleware name, and the value is the RouterUseHTTP interface.
-	RouterUseGroupHTTpMap map[string]RouterUseHTTP
 }
 
 /**
@@ -90,27 +86,6 @@ func (h *httpRouter) UseHTTP(routerUse RouterUseHTTP) RouterHTTP {
 }
 
 /**
- * @description: Registers middleware with the given middleware name and RouterUseGroupHTTpMap interface.
- * @param {string} useName - The name of the middleware to register.
- * @param {RouterUseHTTP} routerUse - The RouterUseHTTP interface to register.
- * @author: Jerry.Yang
- * @date: 2025-03-12 16:36:26
- * @return {RouterHTTP} - Returns the RouterHTTP interface to allow method chaining.
- */
-func (h *httpRouter) UseGroupHttp(routerUse RouterUseHTTP) RouterHTTP {
-	// Initialize the RouterUseGroupHTTpMap if it is nil.
-	if h.RouterUseGroupHTTpMap == nil {
-		h.RouterUseGroupHTTpMap = make(map[string]RouterUseHTTP)
-	}
-
-	// Store the RouterUseHTTP interface in the RouterUseHTTPMap with the middleware name as the key.
-	h.RouterUseGroupHTTpMap[routerUse.UseName()] = routerUse
-
-	// Return the RouterHTTP interface to allow method chaining.
-	return h
-}
-
-/**
  * @description: Starts the HTTP server using the provided configuration.
  * It sets up the Gin engine, registers middleware, routes, and services, and then starts the server.
  * @param {conf.Conf} httpConf - The configuration to use for starting the server.
@@ -144,14 +119,7 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	// If there are registered middleware, apply them to the Gin engine.
 	if len(h.RouterUseHTTPMap) != 0 {
 		for _, useHttp := range h.RouterUseHTTPMap {
-			ginEngine.Use(useHttp.UseHTTP)
-		}
-	}
-
-	// If there are registered middleware, apply them to the Gin engine.
-	if len(h.RouterUseGroupHTTpMap) != 0 {
-		for _, useGroupHttp := range h.RouterUseGroupHTTpMap {
-			ginEngineRegister.Use(useGroupHttp.UseHTTP)
+			ginEngine.Use(h.createExcludingMiddleware(useHttp.UseHTTP, []string{"/ping", "/swagger"}))
 		}
 	}
 
@@ -172,4 +140,24 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 
 	// Start the Gin engine and listen on the address specified in the configuration.
 	return ginEngine.Run(config.HttpConf.Addr)
+}
+
+/**
+ * @description: createExcludingMiddleware
+ * @param {gin.HandlerFunc} middleware
+ * @param {[]string} excludePaths
+ * @author: Jerry.Yang
+ * @date: 2025-08-24
+ * @return {*}
+ */
+func (h *httpRouter) createExcludingMiddleware(middleware gin.HandlerFunc, excludePaths []string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		for _, path := range excludePaths {
+			if c.Request.URL.Path == path {
+				c.Next()
+				return
+			}
+		}
+		middleware(c)
+	}
 }
