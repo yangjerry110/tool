@@ -2,13 +2,16 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-25 15:37:12
+ * @LastEditTime: 2025-08-25 15:43:51
  * @Description: swagger
  */
 package router
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/swag"
 )
 
 // swagger struct is responsible for handling Swagger API documentation.
@@ -26,6 +29,7 @@ type swagger struct{}
 func (s *swagger) RegisterHTTP(ginEngine gin.IRouter) {
 	// Define the route to serve the Swagger UI and API documentation.
 	ginEngine.GET("/swagger", s.apidoc)
+	ginEngine.GET("/swagger.json", s.json)
 }
 
 /**
@@ -121,4 +125,13 @@ func (s *swagger) apidoc(ctx *gin.Context) {
 	// 	}
 	// 	ctx.Writer.Write([]byte(doc))
 	// }
+}
+
+func (s *swagger) json(ctx *gin.Context) {
+	doc, err := swag.ReadDoc()
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.Writer.Write([]byte(doc))
 }
