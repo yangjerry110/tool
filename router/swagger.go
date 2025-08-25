@@ -2,16 +2,13 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-13 10:55:04
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-25 15:32:21
+ * @LastEditTime: 2025-08-25 15:37:12
  * @Description: swagger
  */
 package router
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/swag"
 )
 
 // swagger struct is responsible for handling Swagger API documentation.
@@ -28,7 +25,7 @@ type swagger struct{}
  */
 func (s *swagger) RegisterHTTP(ginEngine gin.IRouter) {
 	// Define the route to serve the Swagger UI and API documentation.
-	ginEngine.GET("/swagger/*any", s.apidoc)
+	ginEngine.GET("/swagger", s.apidoc)
 }
 
 /**
@@ -57,13 +54,10 @@ func (s *swagger) RouterName() string {
  */
 func (s *swagger) apidoc(ctx *gin.Context) {
 	// Extract the path parameter from the request URL.
-	any := ctx.Param("any")
+	// any := ctx.Param("any")
 
-	// Handle different paths for serving the Swagger UI and JSON specification.
-	switch any {
-	case "/index.html":
-		// Serve the Swagger UI HTML page.
-		var doc = []byte(`
+	// Serve the Swagger UI HTML page.
+	var doc = []byte(`
 		 <!DOCTYPE html>
 		 <html>
 		 <head>
@@ -87,14 +81,44 @@ func (s *swagger) apidoc(ctx *gin.Context) {
 		 </body>
 		 </html>
 		 `)
-		ctx.Data(200, "text/html; charset=utf-8", doc)
-	case "/swagger.json":
-		// Serve the Swagger JSON specification.
-		doc, err := swag.ReadDoc()
-		if err != nil {
-			ctx.String(http.StatusInternalServerError, err.Error())
-			return
-		}
-		ctx.Writer.Write([]byte(doc))
-	}
+	ctx.Data(200, "text/html; charset=utf-8", doc)
+
+	// Handle different paths for serving the Swagger UI and JSON specification.
+	// switch any {
+	// case "/index.html":
+	// 	// Serve the Swagger UI HTML page.
+	// 	var doc = []byte(`
+	// 	 <!DOCTYPE html>
+	// 	 <html>
+	// 	 <head>
+	// 		 <title>ReDoc</title>
+	// 		 <meta charset="utf-8"/>
+	// 		 <meta name="viewport" content="width=device-width, initial-scale=1">
+	// 		 <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+	// 		 <!--
+	// 		 ReDoc doesn't change outer page styles
+	// 		 -->
+	// 		 <style>
+	// 		 body {
+	// 			 margin: 0;
+	// 			 padding: 0;
+	// 		 }
+	// 		 </style>
+	// 	 </head>
+	// 	 <body>
+	// 		 <redoc spec-url='swagger.json'></redoc>
+	// 		 <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+	// 	 </body>
+	// 	 </html>
+	// 	 `)
+	// 	ctx.Data(200, "text/html; charset=utf-8", doc)
+	// case "/swagger.json":
+	// 	// Serve the Swagger JSON specification.
+	// 	doc, err := swag.ReadDoc()
+	// 	if err != nil {
+	// 		ctx.String(http.StatusInternalServerError, err.Error())
+	// 		return
+	// 	}
+	// 	ctx.Writer.Write([]byte(doc))
+	// }
 }
