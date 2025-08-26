@@ -149,14 +149,12 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	swaggerRouter.RegisterHTTP(ginEngine)
 
 	// If there are registered middleware, apply them to the Gin engine.
-	useHandler := []gin.HandlerFunc{}
 	if len(h.RouterUseHTTPMap) != 0 {
 		for _, useHttp := range h.RouterUseHTTPMap {
 			// ginEngine.Use(h.createExcludingMiddleware(useHttp.UseHTTP, []string{"/ping", "/swagger", "/swagger.json"}))
-			useHandler = append(useHandler, useHttp.UseHTTP)
+			ginEngine.Use(useHttp.UseHTTP)
 		}
 	}
-	ginEngine.Use(useHandler...)
 
 	// If there are registered middleware, apply them to the Gin engine.
 	// if len(h.RouterUseGroupHTTPMap) != 0 {
