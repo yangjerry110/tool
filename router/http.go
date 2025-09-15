@@ -148,6 +148,10 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	swaggerRouter := &swagger{}
 	swaggerRouter.RegisterHTTP(ginEngine)
 
+	// Register the "Metrics" route with the Gin engine.
+	metricsRouter := &metrics{}
+	metricsRouter.RegisterHTTP(ginEngine)
+
 	// If there are registered middleware, apply them to the Gin engine.
 	if len(h.RouterUseHTTPMap) != 0 {
 		for _, useHttp := range h.RouterUseHTTPMap {
