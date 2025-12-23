@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2025-03-03 14:03:33
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-12 16:55:27
+ * @LastEditTime: 2025-12-01 14:51:45
  * @Description: httpProtobuf
  */
 package protobuf
@@ -62,12 +62,13 @@ func (i *HttpProtobuf) getTemplate() string {
    import (
 	   "context"
 	   "github.com/yangjerry110/tool/router"
+	   "github.com/gin-gonic/gin"
    )
 
    type {{.ServiceNameUp}}HttpServer interface {
    	router.RouterHTTPService
 	{{- range .Services}}
-	{{.ServiceFuncUp}}(ctx context.Context, inputVo *{{.InputReqName}}) (*{{.OutputRespName}}, error)
+	{{.ServiceFuncUp}}(ctx *gin.Context, inputVo *{{.InputReqName}}) (*{{.OutputRespName}}, error)
 	{{- end}}
 	}`
 }

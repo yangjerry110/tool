@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-14 19:04:31
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-13 10:49:00
+ * @LastEditTime: 2025-12-01 14:57:20
  * @Description: append protobuf
  */
 package service
@@ -47,13 +47,13 @@ func (a *AppendProtobuf) getTemplate() string {
 	return `
 	/**
 	* @description: {{.ServiceFuncUp}}
-	* @param {context.Context} ctx
+	* @param {*gin.Context} ctx
 	* @param {*protobuf.{{.InputReqName}}} inputVo
 	* @author: Jerry.Yang
 	* @date: {{.Time}}
 	* @return {*}
 	*/
-   func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceFuncUp}}(ctx context.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error) {
+   func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceFuncUp}}(ctx *gin.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error) {
    
 	   /**
 		* @step

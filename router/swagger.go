@@ -81,7 +81,7 @@ func (s *swagger) apidoc(ctx *gin.Context) {
 		 </head>
 		 <body>
 			 <redoc spec-url='swagger.json'></redoc>
-			 <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+			 <script src="https://cdn.jsdelivr.net/npm/redoc@2.1.5/bundles/redoc.standalone.js"> </script>
 		 </body>
 		 </html>
 		 `)

@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:18:53
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-03-19 18:19:51
+ * @LastEditTime: 2025-12-01 14:58:07
  * @Description: new protobuf
  */
 package service
@@ -63,8 +63,8 @@ func (n *NewProtobuf) getTemplate() string {
    package service
    
    import (
-	   "context"
 	   "{{.ProjectImportPath}}/vo/protobuf"
+	   "github.com/gin-gonic/gin"
    )
 
 	type {{.ServiceNameUp}} struct{}
@@ -90,13 +90,13 @@ func (n *NewProtobuf) getTemplate() string {
 	{{- range .Services}}
 	/**
 	 * @description: {{.ServiceFuncUp}}
-	 * @param {context.Context} ctx
+	 * @param {*gin.Context} ctx
 	 * @param {*protobuf.{{.InputReqName}}} inputVo
 	 * @author: Jerry.Yang
 	 * @date: {{.Time}}
 	 * @return {*}
 	*/
-   func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceFuncUp}}(ctx context.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error) {
+   func ({{.FirstServiceName}} *{{.ServiceNameUp}}) {{.ServiceFuncUp}}(ctx *gin.Context, inputVo *protobuf.{{.InputReqName}}) (*protobuf.{{.OutputRespName}}, error) {
    
 	   /**
 		* @step

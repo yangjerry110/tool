@@ -2,7 +2,7 @@
  * @Author: Jerry.Yang
  * @Date: 2023-12-12 16:19:17
  * @LastEditors: Jerry.Yang
- * @LastEditTime: 2025-08-26 15:19:47
+ * @LastEditTime: 2025-12-01 14:56:31
  * @Description: new protobuf
  */
 package router
@@ -170,7 +170,7 @@ func (n *NewProtobuf) getTemplate() string {
 	    * @step
 	    * @调用service
 	   **/
-	   outputVo, err := {{.FirstRouterName}}.HttpServer.{{.RouterFunc}}(ctx.Request.Context(), inputVo)
+	   outputVo, err := {{.FirstRouterName}}.HttpServer.{{.RouterFunc}}(ctx, inputVo)
 	   if err != nil {
 		   qlog.Errorf("{{.RouterNameUp}}Service {{.RouterFunc}} Err : %+v", err)
 		   ctx.JSON(http.StatusOK,&protobuf.{{.OutputRespName}}{RetCode:proto.Int32(-1),RetMsg: proto.String(err.Error())})
