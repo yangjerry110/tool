@@ -179,23 +179,3 @@ func (h *httpRouter) RunHTTP(httpConf conf.Conf) error {
 	// Start the Gin engine and listen on the address specified in the configuration.
 	return ginEngine.Run(config.HttpConf.Addr)
 }
-
-/**
- * @description: createExcludingMiddleware
- * @param {gin.HandlerFunc} middleware
- * @param {[]string} excludePaths
- * @author: Jerry.Yang
- * @date: 2025-08-24
- * @return {*}
- */
-func (h *httpRouter) createExcludingMiddleware(middleware gin.HandlerFunc, excludePaths []string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		for _, path := range excludePaths {
-			if c.Request.URL.Path == path {
-				c.Next()
-				return
-			}
-		}
-		middleware(c)
-	}
-}
