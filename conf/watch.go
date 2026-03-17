@@ -149,7 +149,7 @@ func (w *watch) watchFile() error {
 						filePath: watchFileObj.filePath,
 						fileName: watchFileObj.fileName,
 						fileType: watchFileObj.fileType,
-						confData: &watchFileObj.confData,
+						confData: watchFileObj.confData,
 					}).SetConfig(); err != nil {
 						fmt.Printf("watchConf SetYamlConf Err : %+v; configFile : %+v", err, configFile)
 						fmt.Print("\r\n")
