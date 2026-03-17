@@ -12,12 +12,14 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"strings"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/yangjerry110/tool/toolerrors"
+	"gopkg.in/yaml.v3"
 )
 
 // watch 结构体，用于管理配置文件监听功能
@@ -35,7 +37,9 @@ type watchFile struct {
 
 // watchConfing 结构体，用于管理监听状态
 type watchConfing struct {
-	isWatch bool // 是否已启动监听
+	mu      sync.Mutex
+	isWatch bool              // 是否已启动监听
+	watcher *fsnotify.Watcher // 全局共享的 watcher 实例
 }
 
 // watchConf 全局变量，存储监听状态
@@ -67,13 +71,31 @@ func (w *watch) SetConfig() error {
 	// 将文件信息存储到全局变量中
 	watchFilesConf.Store(configFileMd5, w.watchfile)
 
-	// 如果已启动监听，直接返回
+	watchConf.mu.Lock()
+	defer watchConf.mu.Unlock()
+
 	if watchConf.isWatch {
+		// watcher 已启动，直接将新文件追加到现有 watcher
+		if err := watchConf.watcher.Add(configFile); err != nil {
+			fmt.Printf("watchConf AddWatch Err : %+v; configFile : %+v\r\n", err, configFile)
+		}
 		return nil
 	}
 
+	// 初始化 watcher
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		return err
+	}
+	watchConf.watcher = watcher
+
 	// 启动文件监听协程
-	go w.watchFile()
+	go w.watchFileLoop(watcher)
+
+	// 将当前文件加入监听
+	if err := watcher.Add(configFile); err != nil {
+		return err
+	}
 
 	// 标记已启动监听
 	watchConf.isWatch = true
@@ -81,89 +103,66 @@ func (w *watch) SetConfig() error {
 }
 
 /**
- * @description: watchFile 监听文件变化，并在文件修改时重新加载配置
+ * @description: watchFileLoop 监听文件变化，并在文件修改时重新加载配置
  * @receiver w *watch 监听对象
- * @return error 如果监听器初始化失败，返回错误；否则持续监听文件变化
+ * @param watcher *fsnotify.Watcher 共享的 fsnotify 监听器
  * @author: Jerry.Yang
  * @date: 2023-12-20 14:46:23
  */
-func (w *watch) watchFile() error {
-	// 初始化 fsnotify 监听器
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		fmt.Printf("watchConf watchFile Err : %+v;", err)
-		fmt.Print("\r\n")
-		return err
-	}
+func (w *watch) watchFileLoop(watcher *fsnotify.Watcher) {
 	defer watcher.Close()
 
-	// 遍历所有被监听的文件，添加到监听器中
-	watchFilesConf.Range(func(watchFileName, watchfile any) bool {
-		watchFileObj := watchfile.(*watchFile)
-		err := watcher.Add(fmt.Sprintf("%s/%s", watchFileObj.filePath, watchFileObj.fileName))
-		if err != nil {
-			fmt.Printf("watchConf watchFile AddWatch Err : %+v;", err)
-			fmt.Print("\r\n")
-			return false
-		}
-		return true
-	})
-
-	// 处理文件变化事件
 	for {
 		select {
 		case event, ok := <-watcher.Events:
 			// 如果事件通道关闭，直接返回
 			if !ok {
-				return nil
+				return
 			}
 
-			// 如果文件被修改
-			if event.Has(fsnotify.Write) {
-				fmt.Printf("Config file %s modified. Reloading...\n", event.Name)
-				fmt.Print("\r\n")
+			// Write：直接写入；Create：vim/nano 等编辑器先写临时文件再重命名，触发 Create
+			if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) {
 				configFile := event.Name
 
 				// 获取文件扩展名
 				extension := strings.ToLower(filepath.Ext(configFile))
+				if extension != ".yaml" {
+					continue
+				}
 
-				// 如果是 YAML 文件
-				if extension == ".yaml" {
-					// 计算文件的 MD5 值
-					configFileMd5, err := w.getConfigFileMd5(configFile)
-					if err != nil {
-						return err
-					}
+				fmt.Printf("Config file %s modified. Reloading...\r\n", configFile)
 
-					// 获取文件信息
-					watchfile, isExistWatchFile := watchFilesConf.Load(configFileMd5)
-					if !isExistWatchFile {
-						fmt.Printf("watchFile is not exist; configFile : %+v", configFile)
-						fmt.Print("\r\n")
-						return toolerrors.New("conf Err : watch conf no confFile")
-					}
+				// 计算文件的 MD5 值
+				configFileMd5, err := w.getConfigFileMd5(configFile)
+				if err != nil {
+					fmt.Printf("watchConf getConfigFileMd5 Err : %+v; configFile : %+v\r\n", err, configFile)
+					continue
+				}
 
-					// 重新加载配置文件
-					watchFileObj := watchfile.(*watchFile)
-					if err := CreateConf(&yamlConf{
-						filePath: watchFileObj.filePath,
-						fileName: watchFileObj.fileName,
-						fileType: watchFileObj.fileType,
-						confData: watchFileObj.confData,
-					}).SetConfig(); err != nil {
-						fmt.Printf("watchConf SetYamlConf Err : %+v; configFile : %+v", err, configFile)
-						fmt.Print("\r\n")
-						// 即使加载失败，也不中断监听
-					}
+				// 获取文件信息
+				watchfile, isExistWatchFile := watchFilesConf.Load(configFileMd5)
+				if !isExistWatchFile {
+					fmt.Printf("watchFile is not exist; configFile : %+v\r\n", configFile)
+					continue
+				}
+
+				// 重新加载配置文件（只调用 yaml 解析，避免再次注册 watcher）
+				watchFileObj := watchfile.(*watchFile)
+				fileContent, err := ioutil.ReadFile(configFile)
+				if err != nil {
+					fmt.Printf("watchConf ReadFile Err : %+v; configFile : %+v\r\n", err, configFile)
+					continue
+				}
+				if err := yaml.Unmarshal(fileContent, watchFileObj.confData); err != nil {
+					fmt.Printf("watchConf Unmarshal Err : %+v; configFile : %+v\r\n", err, configFile)
 				}
 			}
 		case err, ok := <-watcher.Errors:
 			// 处理监听器错误
-			fmt.Printf("watchConf Err : %+v;", err)
-			fmt.Print("\r\n")
-			if ok {
-				return nil
+			if !ok {
+				return
 			}
+			fmt.Printf("watchConf Err : %+v;\r\n", err)
 		}
 	}
 }
