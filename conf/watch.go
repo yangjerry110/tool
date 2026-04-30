@@ -13,8 +13,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
@@ -48,6 +48,9 @@ var watchConf = &watchConfing{}
 // watchFilesConf 全局变量，存储所有被监听的文件信息（使用 sync.Map 实现线程安全）
 var watchFilesConf = sync.Map{}
 
+// watchDirsConf 全局变量，存储已经加入 watcher 的配置目录
+var watchDirsConf = sync.Map{}
+
 /**
  * @description: SetConfig 实现 Conf 接口，用于启动配置文件监听
  * @receiver w *watch 监听对象
@@ -62,22 +65,31 @@ func (w *watch) SetConfig() error {
 	}
 
 	// 计算文件的 MD5 值，作为唯一标识
-	configFile := fmt.Sprintf("%s/%s", w.watchfile.filePath, w.watchfile.fileName)
+	configFile, err := filepath.Abs(filepath.Join(w.watchfile.filePath, w.watchfile.fileName))
+	if err != nil {
+		return err
+	}
 	configFileMd5, err := w.getConfigFileMd5(configFile)
 	if err != nil {
 		return err
 	}
+	configDir := filepath.Dir(configFile)
+
+	watchFileObj := *w.watchfile
+	watchFileObj.filePath = configDir
+	watchFileObj.fileName = filepath.Base(configFile)
 
 	// 将文件信息存储到全局变量中
-	watchFilesConf.Store(configFileMd5, w.watchfile)
+	watchFilesConf.Store(configFileMd5, &watchFileObj)
 
 	watchConf.mu.Lock()
 	defer watchConf.mu.Unlock()
 
 	if watchConf.isWatch {
-		// watcher 已启动，直接将新文件追加到现有 watcher
-		if err := watchConf.watcher.Add(configFile); err != nil {
-			fmt.Printf("watchConf AddWatch Err : %+v; configFile : %+v\r\n", err, configFile)
+		// watcher 已启动，直接将新目录追加到现有 watcher
+		if err := w.addWatchDir(watchConf.watcher, configDir); err != nil {
+			fmt.Printf("watchConf AddWatch Err : %+v; configDir : %+v\r\n", err, configDir)
+			return err
 		}
 		return nil
 	}
@@ -89,16 +101,17 @@ func (w *watch) SetConfig() error {
 	}
 	watchConf.watcher = watcher
 
-	// 启动文件监听协程
-	go w.watchFileLoop(watcher)
-
-	// 将当前文件加入监听
-	if err := watcher.Add(configFile); err != nil {
+	// 将当前配置目录加入监听。配置中心常用 rename 覆盖文件，监听文件本身会在 inode 替换后失效。
+	if err := w.addWatchDir(watcher, configDir); err != nil {
+		watcher.Close()
 		return err
 	}
 
 	// 标记已启动监听
 	watchConf.isWatch = true
+
+	// 启动文件监听协程
+	go w.watchFileLoop(watcher)
 	return nil
 }
 
@@ -120,41 +133,13 @@ func (w *watch) watchFileLoop(watcher *fsnotify.Watcher) {
 				return
 			}
 
-			// Write：直接写入；Create：vim/nano 等编辑器先写临时文件再重命名，触发 Create
-			if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) {
-				configFile := event.Name
-
-				// 获取文件扩展名
-				extension := strings.ToLower(filepath.Ext(configFile))
-				if extension != ".yaml" {
-					continue
-				}
-
-				fmt.Printf("Config file %s modified. Reloading...\r\n", configFile)
-
-				// 计算文件的 MD5 值
-				configFileMd5, err := w.getConfigFileMd5(configFile)
-				if err != nil {
-					fmt.Printf("watchConf getConfigFileMd5 Err : %+v; configFile : %+v\r\n", err, configFile)
-					continue
-				}
-
-				// 获取文件信息
-				watchfile, isExistWatchFile := watchFilesConf.Load(configFileMd5)
-				if !isExistWatchFile {
-					fmt.Printf("watchFile is not exist; configFile : %+v\r\n", configFile)
-					continue
-				}
-
-				// 重新加载配置文件（只调用 yaml 解析，避免再次注册 watcher）
-				watchFileObj := watchfile.(*watchFile)
-				fileContent, err := ioutil.ReadFile(configFile)
-				if err != nil {
-					fmt.Printf("watchConf ReadFile Err : %+v; configFile : %+v\r\n", err, configFile)
-					continue
-				}
-				if err := yaml.Unmarshal(fileContent, watchFileObj.confData); err != nil {
-					fmt.Printf("watchConf Unmarshal Err : %+v; configFile : %+v\r\n", err, configFile)
+			// Write：直接写入；Create/Rename：配置中心或编辑器先写临时文件再替换目标文件。
+			if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) || event.Has(fsnotify.Rename) || event.Has(fsnotify.Remove) {
+				for _, watchFileObj := range w.getEventWatchFiles(event.Name) {
+					configFile := filepath.Join(watchFileObj.filePath, watchFileObj.fileName)
+					if err := w.reloadConfigFile(configFile, watchFileObj); err != nil {
+						fmt.Printf("watchConf Reload Err : %+v; configFile : %+v\r\n", err, configFile)
+					}
 				}
 			}
 		case err, ok := <-watcher.Errors:
@@ -165,6 +150,91 @@ func (w *watch) watchFileLoop(watcher *fsnotify.Watcher) {
 			fmt.Printf("watchConf Err : %+v;\r\n", err)
 		}
 	}
+}
+
+/**
+ * @description: addWatchDir 将配置目录加入 watcher，避免重复监听同一个目录
+ * @receiver w *watch 监听对象
+ * @param watcher *fsnotify.Watcher 共享的 fsnotify 监听器
+ * @param configDir string 配置目录
+ * @return error 如果目录监听失败，返回错误
+ * @author: Jerry.Yang
+ * @date: 2026-04-30 00:00:00
+ */
+func (w *watch) addWatchDir(watcher *fsnotify.Watcher, configDir string) error {
+	if _, ok := watchDirsConf.Load(configDir); ok {
+		return nil
+	}
+
+	if err := watcher.Add(configDir); err != nil {
+		return err
+	}
+	watchDirsConf.Store(configDir, struct{}{})
+	return nil
+}
+
+/**
+ * @description: getEventWatchFiles 获取事件影响的配置文件
+ * @receiver w *watch 监听对象
+ * @param eventName string fsnotify 事件文件名
+ * @return []*watchFile 需要重新加载的配置文件列表
+ * @author: Jerry.Yang
+ * @date: 2026-04-30 00:00:00
+ */
+func (w *watch) getEventWatchFiles(eventName string) []*watchFile {
+	configFile, err := filepath.Abs(eventName)
+	if err != nil {
+		configFile = filepath.Clean(eventName)
+	}
+
+	configFileMd5, err := w.getConfigFileMd5(configFile)
+	if err == nil {
+		if watchfile, isExistWatchFile := watchFilesConf.Load(configFileMd5); isExistWatchFile {
+			return []*watchFile{watchfile.(*watchFile)}
+		}
+	}
+
+	// 配置中心可能只上报临时文件 rename 事件，这里对同目录配置做兜底 reload。
+	configDir := filepath.Dir(configFile)
+	watchFiles := make([]*watchFile, 0)
+	watchFilesConf.Range(func(_, value interface{}) bool {
+		watchFileObj := value.(*watchFile)
+		if watchFileObj.filePath == configDir {
+			watchFiles = append(watchFiles, watchFileObj)
+		}
+		return true
+	})
+	return watchFiles
+}
+
+/**
+ * @description: reloadConfigFile 重新加载配置文件内容
+ * @receiver w *watch 监听对象
+ * @param configFile string 配置文件路径
+ * @param watchFileObj *watchFile 被监听文件信息
+ * @return error 如果读取或解析失败，返回错误
+ * @author: Jerry.Yang
+ * @date: 2026-04-30 00:00:00
+ */
+func (w *watch) reloadConfigFile(configFile string, watchFileObj *watchFile) error {
+	if _, err := os.Stat(configFile); err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
+	}
+
+	fmt.Printf("Config file %s modified. Reloading...\r\n", configFile)
+
+	// 重新加载配置文件（只调用 yaml 解析，避免再次注册 watcher）
+	fileContent, err := ioutil.ReadFile(configFile)
+	if err != nil {
+		return err
+	}
+	if err := yaml.Unmarshal(fileContent, watchFileObj.confData); err != nil {
+		return err
+	}
+	return nil
 }
 
 /**
